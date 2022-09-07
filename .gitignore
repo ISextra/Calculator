@@ -1,0 +1,11 @@
+#ignore .idea folder and files in this folder
+.idea
+
+#ignore dist folder and files in this folder
+dist
+
+#ignore node_modules folder and files in this folder
+node_modules
+
+#ignore package information file
+package-lock.json
