@@ -248,12 +248,14 @@ class CalculatorNumbers extends CalculatorInterface{
 
                 if (this.resultNumberOfElement.length > 16) {
                     CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}`;
+
                 }
                 else if (this.resultNumberOfElement === `0` && symbol !== `.`) {
                     CalculatorInterface.top_result.innerHTML = `${symbol}`;
                 }
                 else {
                     CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}${symbol}`;
+                    CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement}${symbol}`;
                 }
         }
     }
@@ -283,20 +285,17 @@ class CalculatorAction extends CalculatorNumbers{
     static addAction(action) {
         this.resultNumberOfElement = CalculatorInterface.top_result.innerHTML;
         // this.historyElement = CalculatorInterface.top_history.innerHTML;
-        CalculatorInterface.top_history.innerHTML = `${action}`;
-        // if (this.isOperation === 0) {
-        //     CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement} ${action}`
-        // }
-        // else {
-        //     this.isOperation = 1;
-        // }
+        // CalculatorInterface.top_history.innerHTML = `${action}`;
+
+        CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement} ${action}`;
+        this.isOperation = 1;
     }
 
     static additionEventForOperation() {
         CalculatorInterface.bottom_html.onclick = function(event) {
             let target = event.target;
 
-            if (!target.classList.contains("action-button")) return;
+            if (!target.classList.contains("operation-button")) return;
 
             CalculatorAction.addAction(target.textContent);
         }
@@ -304,15 +303,5 @@ class CalculatorAction extends CalculatorNumbers{
 }
 
 
-// const addTwo = new Calculator(".top-result");
-// const addTwo = new CalculatorNumbers(".calculator");
 const interface1 = new CalculatorAction(".calculator");
-
-// addTwo.addSymbol(1);
-// addTwo.addSymbol(2);
-// addTwo.addSymbol(3);
-// addTwo.deleteLastSymbol();
-// addTwo.plusButtonClick();
-// addTwo.minusButtonClick();
-// addTwo.addSymbol(1);
 
