@@ -211,12 +211,13 @@ class CalculatorInterface {
 
 }
 
-class CalculatorNumbers extends CalculatorInterface{
+class CalculatorHandlers extends CalculatorInterface{
     constructor(...args) {
         super(...args);
 
-        CalculatorNumbers.additionEventForNumbers();
+        CalculatorHandlers.onclickTarget();
     }
+
 
     static addSymbol(symbol) {
         this.resultNumberOfElement = CalculatorInterface.top_result.innerHTML;
@@ -255,31 +256,8 @@ class CalculatorNumbers extends CalculatorInterface{
                 }
                 else {
                     CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}${symbol}`;
-                    CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement}${symbol}`;
                 }
         }
-    }
-
-    static additionEventForNumbers() {
-        CalculatorInterface.bottom_html.onclick = function(event) {
-            let target = event.target;
-
-            if (!target.classList.contains("number-button")) return;
-
-            CalculatorNumbers.addSymbol(target.textContent);
-        }
-    }
-}
-
-class CalculatorAction extends CalculatorNumbers{
-    constructor(...args) {
-        super(...args);
-
-        // this.isOperation = 0;
-        // this.prevValue = parseFloat(CalculatorInterface.top_result.innerHTML);
-        // this.nextValue = undefined;
-
-        CalculatorAction.additionEventForOperation();
     }
 
     static addAction(action) {
@@ -288,20 +266,80 @@ class CalculatorAction extends CalculatorNumbers{
         // CalculatorInterface.top_history.innerHTML = `${action}`;
 
         CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement} ${action}`;
-        this.isOperation = 1;
+        // this.isOperation = 1;
     }
 
-    static additionEventForOperation() {
-        CalculatorInterface.bottom_html.onclick = function(event) {
-            let target = event.target;
+    // static additionEventForNumbers() {
+    //     let target =this.target;
+    //     console.log(1,this.target,this)
+    //     if (!target.classList.contains("number-button")) return;
+    //
+    //     CalculatorHandlers.addSymbol(this.target.textContent);
+    // }
 
-            if (!target.classList.contains("operation-button")) return;
+    // static additionEventForOperation() {
+    //     if (this.target === undefined) return;
+    //     let target =this.target;
+    //     if (!target.classList.contains("operation-button")) return;
+    //
+    //     CalculatorHandlers.addAction(this.target.textContent);
+    // }
 
-            CalculatorAction.addAction(target.textContent);
-        }
+    // static onclickTarget () {
+    //     CalculatorInterface.bottom_html.onclick = function(event) {
+    //         CalculatorHandlers.target = event.target;
+    //
+    //         console.log(this.target);
+    //         console.log(this.target.classList);
+    //     }
+    // }
+
+    static onclickTarget () {
+        console.log(true);
+        document.querySelectorAll(`.bottom-button`).forEach(button => {
+            button.addEventListener('click', function () {
+
+                if (button.classList.contains("number-button")){
+                    CalculatorHandlers.addSymbol(button.textContent);
+                }
+                if (button.classList.contains("operation-button")){
+                    CalculatorHandlers.addAction(button.textContent);
+                }
+            })
+        })
     }
 }
 
 
-const interface1 = new CalculatorAction(".calculator");
+// class CalculatorAction extends CalculatorHandlers{
+//     constructor(...args) {
+//         super(...args);
+//
+//         // this.isOperation = 0;
+//         // this.prevValue = parseFloat(CalculatorInterface.top_result.innerHTML);
+//         // this.nextValue = undefined;
+//         CalculatorAction.additionEventForOperation();
+//     }
+//
+//     static addAction(action) {
+//         this.resultNumberOfElement = CalculatorInterface.top_result.innerHTML;
+//         // this.historyElement = CalculatorInterface.top_history.innerHTML;
+//         // CalculatorInterface.top_history.innerHTML = `${action}`;
+//
+//         CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement} ${action}`;
+//         // this.isOperation = 1;
+//     }
+//
+//     static additionEventForOperation() {
+//         CalculatorInterface.bottom_html.onclick = function(event) {
+//             let target = event.target;
+//
+//             if (!target.classList.contains("operation-button")) return;
+//
+//             CalculatorAction.addAction(target.textContent);
+//         }
+//     }
+// }
+
+let interface1 = new CalculatorHandlers(".calculator");
 
