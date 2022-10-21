@@ -20,26 +20,26 @@ class CalculatorInterface {
         const supFlipNumber = document.createElement("sup");
         const supSquaringNumber = document.createElement("sup");
 
-        const top_html = document.createElement("div");
-        top_html.classList.add("top");
-        mainElement.append(top_html);
+        const topHtml = document.createElement("div");
+        topHtml.classList.add("top");
+        mainElement.append(topHtml);
 
         const topElement = document.querySelector('.top');
 
-        this.bottom_html = document.createElement("div");
-        this.bottom_html.classList.add("bottom");
-        mainElement.append(this.bottom_html);
+        this.bottomHtml = document.createElement("div");
+        this.bottomHtml.classList.add("bottom");
+        mainElement.append(this.bottomHtml);
 
         const bottomElement = document.querySelector('.bottom');
 
-        this.top_history = document.createElement("output");
-        this.top_history.classList.add("top-history");
-        topElement.append(this.top_history);
+        this.topHistory = document.createElement("output");
+        this.topHistory.classList.add("top-history");
+        topElement.append(this.topHistory);
 
-        this.top_result = document.createElement("output");
-        this.top_result.classList.add("top-result");
-        this.top_result.textContent = '0';
-        topElement.append(this.top_result);
+        this.topResult = document.createElement("output");
+        this.topResult.classList.add("top-result");
+        this.topResult.textContent = '0';
+        topElement.append(this.topResult);
 
         const bottomPresent = document.createElement("button");
         this.fillingElement(bottomPresent,`%`,bottomElement,`bottom-button`,`bottom-present`);
@@ -132,59 +132,58 @@ class CalculatorNumbers extends CalculatorInterface{
 
 
     additionEventForNumbers() {
-        this.bottom_html.onclick = function(event) {
+        const topResult = this.topResult;
+
+        this.bottomHtml.onclick = function(event) {
             let target = event.target;
 
             if (!target.classList.contains("number-button")) return;
 
-            CalculatorNumbers.addSymbol(target.textContent);
+            this.resultNumberOfElement = topResult.innerHTML;
+            const targetTextContent = target.textContent;
+
+            switch (targetTextContent) {
+                case "+/-":
+                    if (this.resultNumberOfElement.includes(`-`) && this.resultNumberOfElement === `0`) {
+                        topResult.innerHTML = `${this.resultNumberOfElement}`;
+                    }
+                    else if (this.resultNumberOfElement.includes(`-`)) {
+                        topResult.innerHTML = `${this.resultNumberOfElement.slice(1,undefined)}`;
+                    }
+                    else {
+                        topResult.innerHTML = `-${this.resultNumberOfElement}`;
+                    }
+
+                    break;
+                case ".":
+                    if (!this.resultNumberOfElement.includes(`.`)) {
+                        topResult.innerHTML = `${this.resultNumberOfElement}.`;
+                    }
+
+                    break;
+                default:
+
+                    if (this.resultNumberOfElement.length > 10) {
+                        topResult.style.fontSize = "26px";
+                    }
+
+                    if (this.resultNumberOfElement.length > 16) {
+                        topResult.innerHTML = `${this.resultNumberOfElement}`;
+
+                    }
+                    else if (this.resultNumberOfElement === `0` && targetTextContent !== `.`) {
+                        topResult.innerHTML = `${targetTextContent}`;
+                    }
+                    else {
+                        topResult.innerHTML = `${this.resultNumberOfElement}${targetTextContent}`;
+                    }
+            }
         }
     }
 
-    addSymbol(symbol) {
-        this.resultNumberOfElement = this.top_result.innerHTML;
-
-        switch (symbol) {
-            case "+/-":
-                if (this.resultNumberOfElement.includes(`-`) && this.resultNumberOfElement === `0`) {
-                    this.top_result.innerHTML = `${this.resultNumberOfElement}`;
-                }
-                else if (this.resultNumberOfElement.includes(`-`)) {
-                    this.top_result.innerHTML = `${this.resultNumberOfElement.slice(1,undefined)}`;
-                }
-                else {
-                    this.top_result.innerHTML = `-${this.resultNumberOfElement}`;
-                }
-
-                break;
-            case ".":
-                if (!this.resultNumberOfElement.includes(`.`)) {
-                    this.top_result.innerHTML = `${this.resultNumberOfElement}.`;
-                }
-
-                break;
-            default:
-
-                if (this.resultNumberOfElement.length > 10) {
-                    this.top_result.style.fontSize = "26px";
-                }
-
-                if (this.resultNumberOfElement.length > 16) {
-                    this.top_result.innerHTML = `${this.resultNumberOfElement}`;
-
-                }
-                else if (this.resultNumberOfElement === `0` && symbol !== `.`) {
-                    this.top_result.innerHTML = `${symbol}`;
-                }
-                else {
-                    this.top_result.innerHTML = `${this.resultNumberOfElement}${symbol}`;
-                    this.top_history.innerHTML = `${this.resultNumberOfElement}${symbol}`;
-                }
-        }
-    }
 }
 
-class CalculatorAction extends CalculatorNumbers{
+class CalculatorAction extends CalculatorNumbers {
     constructor(...args) {
         super(...args);
 
