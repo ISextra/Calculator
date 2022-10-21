@@ -1,18 +1,26 @@
 class CalculatorInterface {
     constructor(calculatorHTMLClass) {
-        CalculatorInterface.initialisationInterface(calculatorHTMLClass);
+        this.creatingElements(calculatorHTMLClass);
     }
 
-    static initialisationInterface(calculatorHTMLClass) {
+    fillingElement (elementName,elementContent,appendTarget,...classList) {
+
+        classList.forEach(element => {
+            elementName.classList.add(element);
+        });
+
+        elementName.textContent = elementContent;
+        appendTarget.append(elementName);
+    }
+
+    creatingElements(calculatorHTMLClass) {
         this.calculatorHTMLClass = calculatorHTMLClass;
 
         const mainElement = document.querySelector(this.calculatorHTMLClass);
-        let sup_flipNumber = document.createElement("sup");
-        let sup_squaringNumber = document.createElement("sup");
-        let sup_negative = document.createElement("sup");
+        const supFlipNumber = document.createElement("sup");
+        const supSquaringNumber = document.createElement("sup");
 
-
-        let top_html = document.createElement("div");
+        const top_html = document.createElement("div");
         top_html.classList.add("top");
         mainElement.append(top_html);
 
@@ -33,178 +41,83 @@ class CalculatorInterface {
         this.top_result.textContent = '0';
         topElement.append(this.top_result);
 
-        let bottom_present = document.createElement("button");
-        bottom_present.classList.add("bottom-button");
-        bottom_present.classList.add("bottom-present");
-        bottom_present.textContent = '%';
-        bottomElement.append(bottom_present);
+        const bottomPresent = document.createElement("button");
+        this.fillingElement(bottomPresent,`%`,bottomElement,`bottom-button`,`bottom-present`);
 
-        let bottom_deleteLastNumber = document.createElement("button");
-        bottom_deleteLastNumber.classList.add("bottom-button");
-        bottom_deleteLastNumber.classList.add("delete-buttons");
-        bottom_deleteLastNumber.classList.add("bottom-deleteLastNumber");
-        bottom_deleteLastNumber.textContent = 'CE';
-        bottomElement.append(bottom_deleteLastNumber);
+        const bottomDeleteLastNumber = document.createElement("button");
+        this.fillingElement(bottomDeleteLastNumber,`CE`,bottomElement,`bottom-button`,`delete-buttons`,`bottom-deleteLastNumber`);
 
-        let bottom_deleteAll = document.createElement("button");
-        bottom_deleteAll.classList.add("bottom-button");
-        bottom_deleteAll.classList.add("delete-buttons");
-        bottom_deleteAll.classList.add("bottom-deleteAll");
-        bottom_deleteAll.textContent = 'C';
-        bottomElement.append(bottom_deleteAll);
+        const bottomDeleteAll = document.createElement("button");
+        this.fillingElement(bottomDeleteAll,`C`,bottomElement,`bottom-button`,`delete-buttons`,`bottom-deleteAll`);
 
-        let bottom_deleteLast = document.createElement("button");
-        bottom_deleteLast.classList.add("bottom-button");
-        bottom_deleteLast.classList.add("delete-buttons");
-        bottom_deleteLast.classList.add("bottom-deleteLast");
-        bottom_deleteLast.textContent = '<';
-        bottomElement.append(bottom_deleteLast);
+        const bottomDeleteLast = document.createElement("button");
+        this.fillingElement(bottomDeleteLast,`<`,bottomElement,`bottom-button`,`delete-buttons`,`bottom-deleteLast`);
 
-        let bottom_flipNumber = document.createElement("button");
-        bottom_flipNumber.classList.add("bottom-button");
-        bottom_flipNumber.classList.add("bottom-flipNumber");
-        bottom_flipNumber.textContent = '/x';
-        bottomElement.append(bottom_flipNumber);
+        const bottom_flipNumber = document.createElement("button");
+        this.fillingElement(bottom_flipNumber,`/x`,bottomElement,`bottom-button`,`bottom-flipNumber`);
 
-        sup_flipNumber.textContent = '1';
-        document.querySelector('.bottom-flipNumber').prepend(sup_flipNumber);
+        supFlipNumber.textContent = '1';
+        document.querySelector('.bottom-flipNumber').prepend(supFlipNumber);
 
-        let bottom_squaringNumber = document.createElement("button");
-        bottom_squaringNumber.classList.add("bottom-button");
-        bottom_squaringNumber.classList.add("bottom-squaringNumber");
-        bottom_squaringNumber.textContent = 'x';
-        bottomElement.append(bottom_squaringNumber);
+        const bottomSquaringNumber = document.createElement("button");
+        this.fillingElement(bottomSquaringNumber,`x`,bottomElement,`bottom-button`,`bottom-squaringNumber`);
 
-        sup_squaringNumber.textContent = '2';
-        document.querySelector('.bottom-squaringNumber').append(sup_squaringNumber);
+        supSquaringNumber.textContent = '2';
+        document.querySelector('.bottom-squaringNumber').append(supSquaringNumber);
 
-        let bottom_delete_All = document.createElement("button");
-        bottom_delete_All.classList.add("bottom-button");
-        bottom_delete_All.classList.add("bottom-deleteAll");
-        bottom_delete_All.textContent = '\u221Ax';
-        bottomElement.append(bottom_delete_All);
+        const bottomSquareRoot = document.createElement("button");
+        this.fillingElement(bottomSquareRoot,`\u221Ax`,bottomElement,`bottom-button`,`bottom-deleteAll`);
 
-        let bottom_divide = document.createElement("button");
-        bottom_divide.classList.add("bottom-button");
-        bottom_divide.classList.add("operation-button");
-        bottom_divide.classList.add("bottom-divide");
-        bottom_divide.textContent = '\xF7';
-        bottomElement.append(bottom_divide);
+        const bottomDivide = document.createElement("button");
+        this.fillingElement(bottomDivide,`\xF7`,bottomElement,`bottom-button`,`operation-button`,`bottom-divide`);
 
-        let bottom_seven = document.createElement("button");
-        bottom_seven.classList.add("bottom-button");
-        bottom_seven.classList.add("number-button");
-        bottom_seven.classList.add("bottom-seven");
-        bottom_seven.textContent = '7';
-        bottomElement.append(bottom_seven);
+        const bottomSeven = document.createElement("button");
+        this.fillingElement(bottomSeven,`7`,bottomElement,`bottom-button`,`number-button`,`bottom-seven`);
 
-        let bottom_eight = document.createElement("button");
-        bottom_eight.classList.add("bottom-button");
-        bottom_eight.classList.add("number-button");
-        bottom_eight.classList.add("bottom-eight");
-        bottom_eight.textContent = '8';
-        bottomElement.append(bottom_eight);
+        const bottomEight = document.createElement("button");
+        this.fillingElement(bottomEight,`8`,bottomElement,`bottom-button`,`number-button`,`bottom-eight`);
 
-        let bottom_nine = document.createElement("button");
-        bottom_nine.classList.add("bottom-button");
-        bottom_nine.classList.add("number-button");
-        bottom_nine.classList.add("bottom-nine");
-        bottom_nine.textContent = '9';
-        bottomElement.append(bottom_nine);
+        const bottomNine = document.createElement("button");
+        this.fillingElement(bottomNine,`9`,bottomElement,`bottom-button`,`number-button`,`bottom-nine`);
 
-        let bottom_times = document.createElement("button");
-        bottom_times.classList.add("bottom-button");
-        bottom_times.classList.add("operation-button");
-        bottom_times.classList.add("bottom-times");
-        bottom_times.textContent = '\xD7';
-        bottomElement.append(bottom_times);
+        const bottomTimes = document.createElement("button");
+        this.fillingElement(bottomTimes,`\xD7`,bottomElement,`bottom-button`,`operation-button`,`bottom-times`);
 
-        let bottom_four = document.createElement("button");
-        bottom_four.classList.add("bottom-button");
-        bottom_four.classList.add("number-button");
-        bottom_four.classList.add("bottom-four");
-        bottom_four.textContent = '4';
-        bottomElement.append(bottom_four);
+        const bottomFour = document.createElement("button");
+        this.fillingElement(bottomFour,`4`,bottomElement,`bottom-button`,`number-button`,`bottom-four`);
 
-        let bottom_five = document.createElement("button");
-        bottom_five.classList.add("bottom-button");
-        bottom_five.classList.add("number-button");
-        bottom_five.classList.add("bottom-five");
-        bottom_five.textContent = '5';
-        bottomElement.append(bottom_five);
+        const bottomFive = document.createElement("button");
+        this.fillingElement(bottomFive,`5`,bottomElement,`bottom-button`,`number-button`,`bottom-five`);
 
-        let bottom_six = document.createElement("button");
-        bottom_six.classList.add("bottom-button");
-        bottom_six.classList.add("number-button");
-        bottom_six.classList.add("bottom-six");
-        bottom_six.textContent = '6';
-        bottomElement.append(bottom_six);
+        const bottomSix = document.createElement("button");
+        this.fillingElement(bottomSix,`6`,bottomElement,`bottom-button`,`number-button`,`bottom-six`);
 
-        let bottom_minus = document.createElement("button");
-        bottom_minus.classList.add("bottom-button");
-        bottom_minus.classList.add("operation-button");
-        bottom_minus.classList.add("bottom-minus");
-        bottom_minus.textContent = '-';
-        bottomElement.append(bottom_minus);
+        const bottomMinus = document.createElement("button");
+        this.fillingElement(bottomMinus,`-`,bottomElement,`bottom-button`,`operation-button`,`bottom-minus`);
 
-        let bottom_one = document.createElement("button");
-        bottom_one.classList.add("bottom-button");
-        bottom_one.classList.add("number-button");
-        bottom_one.classList.add("bottom-one");
-        bottom_one.textContent = '1';
-        bottomElement.append(bottom_one);
+        const bottomOne = document.createElement("button");
+        this.fillingElement(bottomOne,`1`,bottomElement,`bottom-button`,`number-button`,`bottom-one`);
 
-        let bottom_two = document.createElement("button");
-        bottom_two.classList.add("bottom-button");
-        bottom_two.classList.add("number-button");
-        bottom_two.classList.add("bottom-two");
-        bottom_two.textContent = '2';
-        bottomElement.append(bottom_two);
+        const bottomTwo = document.createElement("button");
+        this.fillingElement(bottomTwo,`2`,bottomElement,`bottom-button`,`number-button`,`bottom-two`);
 
-        let bottom_three = document.createElement("button");
-        bottom_three.classList.add("bottom-button");
-        bottom_three.classList.add("number-button");
-        bottom_three.classList.add("bottom-three");
-        bottom_three.textContent = '3';
-        bottomElement.append(bottom_three);
+        const bottomThree = document.createElement("button");
+        this.fillingElement(bottomThree,`3`,bottomElement,`bottom-button`,`number-button`,`bottom-three`);
 
-        let bottom_plus = document.createElement("button");
-        bottom_plus.classList.add("bottom-button");
-        bottom_plus.classList.add("operation-button");
-        bottom_plus.classList.add("bottom-plus");
-        bottom_plus.textContent = '+';
-        bottomElement.append(bottom_plus);
+        const bottomPlus = document.createElement("button");
+        this.fillingElement(bottomPlus,`+`,bottomElement,`bottom-button`,`operation-button`,`bottom-plus`);
 
-        let bottom_negative = document.createElement("button");
-        bottom_negative.classList.add("bottom-button");
-        bottom_negative.classList.add("number-button");
-        bottom_negative.classList.add("bottom-negative");
-        bottom_negative.textContent = '/-';
-        bottomElement.append(bottom_negative);
+        const bottomNegative = document.createElement("button");
+        this.fillingElement(bottomNegative,`+/-`,bottomElement,`bottom-button`,`number-button`,`bottom-negative`);
 
-        sup_negative.textContent = '+';
-        document.querySelector('.bottom-negative').prepend(sup_negative);
+        const bottomZero = document.createElement("button");
+        this.fillingElement(bottomZero,`0`,bottomElement,`bottom-button`,`number-button`,`bottom-zero`);
 
-        let bottom_zero = document.createElement("button");
-        bottom_zero.classList.add("bottom-button");
-        bottom_zero.classList.add("number-button");
-        bottom_zero.classList.add("bottom-zero");
-        bottom_zero.textContent = '0';
-        bottomElement.append(bottom_zero);
+        const bottomPoint = document.createElement("button");
+        this.fillingElement(bottomPoint,`.`,bottomElement,`bottom-button`,`number-button`,`bottom-point`);
 
-        let bottom_point = document.createElement("button");
-        bottom_point.classList.add("bottom-button");
-        bottom_point.classList.add("number-button");
-        bottom_point.classList.add("bottom-point");
-        bottom_point.textContent = '.';
-        bottomElement.append(bottom_point);
-
-        let bottom_result = document.createElement("button");
-        bottom_result.classList.add("bottom-button");
-        bottom_result.classList.add("red-button");
-        bottom_result.classList.add("bottom-result");
-        bottom_result.textContent = '=';
-        bottomElement.append(bottom_result);
+        const bottomResult = document.createElement("button");
+        this.fillingElement(bottomResult,`=`,bottomElement,`bottom-button`,`red-button`,`bottom-result`);
     }
 
 }
@@ -213,58 +126,60 @@ class CalculatorNumbers extends CalculatorInterface{
     constructor(...args) {
         super(...args);
 
-        CalculatorNumbers.additionEventForNumbers();
+        this.additionEventForNumbers();
     }
 
-    static addSymbol(symbol) {
-        this.resultNumberOfElement = CalculatorInterface.top_result.innerHTML;
+
+
+    additionEventForNumbers() {
+        this.bottom_html.onclick = function(event) {
+            let target = event.target;
+
+            if (!target.classList.contains("number-button")) return;
+
+            CalculatorNumbers.addSymbol(target.textContent);
+        }
+    }
+
+    addSymbol(symbol) {
+        this.resultNumberOfElement = this.top_result.innerHTML;
 
         switch (symbol) {
             case "+/-":
                 if (this.resultNumberOfElement.includes(`-`) && this.resultNumberOfElement === `0`) {
-                    CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}`;
+                    this.top_result.innerHTML = `${this.resultNumberOfElement}`;
                 }
                 else if (this.resultNumberOfElement.includes(`-`)) {
-                    CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement.slice(1,undefined)}`;
+                    this.top_result.innerHTML = `${this.resultNumberOfElement.slice(1,undefined)}`;
                 }
                 else {
-                    CalculatorInterface.top_result.innerHTML = `-${this.resultNumberOfElement}`;
+                    this.top_result.innerHTML = `-${this.resultNumberOfElement}`;
                 }
 
                 break;
             case ".":
                 if (!this.resultNumberOfElement.includes(`.`)) {
-                    CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}.`;
+                    this.top_result.innerHTML = `${this.resultNumberOfElement}.`;
                 }
 
                 break;
             default:
 
                 if (this.resultNumberOfElement.length > 10) {
-                    CalculatorInterface.top_result.style.fontSize = "26px";
+                    this.top_result.style.fontSize = "26px";
                 }
 
                 if (this.resultNumberOfElement.length > 16) {
-                    CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}`;
+                    this.top_result.innerHTML = `${this.resultNumberOfElement}`;
 
                 }
                 else if (this.resultNumberOfElement === `0` && symbol !== `.`) {
-                    CalculatorInterface.top_result.innerHTML = `${symbol}`;
+                    this.top_result.innerHTML = `${symbol}`;
                 }
                 else {
-                    CalculatorInterface.top_result.innerHTML = `${this.resultNumberOfElement}${symbol}`;
-                    CalculatorInterface.top_history.innerHTML = `${this.resultNumberOfElement}${symbol}`;
+                    this.top_result.innerHTML = `${this.resultNumberOfElement}${symbol}`;
+                    this.top_history.innerHTML = `${this.resultNumberOfElement}${symbol}`;
                 }
-        }
-    }
-
-    static additionEventForNumbers() {
-        CalculatorInterface.bottom_html.onclick = function(event) {
-            let target = event.target;
-
-            if (!target.classList.contains("number-button")) return;
-
-            CalculatorNumbers.addSymbol(target.textContent);
         }
     }
 }
@@ -301,4 +216,4 @@ class CalculatorAction extends CalculatorNumbers{
 }
 
 
-const interface1 = new CalculatorAction(".calculator");
+const interface1 = new CalculatorNumbers(".calculator");
