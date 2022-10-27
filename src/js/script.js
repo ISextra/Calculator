@@ -2,25 +2,23 @@ class CalculatorInterface {
     constructor(calculatorHTMLClass) {
         this.creatingElements(calculatorHTMLClass);
 
-        const objectsMassive = [`%`,`CE`,`C`,`<`,`1/x`,`x`,`x^2`,`\u221Ax`,`\xF7`,`7`,`8`,`9`,`\xD7`,`4`,`5`,`6`,`-`,`1`,`2`,`3`,`+`,`+/-`,`0`,`.`,`=`]
+        const objectsMassive = [`%`, `CE`, `C`, `<`, `1/x`, `x`, `x^2`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `+/-`, `0`, `.`, `=`]
     }
 
-    extensionOfElement (elementName,elementContent,appendTarget,...classList) {
-
-        classList.forEach(element => {
-            elementName.classList.add(element);
+    extensionOfElement (object) {
+        object.classList.forEach(element => {
+            object.elementName.classList.add(element);
         });
 
-        elementName.textContent = elementContent;
-        appendTarget.append(elementName);
+        object.elementName.textContent = object.elementContent;
+        object.appendTarget.append(object.elementName);
     }
 
     creatingElements(calculatorHTMLClass) {
         this.calculatorHTMLClass = calculatorHTMLClass;
+        let object;
 
         const mainElement = document.querySelector(this.calculatorHTMLClass);
-        const supFlipNumber = document.createElement("sup");
-        const supSquaringNumber = document.createElement("sup");
 
         const topHtml = document.createElement("div");
         topHtml.classList.add("top");
@@ -40,80 +38,200 @@ class CalculatorInterface {
 
         this.topResult = document.createElement("output");
         this.topResult.classList.add("top-result");
-        this.topResult.textContent = '0';
+        this.topResult.textContent = "0";
         topElement.append(this.topResult);
 
         const bottomPresent = document.createElement("button");
-        this.extensionOfElement(bottomPresent,`%`,bottomElement,`bottom-button`,`bottom-present`);
+        this.extensionOfElement(object = {
+            elementName: bottomPresent,
+            elementContent: "%",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "bottom-present"]
+        });
 
         const bottomDeleteLastNumber = document.createElement("button");
-        this.extensionOfElement(bottomDeleteLastNumber,`CE`,bottomElement,`bottom-button`,`delete-buttons`,`bottom-deleteLastNumber`);
+        this.extensionOfElement(object = {
+            elementName: bottomDeleteLastNumber,
+            elementContent: "CE",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "delete-buttons", "bottom-deleteLastNumber"]
+        });
 
         const bottomDeleteAll = document.createElement("button");
-        this.extensionOfElement(bottomDeleteAll,`C`,bottomElement,`bottom-button`,`delete-buttons`,`bottom-deleteAll`);
+        this.extensionOfElement(object = {
+            elementName: bottomDeleteAll,
+            elementContent: "C",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "delete-buttons", "bottom-deleteAll"]
+        });
 
         const bottomDeleteLast = document.createElement("button");
-        this.extensionOfElement(bottomDeleteLast,`<`,bottomElement,`bottom-button`,`delete-buttons`,`bottom-deleteLast`);
+        this.extensionOfElement(object = {
+            elementName: bottomDeleteLast,
+            elementContent: "<",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "delete-buttons", "bottom-deleteLast"]
+        });
 
         const bottom_flipNumber = document.createElement("button");
-        this.extensionOfElement(bottom_flipNumber,`1/x`,bottomElement,`bottom-button`,`bottom-flipNumber`);
+        this.extensionOfElement(object = {
+            elementName: bottom_flipNumber,
+            elementContent: "1/x",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "bottom-flipNumber"]
+        });
 
         const bottomSquaringNumber = document.createElement("button");
-        this.extensionOfElement(bottomSquaringNumber,`x^2`,bottomElement,`bottom-button`,`bottom-squaringNumber`);
+        this.extensionOfElement(object = {
+            elementName: bottomSquaringNumber,
+            elementContent: "x^2",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "bottom-squaringNumber"]
+        });
 
         const bottomSquareRoot = document.createElement("button");
-        this.extensionOfElement(bottomSquareRoot,`\u221Ax`,bottomElement,`bottom-button`,`bottom-deleteAll`);
+        this.extensionOfElement(object = {
+            elementName: bottomSquareRoot,
+            elementContent: "\u221Ax",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "bottom-deleteAll"]
+        });
 
         const bottomDivide = document.createElement("button");
-        this.extensionOfElement(bottomDivide,`\xF7`,bottomElement,`bottom-button`,`operation-button`,`bottom-divide`);
+        this.extensionOfElement(object = {
+            elementName: bottomDivide,
+            elementContent: "\xF7",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "operation-button", "bottom-divide"]
+        });
 
         const bottomSeven = document.createElement("button");
-        this.extensionOfElement(bottomSeven,`7`,bottomElement,`bottom-button`,`number-button`,`bottom-seven`);
+        this.extensionOfElement(object = {
+            elementName: bottomSeven,
+            elementContent: "7",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-seven"]
+        });
 
         const bottomEight = document.createElement("button");
-        this.extensionOfElement(bottomEight,`8`,bottomElement,`bottom-button`,`number-button`,`bottom-eight`);
+        this.extensionOfElement(object = {
+            elementName: bottomEight,
+            elementContent: "8",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-eight"]
+        });
 
         const bottomNine = document.createElement("button");
-        this.extensionOfElement(bottomNine,`9`,bottomElement,`bottom-button`,`number-button`,`bottom-nine`);
+        this.extensionOfElement(object = {
+            elementName: bottomNine,
+            elementContent: "9",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-nine"]
+        });
 
         const bottomTimes = document.createElement("button");
-        this.extensionOfElement(bottomTimes,`\xD7`,bottomElement,`bottom-button`,`operation-button`,`bottom-times`);
+        this.extensionOfElement(object = {
+            elementName: bottomTimes,
+            elementContent: "\xD7",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "operation-button", "bottom-times"]
+        });
 
         const bottomFour = document.createElement("button");
-        this.extensionOfElement(bottomFour,`4`,bottomElement,`bottom-button`,`number-button`,`bottom-four`);
+        this.extensionOfElement(object = {
+            elementName: bottomFour,
+            elementContent: "4",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-four"]
+        });
 
         const bottomFive = document.createElement("button");
-        this.extensionOfElement(bottomFive,`5`,bottomElement,`bottom-button`,`number-button`,`bottom-five`);
+        this.extensionOfElement(object = {
+            elementName: bottomFive,
+            elementContent: "5",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-five"]
+        });
 
         const bottomSix = document.createElement("button");
-        this.extensionOfElement(bottomSix,`6`,bottomElement,`bottom-button`,`number-button`,`bottom-six`);
+        this.extensionOfElement(object = {
+            elementName: bottomSix,
+            elementContent: "6",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-six"]
+        });
 
         const bottomMinus = document.createElement("button");
-        this.extensionOfElement(bottomMinus,`-`,bottomElement,`bottom-button`,`operation-button`,`bottom-minus`);
+        this.extensionOfElement(object = {
+            elementName: bottomMinus,
+            elementContent: "-",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "operation-button", "bottom-minus"]
+        });
 
         const bottomOne = document.createElement("button");
-        this.extensionOfElement(bottomOne,`1`,bottomElement,`bottom-button`,`number-button`,`bottom-one`);
+        this.extensionOfElement(object = {
+            elementName: bottomOne,
+            elementContent: "1",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-one"]
+        });
 
         const bottomTwo = document.createElement("button");
-        this.extensionOfElement(bottomTwo,`2`,bottomElement,`bottom-button`,`number-button`,`bottom-two`);
+        this.extensionOfElement(object = {
+            elementName: bottomTwo,
+            elementContent: "2",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-two"]
+        });
 
         const bottomThree = document.createElement("button");
-        this.extensionOfElement(bottomThree,`3`,bottomElement,`bottom-button`,`number-button`,`bottom-three`);
+        this.extensionOfElement(object = {
+            elementName: bottomThree,
+            elementContent: "3",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-three"]
+        });
 
         const bottomPlus = document.createElement("button");
-        this.extensionOfElement(bottomPlus,`+`,bottomElement,`bottom-button`,`operation-button`,`bottom-plus`);
+        this.extensionOfElement(object = {
+            elementName: bottomPlus,
+            elementContent: "+",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "operation-button", "bottom-plus"]
+        });
 
         const bottomNegative = document.createElement("button");
-        this.extensionOfElement(bottomNegative,`+/-`,bottomElement,`bottom-button`,`number-button`,`bottom-negative`);
+        this.extensionOfElement(object = {
+            elementName: bottomNegative,
+            elementContent: "+/-",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-negative"]
+        });
 
         const bottomZero = document.createElement("button");
-        this.extensionOfElement(bottomZero,`0`,bottomElement,`bottom-button`,`number-button`,`bottom-zero`);
+        this.extensionOfElement(object = {
+            elementName: bottomZero,
+            elementContent: "0",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-zero"]
+        });
 
         const bottomPoint = document.createElement("button");
-        this.extensionOfElement(bottomPoint,`.`,bottomElement,`bottom-button`,`number-button`,`bottom-point`);
+        this.extensionOfElement(object = {
+            elementName: bottomPoint,
+            elementContent: ".",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "number-button", "bottom-point"]
+        });
 
         const bottomResult = document.createElement("button");
-        this.extensionOfElement(bottomResult,`=`,bottomElement,`bottom-button`,`red-button`,`bottom-result`);
+        this.extensionOfElement(object = {
+            elementName: bottomResult,
+            elementContent: "=",
+            appendTarget: bottomElement,
+            classList: ["bottom-button", "red-button", "bottom-result"]
+        });
     }
 
 }
@@ -124,8 +242,6 @@ class CalculatorNumbers extends CalculatorInterface{
 
         this.additionEventForNumbers();
     }
-
-
 
     additionEventForNumbers() {
         const topResult = this.topResult;
@@ -144,13 +260,13 @@ class CalculatorNumbers extends CalculatorInterface{
 
             switch (targetTextContent) {
                 case "+/-":
-                    if (this.resultNumberOfElement.includes(`-`) && this.resultNumberOfElement === `0`) {
+                    if (this.resultNumberOfElement === "0") {
                         topResult.innerHTML = `${this.resultNumberOfElement}`;
 
                         break;
                     }
 
-                    if (this.resultNumberOfElement.includes(`-`)) {
+                    if (this.resultNumberOfElement.includes("-")) {
                         topResult.innerHTML = `${this.resultNumberOfElement.slice(1,undefined)}`;
                     }
                     else {
@@ -159,7 +275,7 @@ class CalculatorNumbers extends CalculatorInterface{
 
                     break;
                 case ".":
-                    if (!this.resultNumberOfElement.includes(`.`)) {
+                    if (!this.resultNumberOfElement.includes(".")) {
                         topResult.innerHTML = `${this.resultNumberOfElement}.`;
                     }
 
@@ -175,7 +291,7 @@ class CalculatorNumbers extends CalculatorInterface{
                         break;
                     }
 
-                    if (this.resultNumberOfElement === `0` && targetTextContent !== `.`) {
+                    if (this.resultNumberOfElement === "0" && targetTextContent !== ".") {
                         topResult.innerHTML = `${targetTextContent}`;
                     }
                     else {
@@ -184,7 +300,6 @@ class CalculatorNumbers extends CalculatorInterface{
             }
         }
     }
-
 }
 
 class CalculatorAction extends CalculatorNumbers {
@@ -219,6 +334,5 @@ class CalculatorAction extends CalculatorNumbers {
         }
     }
 }
-
 
 const interface1 = new CalculatorNumbers(".calculator");
