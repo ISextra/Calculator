@@ -2,9 +2,11 @@
 class CalculatorInterface {
     constructor(calculatorHTMLClass) {
         this.objectsMassive = [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`];
-
         this.textMassiveForNumbers = [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`,`0` ,`±`];
         this.equalSymbol = "=";
+
+        this.textMassiveForOperationsJs = [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `\xD7`, `-`, `+`, `±`];
+        this.textMassiveForNumbersJs= [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`,`0`];
 
         this.documentCollection = [];
 
@@ -14,6 +16,8 @@ class CalculatorInterface {
     extensionOfElement() {
         const objectsMassive = this.objectsMassive;
         const textMassiveForNumbers = this.textMassiveForNumbers;
+        const textMassiveForOperationsJs = this.textMassiveForOperationsJs;
+        const textMassiveForNumbersJs = this.textMassiveForNumbersJs;
         const equalSymbol = this.equalSymbol;
         const documentCollection = this.documentCollection;
 
@@ -21,16 +25,27 @@ class CalculatorInterface {
 
         const defaultClass = "bottom-button";
         const numberClass = "number-button";
+        const numberClassJs = "number-button-JS";
+        const operationClassJs = "operation-button-JS";
         const equalClass = "red-button";
 
         objectsMassive.forEach((element,index) => {
             documentCollection[index] = {};
             documentCollection[index] = document.createElement("button");
             documentCollection[index].textContent = element;
+            documentCollection[index].dataset.text = element;
             documentCollection[index].classList.add(defaultClass);
 
             if (textMassiveForNumbers.includes(element)) {
                 documentCollection[index].classList.add(numberClass);
+            }
+
+            if (textMassiveForNumbersJs.includes(element)) {
+                documentCollection[index].classList.add(numberClassJs);
+            }
+
+            if (textMassiveForOperationsJs.includes(element)) {
+                documentCollection[index].classList.add(operationClassJs);
             }
 
             if (element === equalSymbol) {
@@ -70,103 +85,59 @@ class CalculatorInterface {
 
 }
 
-class CalculatorNumbers extends CalculatorInterface {
+class CalculatorOperations extends CalculatorInterface {
     constructor(...args) {
         super(...args);
 
-        this.additionEventForNumbers();
+        this.getDataOnClick();
     }
 
-    additionEventForNumbers() {
+    getDataOnClick() {
         const topResult = this.topResult;
         const lengthForSwitchFontSize = 10;
         const maxLineLength = 16;
 
-        this.bottomHtml.onclick = function(event) {
-            let target = event.target;
+        const numberButtons = document.querySelectorAll('.number-button-JS');
 
-            if (!target.classList.contains("number-button")) {
-                return;
-            }
+        numberButtons.forEach(element => {
+            element.onclick = function(event) {
+                let target = event.target;
 
-            this.resultNumberOfElement = topResult.innerHTML;
-            const targetTextContent = target.textContent;
+                if (!target.classList.contains("number-button-JS")) {
+                    return;
+                }
 
-            switch (targetTextContent) {
-                case "+/-":
-                    if (this.resultNumberOfElement === "0") {
-                        topResult.innerHTML = `${this.resultNumberOfElement}`;
+                this.resultNumberOfElement = topResult.innerHTML;
+                const targetTextContent = target.dataset.text;
 
-                        break;
-                    }
-
-                    if (this.resultNumberOfElement.includes("-")) {
-                        topResult.innerHTML = `${this.resultNumberOfElement.slice(1,undefined)}`;
-                    }
-                    else {
-                        topResult.innerHTML = `-${this.resultNumberOfElement}`;
-                    }
-
-                    break;
-                case ".":
-                    if (!this.resultNumberOfElement.includes(".")) {
-                        topResult.innerHTML = `${this.resultNumberOfElement}.`;
-                    }
-
-                    break;
-                default:
-                    if (this.resultNumberOfElement.length > lengthForSwitchFontSize) {
-                        topResult.style.fontSize = "26px";
-                    }
-
-                    if (this.resultNumberOfElement.length > maxLineLength) {
-                        topResult.innerHTML = `${this.resultNumberOfElement}`;
+                switch (targetTextContent) {
+                    case ".":
+                        if (!this.resultNumberOfElement.includes(".")) {
+                            topResult.innerHTML = `${this.resultNumberOfElement}.`;
+                        }
 
                         break;
-                    }
+                    default:
+                        if (this.resultNumberOfElement.length > lengthForSwitchFontSize) {
+                            topResult.style.fontSize = "26px";
+                        }
 
-                    if (this.resultNumberOfElement === "0" && targetTextContent !== ".") {
-                        topResult.innerHTML = `${targetTextContent}`;
-                    }
-                    else {
-                        topResult.innerHTML = `${this.resultNumberOfElement}${targetTextContent}`;
-                    }
+                        if (this.resultNumberOfElement.length > maxLineLength) {
+                            topResult.innerHTML = `${this.resultNumberOfElement}`;
+
+                            break;
+                        }
+
+                        if (this.resultNumberOfElement === "0" && targetTextContent !== ".") {
+                            topResult.innerHTML = `${targetTextContent}`;
+                        }
+                        else {
+                            topResult.innerHTML = `${this.resultNumberOfElement}${targetTextContent}`;
+                        }
+                }
             }
-        }
+        })
     }
 }
 
-class CalculatorAction extends CalculatorNumbers {
-    constructor(...args) {
-        super(...args);
-
-        // this.isOperation = 0;
-        // this.prevValue = parseFloat(CalculatorInterface.top_result.innerHTML);
-        // this.nextValue = undefined;
-
-        CalculatorAction.additionEventForOperation();
-    }
-
-    static addAction(action) {
-        this.resultNumberOfElement = CalculatorInterface.topResult.innerHTML;
-        // this.historyElement = CalculatorInterface.top_history.innerHTML;
-        // CalculatorInterface.top_history.innerHTML = `${action}`;
-
-        CalculatorInterface.topHistory.innerHTML = `${this.resultNumberOfElement} ${action}`;
-        this.isOperation = 1;
-    }
-
-    static additionEventForOperation() {
-        this.bottomHtml.onclick = function (event) {
-            let target = event.target;
-
-            if (!target.classList.contains("operation-button")) {
-                return;
-            }
-
-            CalculatorAction.addAction(target.textContent);
-        }
-    }
-}
-
-const interface1 = new CalculatorNumbers(".calculator");
+const interface1 = new CalculatorOperations(".calculator");
