@@ -2,13 +2,50 @@ class CalculatorInterface {
     constructor(calculatorHTMLClass) {
         this.creatingElements(calculatorHTMLClass);
 
-        const objectsMassive = [`%`, `CE`, `C`, `<`, `1/x`, `x`, `x^2`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `+/-`, `0`, `.`, `=`]
+        this.objectsMassive = [
+                [`%`, `CE`, `C`, `<`, `1/x`, `x`, `x^2`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `+/-`, `0`, `.`, `=`]
+                ["bottomPresent", "bottomDeleteLastNumber", "bottomDeleteAll", "bottomDeleteLast", "bottomFlipNumber", "bottomSquaringNumber",
+                "bottomSquareRoot", "bottomDivide", "bottomSeven", "bottomEight", "bottomNine", "bottomTimes", "bottomFour",
+                "bottomFive", "bottomSix", "bottomMinus", "bottomOne", "bottomTwo", "bottomThree", "bottomPlus",
+                "bottomNegative", "bottomZero", "bottomPoint", "bottomResult"]
+        ];
+
+        this.textMassiveForOperations = [`%`, `CE`, `C`, `<`, `1/x`, `x`, `x^2`, `\u221Ax`, `\xF7`, `\xD7`, `-`, `+`, `0`];
+        this.textMassiveForNumbers = [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`, `+/-`];
+        this.equalSymbol = "=";
+    }
+
+    extensionOfElement1 (massive) {
+        const appendTarget = "bottomElement";
+        const defaultClass = "bottom-button";
+        const numberClass = "number-button";
+        const equalClass = "red-button";
+
+        this.objectsMassive[0].forEach((element,index) => {
+            const jsObjectsName = this.objectsMassive[1][index];
+
+            jsObjectsName.textContent = element;
+
+            appendTarget.append(jsObjectsName);
+
+            jsObjectsName.classList.add(defaultClass);
+
+            if (this.textMassiveForNumbers.includes(element)) {
+                jsObjectsName.classList.add(numberClass);
+            }
+
+            if (element === this.equalClass) {
+                jsObjectsName.classList.add(equalClass);
+            }
+        });
+
     }
 
     extensionOfElement (object) {
         object.classList.forEach(element => {
             object.elementName.classList.add(element);
         });
+
 
         object.elementName.textContent = object.elementContent;
         object.appendTarget.append(object.elementName);
@@ -73,9 +110,9 @@ class CalculatorInterface {
             classList: ["bottom-button", "delete-buttons", "bottom-deleteLast"]
         });
 
-        const bottom_flipNumber = document.createElement("button");
+        const bottomFlipNumber = document.createElement("button");
         this.extensionOfElement(object = {
-            elementName: bottom_flipNumber,
+            elementName: bottomFlipNumber,
             elementContent: "1/x",
             appendTarget: bottomElement,
             classList: ["bottom-button", "bottom-flipNumber"]
@@ -236,7 +273,7 @@ class CalculatorInterface {
 
 }
 
-class CalculatorNumbers extends CalculatorInterface{
+class CalculatorNumbers extends CalculatorInterface {
     constructor(...args) {
         super(...args);
 
