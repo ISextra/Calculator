@@ -1,9 +1,9 @@
 
 class CalculatorInterface {
     constructor(calculatorHTMLClass) {
-        this.objectsMassive = [`%`, `CE`, `C`, `<`, `1/x`, `x^2`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `+/-`, `0`, `.`, `=`];
+        this.objectsMassive = [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`];
 
-        this.textMassiveForNumbers = [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`,`0` ,`+/-`];
+        this.textMassiveForNumbers = [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`,`0` ,`±`];
         this.equalSymbol = "=";
 
         this.documentCollection = [];
@@ -39,7 +39,6 @@ class CalculatorInterface {
 
             appendTarget.append(documentCollection[index]);
         });
-
     }
 
     creatingElements(calculatorHTMLClass) {
