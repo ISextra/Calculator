@@ -89,10 +89,17 @@ class CalculatorOperations extends CalculatorInterface {
     constructor(...args) {
         super(...args);
 
-        this.getDataOnClick();
+        this.secondNumber = undefined;
+        this.action = undefined;
+
+        this.setDataOnClick();
+        this.additionOnClick();
+        this.subtractionOnClick();
+        this.multiplicationOnClick();
+        this.divisionOnClick();
     }
 
-    getDataOnClick() {
+    setDataOnClick() {
         const topResult = this.topResult;
         const lengthForSwitchFontSize = 10;
         const maxLineLength = 16;
@@ -137,6 +144,66 @@ class CalculatorOperations extends CalculatorInterface {
                 }
             }
         })
+    }
+
+    additionOnClick() {
+        const plus = document.querySelector("[data-text='-']");
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        plus.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = '-';
+            topResult.innerHTML = `${Number(secondNumber)}`;
+            topHistory.innerHTML = `${Number(secondNumber)} -`;
+        }
+    }
+
+    subtractionOnClick() {
+        const plus = document.querySelector("[data-text='+']");
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        plus.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = '+';
+            topResult.innerHTML = `${Number(secondNumber)}`;
+            topHistory.innerHTML = `${Number(secondNumber)} +`;
+        }
+    }
+
+    multiplicationOnClick() {
+        const plus = document.querySelector('[data-text="\xD7"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        plus.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `\xD7`;
+            topResult.innerHTML = `${Number(secondNumber)}`;
+            topHistory.innerHTML = `${Number(secondNumber)} \xD7`;
+        }
+    }
+
+    divisionOnClick() {
+        const plus = document.querySelector('[data-text="\xF7"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        plus.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `\xF7`;
+            topResult.innerHTML = `${Number(secondNumber)}`;
+            topHistory.innerHTML = `${Number(secondNumber)} \xF7`;
+        }
     }
 }
 
