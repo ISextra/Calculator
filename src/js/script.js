@@ -78,11 +78,10 @@ class CalculatorInterface {
 
         this.topResult = document.createElement("output");
         this.topResult.classList.add("top-result");
+        this.topResult.textContent = '0';
         topElement.append(this.topResult);
 
         this.creatingLastElements();
-
-        this.topResult.textContent = '0';
     }
 
 }
@@ -91,8 +90,8 @@ class CalculatorOperations extends CalculatorInterface {
     constructor(...args) {
         super(...args);
 
-        this.secondNumber = ``;
-        this.action = ``;
+        this.secondNumber = ' ';
+        this.action = ' ';
 
         this.setDataOnClick();
         this.additionOnClick();
@@ -154,75 +153,91 @@ class CalculatorOperations extends CalculatorInterface {
     }
 
     additionOnClick() {
-        const selectedData = document.querySelector("[data-text='-']");
+        const selectedData = document.querySelector("[data-text = '+']");
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset.text;
+        const topHistoryData = this.topHistory.dataset;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
         selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
-            action = '-';
-            topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistoryData = `${Number(secondNumber)} -`;
-            topHistory.innerHTML = `${topHistoryData}`;
+
+            if (action !== ' ') {
+                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
+            }
+
+            action = '+';
+            topHistoryData.text = `${topHistoryData.text} +`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
         }
     }
 
     subtractionOnClick() {
-        const selectedData = document.querySelector("[data-text='+']");
+        const selectedData = document.querySelector("[data-text = '-']");
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset.text;
+        let topHistoryData = this.topHistory.dataset;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
         selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
-            action = '+';
-            topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistoryData = `${Number(secondNumber)} +`;
-            topHistory.innerHTML = `${topHistoryData}`;
+
+            if (action !== ' ') {
+                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
+            }
+
+            action = '-';
+            topHistoryData.text = `${topHistoryData.text} -`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
         }
     }
 
     multiplicationOnClick() {
-        const selectedData = document.querySelector('[data-text="\xD7"]');
+        const selectedData = document.querySelector('[data-text = "\xD7"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset.text;
+        let topHistoryData = this.topHistory.dataset;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
         selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
+
+            if (action !== ' ') {
+                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
+            }
+
             action = `\xD7`;
-            topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistoryData = `${Number(secondNumber)} \xD7`;
-            topHistory.innerHTML = `${topHistoryData}`;
+            topHistoryData.text = `${topHistoryData.text} \xD7`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
         }
     }
 
     divisionOnClick() {
-        const selectedData = document.querySelector('[data-text="\xF7"]');
+        const selectedData = document.querySelector('[data-text = "\xF7"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset.text;
+        const topHistoryData = this.topHistory.dataset;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
         selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
+
+            if (action !== ' ') {
+                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
+            }
+
             action = `\xF7`;
-            topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistoryData = `${Number(secondNumber)} \xF7`;
-            topHistory.innerHTML = `${topHistoryData}`;
+            topHistoryData.text = `${topHistoryData.text} \xF7`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
         }
     }
 
     reversOnClick() {
-        const selectedData = document.querySelector('[data-text="1/x"]');
+        const selectedData = document.querySelector('[data-text = "1/x"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
         const lengthForSwitchFontSize = 10;
@@ -233,7 +248,7 @@ class CalculatorOperations extends CalculatorInterface {
 
         selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
-            action = `\xF7`;
+            action = `1/x`;
 
             topResult.innerHTML = `${1/secondNumber}`.slice(0, 17);
 
@@ -253,7 +268,7 @@ class CalculatorOperations extends CalculatorInterface {
 
 
     clearAll() {
-        const selectedData = document.querySelector('[data-text="C"]');
+        const selectedData = document.querySelector('[data-text = "C"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
         let topHistoryData = this.topHistory.dataset.text;
@@ -273,7 +288,7 @@ class CalculatorOperations extends CalculatorInterface {
     }
 
     clearCurrentNumber() {
-        const selectedData = document.querySelector('[data-text="CE"]');
+        const selectedData = document.querySelector('[data-text = "CE"]');
         const topResult = this.topResult;
 
         selectedData.onclick = function() {
@@ -283,7 +298,7 @@ class CalculatorOperations extends CalculatorInterface {
     }
 
     clearLastSymbol() {
-        const selectedData = document.querySelector('[data-text="<"]');
+        const selectedData = document.querySelector('[data-text = "<"]');
         const topResult = this.topResult;
         const lengthForSwitchFontSize = 10;
 
