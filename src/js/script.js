@@ -10,10 +10,10 @@ class CalculatorInterface {
 
         this.documentCollection = [];
 
-        this.creatingElements(calculatorHTMLClass);
+        this.creatingBaseElements(calculatorHTMLClass);
     }
 
-    extensionOfElement() {
+    creatingLastElements() {
         const objectsMassive = this.objectsMassive;
         const textMassiveForNumbers = this.textMassiveForNumbers;
         const textMassiveForOperationsJs = this.textMassiveForOperationsJs;
@@ -56,7 +56,7 @@ class CalculatorInterface {
         });
     }
 
-    creatingElements(calculatorHTMLClass) {
+    creatingBaseElements(calculatorHTMLClass) {
         this.calculatorHTMLClass = calculatorHTMLClass;
 
         const mainElement = document.querySelector(this.calculatorHTMLClass);
@@ -78,10 +78,11 @@ class CalculatorInterface {
 
         this.topResult = document.createElement("output");
         this.topResult.classList.add("top-result");
-        this.topResult.textContent = "0";
         topElement.append(this.topResult);
 
-        this.extensionOfElement();
+        this.creatingLastElements();
+
+        this.topResult.textContent = '0';
     }
 
 }
@@ -98,7 +99,7 @@ class CalculatorOperations extends CalculatorInterface {
         this.subtractionOnClick();
         this.multiplicationOnClick();
         this.divisionOnClick();
-        this.reversOnClick1();
+        this.reversOnClick();
         this.clearAll();
         this.clearCurrentNumber();
         this.clearLastSymbol();
@@ -106,8 +107,7 @@ class CalculatorOperations extends CalculatorInterface {
 
     setDataOnClick() {
         const topResult = this.topResult;
-        let topHistoryData = this.topHistory.dataset.text;
-        const action = this.action;
+        const topHistoryData = this.topHistory.dataset;
         const lengthForSwitchFontSize = 10;
         const maxLineLength = 16;
 
@@ -121,34 +121,32 @@ class CalculatorOperations extends CalculatorInterface {
                     return;
                 }
 
-                this.resultNumberOfElement = topResult.innerHTML;
                 const targetTextContent = target.dataset.text;
 
                 switch (targetTextContent) {
                     case ".":
-                        if (!this.resultNumberOfElement.includes(".")) {
-                            topResult.innerHTML = `${this.resultNumberOfElement}.`;
-                            topHistoryData = `${this.resultNumberOfElement}.`;
+                        if (!topResult.innerHTML.includes(".")) {
+                            topResult.innerHTML = `${topResult.textContent}.`;
+                            topHistoryData.text = `${topResult.textContent}`;
                         }
 
                         break;
                     default:
-                        if (this.resultNumberOfElement.length > lengthForSwitchFontSize) {
+                        if (topResult.innerHTML.length > lengthForSwitchFontSize) {
                             topResult.style.fontSize = "26px";
                         }
 
-                        if (this.resultNumberOfElement.length > maxLineLength) {
-                            topResult.innerHTML = `${this.resultNumberOfElement}`;
-
+                        if (topResult.innerHTML.length > maxLineLength) {
                             break;
                         }
 
-                        if (this.resultNumberOfElement === "0" && targetTextContent !== ".") {
+                        if (topResult.innerHTML === "0" && targetTextContent !== ".") {
                             topResult.innerHTML = `${targetTextContent}`;
+                            topHistoryData.text = `${topResult.textContent}`;
                         }
                         else {
-                            topResult.innerHTML = `${this.resultNumberOfElement}${targetTextContent}`;
-                            topHistoryData = `${this.resultNumberOfElement}${targetTextContent}`;
+                            topResult.innerHTML = `${topResult.textContent}${targetTextContent}`;
+                            topHistoryData.text = `${topResult.textContent}`;
                         }
                 }
             }
@@ -227,8 +225,8 @@ class CalculatorOperations extends CalculatorInterface {
         const selectedData = document.querySelector('[data-text="1/x"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
+        const lengthForSwitchFontSize = 10;
         let topHistoryData = this.topHistory.dataset;
-        const lengthForSwitchFontSize = 10;
 
         let action = this.action;
         let secondNumber = this.secondNumber;
@@ -237,12 +235,13 @@ class CalculatorOperations extends CalculatorInterface {
             secondNumber = Number(topResult.textContent);
             action = `\xF7`;
 
-            topResult.innerHTML = `${1/Number(secondNumber)}`;
+            topResult.innerHTML = `${1/secondNumber}`.slice(0, 17);
 
-            topHistoryData.text = `1/(${Number(secondNumber)})`;
-            topHistory.innerHTML = `1/(${Number(secondNumber)})`;
+            topHistoryData.text = `1/(${topHistoryData.text})`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
 
-            if (topResult.innerHTML.length > lengthForSwitchFontSize) {
+
+            if (topResult.textContent.length > lengthForSwitchFontSize) {
                 topResult.style.fontSize = "26px";
             }
             else {
@@ -251,31 +250,7 @@ class CalculatorOperations extends CalculatorInterface {
         }
     }
 
-    reversOnClick1() {
-        const selectedData = document.querySelector('[data-text="1/x"]');
-        const topResult = this.topResult;
-        const topHistory = this.topHistory;
-        const lengthForSwitchFontSize = 10;
 
-        let action = this.action;
-        let secondNumber = this.secondNumber;
-
-        selectedData.onclick = function() {
-            secondNumber = Number(topResult.textContent);
-            action = `\xF7`;
-
-            topResult.innerHTML = `${1/Number(secondNumber)}`.slice(0, 17);
-
-            topHistory.innerHTML = `1/(${Number(secondNumber)})`;
-
-            if (topResult.innerHTML.length > lengthForSwitchFontSize) {
-                topResult.style.fontSize = "26px";
-            }
-            else {
-                topResult.style.fontSize = "42px";
-            }
-        }
-    }
 
     clearAll() {
         const selectedData = document.querySelector('[data-text="C"]');
@@ -313,7 +288,6 @@ class CalculatorOperations extends CalculatorInterface {
         const lengthForSwitchFontSize = 10;
 
         selectedData.onclick = function() {
-
             topResult.innerHTML = topResult.innerHTML.slice(0,topResult.innerHTML.length-1);
 
             if (topResult.innerHTML === "") {
