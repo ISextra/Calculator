@@ -73,6 +73,7 @@ class CalculatorInterface {
 
         this.topHistory = document.createElement("output");
         this.topHistory.classList.add("top-history");
+        this.topHistory.dataset.text = "0";
         topElement.append(this.topHistory);
 
         this.topResult = document.createElement("output");
@@ -89,18 +90,22 @@ class CalculatorOperations extends CalculatorInterface {
     constructor(...args) {
         super(...args);
 
-        this.secondNumber = undefined;
-        this.action = undefined;
+        this.secondNumber = ``;
+        this.action = ``;
 
         this.setDataOnClick();
         this.additionOnClick();
         this.subtractionOnClick();
         this.multiplicationOnClick();
         this.divisionOnClick();
+        this.reversOnClick1();
+        this.clearAll();
     }
 
     setDataOnClick() {
         const topResult = this.topResult;
+        let topHistoryData = this.topHistory.dataset.text;
+        const action = this.action;
         const lengthForSwitchFontSize = 10;
         const maxLineLength = 16;
 
@@ -121,6 +126,7 @@ class CalculatorOperations extends CalculatorInterface {
                     case ".":
                         if (!this.resultNumberOfElement.includes(".")) {
                             topResult.innerHTML = `${this.resultNumberOfElement}.`;
+                            topHistoryData = `${this.resultNumberOfElement}.`;
                         }
 
                         break;
@@ -140,6 +146,7 @@ class CalculatorOperations extends CalculatorInterface {
                         }
                         else {
                             topResult.innerHTML = `${this.resultNumberOfElement}${targetTextContent}`;
+                            topHistoryData = `${this.resultNumberOfElement}${targetTextContent}`;
                         }
                 }
             }
@@ -147,62 +154,144 @@ class CalculatorOperations extends CalculatorInterface {
     }
 
     additionOnClick() {
-        const plus = document.querySelector("[data-text='-']");
+        const selectedData = document.querySelector("[data-text='-']");
         const topResult = this.topResult;
         const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset.text;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
-        plus.onclick = function() {
+        selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
             action = '-';
             topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistory.innerHTML = `${Number(secondNumber)} -`;
+            topHistoryData = `${Number(secondNumber)} -`;
+            topHistory.innerHTML = `${topHistoryData}`;
         }
     }
 
     subtractionOnClick() {
-        const plus = document.querySelector("[data-text='+']");
+        const selectedData = document.querySelector("[data-text='+']");
         const topResult = this.topResult;
         const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset.text;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
-        plus.onclick = function() {
+        selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
             action = '+';
             topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistory.innerHTML = `${Number(secondNumber)} +`;
+            topHistoryData = `${Number(secondNumber)} +`;
+            topHistory.innerHTML = `${topHistoryData}`;
         }
     }
 
     multiplicationOnClick() {
-        const plus = document.querySelector('[data-text="\xD7"]');
+        const selectedData = document.querySelector('[data-text="\xD7"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset.text;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
-        plus.onclick = function() {
+        selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
             action = `\xD7`;
             topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistory.innerHTML = `${Number(secondNumber)} \xD7`;
+            topHistoryData = `${Number(secondNumber)} \xD7`;
+            topHistory.innerHTML = `${topHistoryData}`;
         }
     }
 
     divisionOnClick() {
-        const plus = document.querySelector('[data-text="\xF7"]');
+        const selectedData = document.querySelector('[data-text="\xF7"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset.text;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
-        plus.onclick = function() {
+        selectedData.onclick = function() {
             secondNumber = Number(topResult.textContent);
             action = `\xF7`;
             topResult.innerHTML = `${Number(secondNumber)}`;
-            topHistory.innerHTML = `${Number(secondNumber)} \xF7`;
+            topHistoryData = `${Number(secondNumber)} \xF7`;
+            topHistory.innerHTML = `${topHistoryData}`;
+        }
+    }
+
+    reversOnClick() {
+        const selectedData = document.querySelector('[data-text="1/x"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset;
+        const lengthForSwitchFontSize = 10;
+
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        selectedData.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `\xF7`;
+
+            topResult.innerHTML = `${1/Number(secondNumber)}`;
+
+            topHistoryData.text = `1/(${Number(secondNumber)})`;
+            topHistory.innerHTML = `1/(${Number(secondNumber)})`;
+
+            if (topResult.innerHTML.length > lengthForSwitchFontSize) {
+                topResult.style.fontSize = "26px";
+            }
+            else {
+                topResult.style.fontSize = "42px";
+            }
+        }
+    }
+
+    reversOnClick1() {
+        const selectedData = document.querySelector('[data-text="1/x"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        const lengthForSwitchFontSize = 10;
+
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        selectedData.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `\xF7`;
+
+            topResult.innerHTML = `${1/Number(secondNumber)}`.slice(0, 17);
+
+            topHistory.innerHTML = `1/(${Number(secondNumber)})`;
+
+            if (topResult.innerHTML.length > lengthForSwitchFontSize) {
+                topResult.style.fontSize = "26px";
+            }
+            else {
+                topResult.style.fontSize = "42px";
+            }
+        }
+    }
+
+    clearAll() {
+        const selectedData = document.querySelector('[data-text="C"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset.text;
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        selectedData.onclick = function() {
+            secondNumber = ``;
+            action = ``;
+
+            topHistoryData = ``;
+            topHistory.innerHTML = ``;
+
+            topResult.innerHTML = `0`;
+            topResult.style.fontSize = "42px";
         }
     }
 }
