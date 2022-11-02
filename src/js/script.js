@@ -100,6 +100,8 @@ class CalculatorOperations extends CalculatorInterface {
         this.divisionOnClick();
         this.reversOnClick1();
         this.clearAll();
+        this.clearCurrentNumber();
+        this.clearLastSymbol();
     }
 
     setDataOnClick() {
@@ -292,6 +294,35 @@ class CalculatorOperations extends CalculatorInterface {
 
             topResult.innerHTML = `0`;
             topResult.style.fontSize = "42px";
+        }
+    }
+
+    clearCurrentNumber() {
+        const selectedData = document.querySelector('[data-text="CE"]');
+        const topResult = this.topResult;
+
+        selectedData.onclick = function() {
+            topResult.innerHTML = `0`;
+            topResult.style.fontSize = "42px";
+        }
+    }
+
+    clearLastSymbol() {
+        const selectedData = document.querySelector('[data-text="<"]');
+        const topResult = this.topResult;
+        const lengthForSwitchFontSize = 10;
+
+        selectedData.onclick = function() {
+
+            topResult.innerHTML = topResult.innerHTML.slice(0,topResult.innerHTML.length-1);
+
+            if (topResult.innerHTML === "") {
+                topResult.innerHTML = "0";
+            }
+
+            if (topResult.innerHTML.length > lengthForSwitchFontSize) {
+                topResult.style.fontSize = "26px";
+            }
         }
     }
 }
