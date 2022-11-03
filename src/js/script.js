@@ -92,13 +92,9 @@ class CalculatorOperations extends CalculatorInterface {
         super(...args);
 
         this.secondNumber = ' ';
-        this.action = ' ';
+        this.action = 0;
 
         this.setDataOnClick();
-        // this.additionOnClick();
-        // this.subtractionOnClick();
-        // this.multiplicationOnClick();
-        // this.divisionOnClick();
         this.simpleOperationsOnClick();
         this.reversOnClick();
         this.clearAll();
@@ -156,11 +152,9 @@ class CalculatorOperations extends CalculatorInterface {
     simpleOperationsOnClick() {
         const operationsButtons = document.querySelectorAll('.operation-button-JS');
         const textMassiveForSimpleOperationsJs = this.textMassiveForSimpleOperationsJs;
-        const topResult = this.topResult;
         const topHistory = this.topHistory;
         const topHistoryData = this.topHistory.dataset;
         let action = this.action;
-        let secondNumber = this.secondNumber;
 
         operationsButtons.forEach(element => {
             element.onclick = function () {
@@ -168,14 +162,12 @@ class CalculatorOperations extends CalculatorInterface {
                     return;
                 }
 
-                secondNumber = Number(topResult.textContent);
-
-                // if (action !== ' ') {
-                //     topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
-                // }
+                if (action) {
+                    topHistoryData.text = topHistoryData.text.slice(0,topHistoryData.text.length - 2);
+                }
 
                 action = element.textContent;
-                topHistoryData.text = `${topHistoryData.text} ${element.textContent}`;
+                topHistoryData.text = `${topHistoryData.text} ${action}`;
                 topHistory.innerHTML = `${topHistoryData.text}`;
             }
         });
@@ -329,13 +321,13 @@ class CalculatorOperations extends CalculatorInterface {
         let secondNumber = this.secondNumber;
 
         selectedData.onclick = function() {
-            secondNumber = ``;
-            action = ``;
+            secondNumber = " ";
+            action = 0;
 
-            topHistoryData.text = `0`;
-            topHistory.innerHTML = ``;
+            topHistoryData.text = "0";
+            topHistory.innerHTML = "";
 
-            topResult.innerHTML = `0`;
+            topResult.innerHTML = "0";
             topResult.style.fontSize = "42px";
         }
     }
