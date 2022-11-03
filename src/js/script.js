@@ -103,6 +103,7 @@ class CalculatorOperations extends CalculatorDisplay {
         this.squareOnClick();
         this.squareRootOnClick();
         this.negateOnClick();
+        this.percentOnClick()
     }
 
     setDataOnClick() {
