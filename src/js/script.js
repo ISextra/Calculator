@@ -6,6 +6,7 @@ class CalculatorInterface {
         this.equalSymbol = "=";
 
         this.textMassiveForOperationsJs = [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `\xD7`, `-`, `+`, `±`];
+        this.textMassiveForSimpleOperationsJs = [`\xF7`, `\xD7`, `-`, `+`];
         this.textMassiveForNumbersJs= [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`,`0`];
 
         this.documentCollection = [];
@@ -94,10 +95,11 @@ class CalculatorOperations extends CalculatorInterface {
         this.action = ' ';
 
         this.setDataOnClick();
-        this.additionOnClick();
-        this.subtractionOnClick();
-        this.multiplicationOnClick();
-        this.divisionOnClick();
+        // this.additionOnClick();
+        // this.subtractionOnClick();
+        // this.multiplicationOnClick();
+        // this.divisionOnClick();
+        this.simpleOperationsOnClick();
         this.reversOnClick();
         this.clearAll();
         this.clearCurrentNumber();
@@ -118,10 +120,6 @@ class CalculatorOperations extends CalculatorInterface {
         numberButtons.forEach(element => {
             element.onclick = function(event) {
                 let target = event.target;
-
-                if (!target.classList.contains("number-button-JS")) {
-                    return;
-                }
 
                 const targetTextContent = target.dataset.text;
 
@@ -155,88 +153,32 @@ class CalculatorOperations extends CalculatorInterface {
         })
     }
 
-    additionOnClick() {
-        const selectedData = document.querySelector("[data-text = '+']");
+    simpleOperationsOnClick() {
+        const operationsButtons = document.querySelectorAll('.operation-button-JS');
+        const textMassiveForSimpleOperationsJs = this.textMassiveForSimpleOperationsJs;
         const topResult = this.topResult;
         const topHistory = this.topHistory;
         const topHistoryData = this.topHistory.dataset;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
-        selectedData.onclick = function() {
-            secondNumber = Number(topResult.textContent);
+        operationsButtons.forEach(element => {
+            element.onclick = function () {
+                if (!textMassiveForSimpleOperationsJs.includes(element.textContent)) {
+                    return;
+                }
 
-            if (action !== ' ') {
-                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
+                secondNumber = Number(topResult.textContent);
+
+                // if (action !== ' ') {
+                //     topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
+                // }
+
+                action = element.textContent;
+                topHistoryData.text = `${topHistoryData.text} ${element.textContent}`;
+                topHistory.innerHTML = `${topHistoryData.text}`;
             }
-
-            action = '+';
-            topHistoryData.text = `${topHistoryData.text} +`;
-            topHistory.innerHTML = `${topHistoryData.text}`;
-        }
-    }
-
-    subtractionOnClick() {
-        const selectedData = document.querySelector("[data-text = '-']");
-        const topResult = this.topResult;
-        const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset;
-        let action = this.action;
-        let secondNumber = this.secondNumber;
-
-        selectedData.onclick = function() {
-            secondNumber = Number(topResult.textContent);
-
-            if (action !== ' ') {
-                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
-            }
-
-            action = '-';
-            topHistoryData.text = `${topHistoryData.text} -`;
-            topHistory.innerHTML = `${topHistoryData.text}`;
-        }
-    }
-
-    multiplicationOnClick() {
-        const selectedData = document.querySelector('[data-text = "\xD7"]');
-        const topResult = this.topResult;
-        const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset;
-        let action = this.action;
-        let secondNumber = this.secondNumber;
-
-        selectedData.onclick = function() {
-            secondNumber = Number(topResult.textContent);
-
-            if (action !== ' ') {
-                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
-            }
-
-            action = `\xD7`;
-            topHistoryData.text = `${topHistoryData.text} \xD7`;
-            topHistory.innerHTML = `${topHistoryData.text}`;
-        }
-    }
-
-    divisionOnClick() {
-        const selectedData = document.querySelector('[data-text = "\xF7"]');
-        const topResult = this.topResult;
-        const topHistory = this.topHistory;
-        const topHistoryData = this.topHistory.dataset;
-        let action = this.action;
-        let secondNumber = this.secondNumber;
-
-        selectedData.onclick = function() {
-            secondNumber = Number(topResult.textContent);
-
-            if (action !== ' ') {
-                topHistoryData.text = topHistoryData.text.slice(0, topHistoryData.text.length-2);
-            }
-
-            action = `\xF7`;
-            topHistoryData.text = `${topHistoryData.text} \xF7`;
-            topHistory.innerHTML = `${topHistoryData.text}`;
-        }
+        });
     }
 
     reversOnClick() {
