@@ -102,6 +102,9 @@ class CalculatorOperations extends CalculatorInterface {
         this.clearAll();
         this.clearCurrentNumber();
         this.clearLastSymbol();
+        this.squareOnClick();
+        this.squareRootOnClick();
+        this.negateOnClick();
     }
 
     setDataOnClick() {
@@ -240,7 +243,8 @@ class CalculatorOperations extends CalculatorInterface {
         const selectedData = document.querySelector('[data-text = "1/x"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        const lengthForSwitchFontSize = 10;
+        const lengthForSwitchFontSizeMedium = 10;
+        const lengthForSwitchFontSizeLow = 16;
         let topHistoryData = this.topHistory.dataset;
 
         let action = this.action;
@@ -250,28 +254,135 @@ class CalculatorOperations extends CalculatorInterface {
             secondNumber = Number(topResult.textContent);
             action = `1/x`;
 
-            topResult.innerHTML = `${1/secondNumber}`.slice(0, 17);
+            topResult.innerHTML = `${1/secondNumber}`;
 
             topHistoryData.text = `1/(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
 
-            if (topResult.textContent.length > lengthForSwitchFontSize) {
+            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "42px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
                 topResult.style.fontSize = "26px";
             }
-            else {
-                topResult.style.fontSize = "42px";
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
+                topResult.style.fontSize = "22px";
             }
         }
     }
 
+    squareOnClick() {
+        const selectedData = document.querySelector('[data-text = "x²"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        const lengthForSwitchFontSizeMedium = 10;
+        const lengthForSwitchFontSizeLow = 16;
+        let topHistoryData = this.topHistory.dataset;
 
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        selectedData.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `x²`;
+
+            topResult.innerHTML = `${secondNumber * secondNumber}`;
+
+            topHistoryData.text = `sqr(${topHistoryData.text})`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
+
+            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "42px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "26px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
+                topResult.style.fontSize = "22px";
+            }
+
+        }
+    }
+
+    squareRootOnClick() {
+        const selectedData = document.querySelector('[data-text = "\u221Ax"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        const lengthForSwitchFontSizeMedium = 10;
+        const lengthForSwitchFontSizeLow = 16;
+        let topHistoryData = this.topHistory.dataset;
+
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        selectedData.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `\u221Ax`;
+
+            topResult.innerHTML = `${Math.sqrt(secondNumber)}`;
+
+            topHistoryData.text = `\u221A(${topHistoryData.text})`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
+
+            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "42px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "26px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
+                topResult.style.fontSize = "22px";
+            }
+
+        }
+    }
+
+    negateOnClick() {
+        const selectedData = document.querySelector('[data-text = "±"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        const lengthForSwitchFontSizeMedium = 10;
+        const lengthForSwitchFontSizeLow = 16;
+        let topHistoryData = this.topHistory.dataset;
+
+        let action = this.action;
+        let secondNumber = this.secondNumber;
+
+        selectedData.onclick = function() {
+            secondNumber = Number(topResult.textContent);
+            action = `±`;
+
+            topResult.innerHTML = `${secondNumber * -1}`;
+
+            topHistoryData.text = `negate(${topHistoryData.text})`;
+
+            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "42px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
+                topResult.style.fontSize = "26px";
+            }
+
+            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
+                topResult.style.fontSize = "22px";
+            }
+
+        }
+    }
 
     clearAll() {
         const selectedData = document.querySelector('[data-text = "C"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        let topHistoryData = this.topHistory.dataset.text;
+        const topHistoryData = this.topHistory.dataset;
         let action = this.action;
         let secondNumber = this.secondNumber;
 
@@ -279,7 +390,7 @@ class CalculatorOperations extends CalculatorInterface {
             secondNumber = ``;
             action = ``;
 
-            topHistoryData = ``;
+            topHistoryData.text = `0`;
             topHistory.innerHTML = ``;
 
             topResult.innerHTML = `0`;

@@ -60,6 +60,9 @@ sub sup {
         color: #B8BBD2;
         height: 17px;
         text-align: right;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       &-result {
         font-size: 42px;
