@@ -1,5 +1,5 @@
 
-class CalculatorInterface {
+class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
         this.objectsMassive = [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`];
         this.textMassiveForNumbers = [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`,`0` ,`±`];
@@ -87,7 +87,7 @@ class CalculatorInterface {
 
 }
 
-class CalculatorOperations extends CalculatorInterface {
+class CalculatorOperations extends CalculatorDisplay {
     constructor(...args) {
         super(...args);
 
@@ -154,6 +154,8 @@ class CalculatorOperations extends CalculatorInterface {
         const textMassiveForSimpleOperationsJs = this.textMassiveForSimpleOperationsJs;
         const topHistory = this.topHistory;
         const topHistoryData = this.topHistory.dataset;
+        const topResult = this.topResult;
+        let secondNumber = this.secondNumber;
         let action = this.action;
 
         operationsButtons.forEach(element => {
@@ -169,16 +171,59 @@ class CalculatorOperations extends CalculatorInterface {
                 action = element.textContent;
                 topHistoryData.text = `${topHistoryData.text} ${action}`;
                 topHistory.innerHTML = `${topHistoryData.text}`;
+                secondNumber = topResult.textContent;
             }
         });
     }
 
+    resultFontSizeFix() {
+        const topResult = this.topResult;
+        const lengthForSwitchFontSizeMedium = 10;
+        const lengthForSwitchFontSizeLow = 16;
+
+        if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
+            topResult.style.fontSize = "42px";
+        }
+
+        if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
+            topResult.style.fontSize = "26px";
+        }
+
+        if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
+            topResult.style.fontSize = "22px";
+        }
+    }
+
+    percentOnClick() {
+        const resultFontSizeFix = this.resultFontSizeFix;
+        const selectedData = document.querySelector('[data-text = "%"]');
+        const topResult = this.topResult;
+        const topHistory = this.topHistory;
+        let topHistoryData = this.topHistory.dataset;
+
+        let action = this.action;
+
+        selectedData.onclick = function() {
+            if (!action) {
+                topResult.innerHTML = "0";
+                topHistory.innerHTML = "0";
+                topHistoryData.text = "0";
+                return;
+            }
+
+            topResult.innerHTML = `${topResult.textContent/100}`;
+            topHistoryData.text = `${topHistoryData.text} ${topResult.textContent/100}`;
+            topHistory.innerHTML = `${topHistoryData.text}`;
+
+            resultFontSizeFix();
+        }
+    }
+
     reversOnClick() {
+        const resultFontSizeFix = this.resultFontSizeFix;
         const selectedData = document.querySelector('[data-text = "1/x"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        const lengthForSwitchFontSizeMedium = 10;
-        const lengthForSwitchFontSizeLow = 16;
         let topHistoryData = this.topHistory.dataset;
 
         let action = this.action;
@@ -193,27 +238,15 @@ class CalculatorOperations extends CalculatorInterface {
             topHistoryData.text = `1/(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-
-            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "42px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "26px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
-                topResult.style.fontSize = "22px";
-            }
+            resultFontSizeFix();
         }
     }
 
     squareOnClick() {
+        const resultFontSizeFix = this.resultFontSizeFix;
         const selectedData = document.querySelector('[data-text = "x²"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        const lengthForSwitchFontSizeMedium = 10;
-        const lengthForSwitchFontSizeLow = 16;
         let topHistoryData = this.topHistory.dataset;
 
         let action = this.action;
@@ -228,27 +261,15 @@ class CalculatorOperations extends CalculatorInterface {
             topHistoryData.text = `sqr(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "42px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "26px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
-                topResult.style.fontSize = "22px";
-            }
-
+            resultFontSizeFix();
         }
     }
 
     squareRootOnClick() {
+        const resultFontSizeFix = this.resultFontSizeFix;
         const selectedData = document.querySelector('[data-text = "\u221Ax"]');
         const topResult = this.topResult;
         const topHistory = this.topHistory;
-        const lengthForSwitchFontSizeMedium = 10;
-        const lengthForSwitchFontSizeLow = 16;
         let topHistoryData = this.topHistory.dataset;
 
         let action = this.action;
@@ -263,27 +284,14 @@ class CalculatorOperations extends CalculatorInterface {
             topHistoryData.text = `\u221A(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "42px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "26px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
-                topResult.style.fontSize = "22px";
-            }
-
+            resultFontSizeFix();
         }
     }
 
     negateOnClick() {
+        const resultFontSizeFix = this.resultFontSizeFix;
         const selectedData = document.querySelector('[data-text = "±"]');
         const topResult = this.topResult;
-        const topHistory = this.topHistory;
-        const lengthForSwitchFontSizeMedium = 10;
-        const lengthForSwitchFontSizeLow = 16;
         let topHistoryData = this.topHistory.dataset;
 
         let action = this.action;
@@ -297,18 +305,7 @@ class CalculatorOperations extends CalculatorInterface {
 
             topHistoryData.text = `negate(${topHistoryData.text})`;
 
-            if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "42px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
-                topResult.style.fontSize = "26px";
-            }
-
-            if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
-                topResult.style.fontSize = "22px";
-            }
-
+            resultFontSizeFix();
         }
     }
 
