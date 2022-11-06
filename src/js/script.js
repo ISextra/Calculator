@@ -2,7 +2,7 @@ class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
         this.operations = {
             buttons: [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`],
-            numberButtons: [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `0`, `.`, `±`],
+            numberButtons: [`0`,`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`, `±`],
             equalSymbol: "=",
 
             numberOperationButton: `±`,
@@ -322,6 +322,7 @@ class CalculatorOperations extends CalculatorDisplay {
 
     clearCurrentNumber() {
         const dataContent = "CE";
+        const thisClass = this;
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
         const setResultFontSize = this.setResultFontSize;
         const topResult = this.topResult;
