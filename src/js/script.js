@@ -10,9 +10,6 @@ class CalculatorDisplay {
             complexOperations: [`%`, `1/x`, `x²`, `\u221Ax`]
         }
 
-        this.lengthForSwitchFontSizeMedium = 10;
-        this.lengthForSwitchFontSizeLow = 16;
-
         this.renderElements(calculatorHTMLClass);
     }
 
@@ -80,6 +77,8 @@ class CalculatorOperations extends CalculatorDisplay {
 
         this.secondNumber = "no secondNumber defined";
         this.action = "no actions defined";
+        this.lengthForSwitchFontSizeMedium = 10;
+        this.lengthForSwitchFontSizeLow = 16;
 
         this.setDataOnClick();
         this.setBasicOperations();
