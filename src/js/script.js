@@ -2,7 +2,7 @@ class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
         this.operations = {
             buttons: [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`],
-            numberButtons: [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`,`0`, `.`, `±`],
+            numberButtons: [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `0`, `.`, `±`],
             equalSymbol: "=",
 
             numberOperationButton: `±`,
@@ -92,7 +92,7 @@ class CalculatorOperations extends CalculatorDisplay {
         this.clearLastSymbol();
     }
 
-    fixResultFontSize(thisClass) {
+    setResultFontSize(thisClass) {
         if (thisClass.topResult.textContent.length < thisClass.lengthForSwitchFontSizeMedium) {
             thisClass.topResult.style.fontSize = "42px";
         }
@@ -107,7 +107,7 @@ class CalculatorOperations extends CalculatorDisplay {
     }
 
     setDataOnClick() {
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const thisClass = this;
         const topResult = this.topResult;
         const topHistoryData = this.topHistory.dataset;
@@ -117,33 +117,30 @@ class CalculatorOperations extends CalculatorDisplay {
         numberButtons.forEach(element => {
             const selectedData = document.querySelector(`[data-text = "${element}"]`);
 
-            selectedData.onclick = function(event) {
-                const target = event.target;
-                const targetTextContent = target.dataset.text;
-
-                switch (targetTextContent) {
+            selectedData.onclick = function() {
+                switch (element) {
                     case ".":
-                        if (!topResult.innerHTML.includes(".")) {
+                        if (!topResult.innerHTML.includes(".")) {//если результат не имеет "."
                             topResult.innerHTML = `${topResult.textContent}.`;
                             topHistoryData.text = `${topResult.textContent}`;
                         }
 
                         break;
                     default:
-                        fixResultFontSize(thisClass);
-
-                        if (topResult.innerHTML.length > maxLineLength) {
+                        if (topResult.innerHTML.length > maxLineLength) {//если длинна больше допустимой
                             break;
                         }
 
-                        if (topResult.innerHTML === "0" && targetTextContent !== ".") {
-                            topResult.innerHTML = `${targetTextContent}`;
+                        if (topResult.innerHTML === "0") {//если стоит начальный 0
+                            topResult.innerHTML = `${element}`;//заменяем его на число
                             topHistoryData.text = `${topResult.textContent}`;
                         }
                         else {
-                            topResult.innerHTML = `${topResult.textContent}${targetTextContent}`;
+                            topResult.innerHTML = `${topResult.textContent}${element}`;//в остальных случаях добавляем нажатое значение
                             topHistoryData.text = `${topResult.textContent}`;
                         }
+
+                        setResultFontSize(thisClass);
                 }
             }
         })
@@ -174,7 +171,7 @@ class CalculatorOperations extends CalculatorDisplay {
     }
 
     setPercentOnClick() {
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const dataContent = "%";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
         const topResult = this.topResult;
@@ -204,12 +201,12 @@ class CalculatorOperations extends CalculatorDisplay {
             }
 
             thisClass.action = dataContent;
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     setReversOnClick() {
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const dataContent = "1/x";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
         const topResult = this.topResult;
@@ -228,12 +225,12 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistoryData.text = `1/(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     setSquareOnClick() {
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const dataContent = "x²";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
         const topResult = this.topResult;
@@ -251,12 +248,12 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistoryData.text = `sqr(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     setSquareRootOnClick() {
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const dataContent = "\u221Ax";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
         const topResult = this.topResult;
@@ -275,12 +272,12 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistoryData.text = `\u221A(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     setNegateOnClick() {
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const dataContent = "±";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
         const topResult = this.topResult;
@@ -297,14 +294,14 @@ class CalculatorOperations extends CalculatorDisplay {
 
             topHistoryData.text = `negate(${topHistoryData.text})`;
 
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     clearAll() {
         const dataContent = "C";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const topResult = this.topResult;
         const topHistory = this.topHistory;
         const topHistoryData = this.topHistory.dataset;
@@ -319,27 +316,27 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistory.innerHTML = "";
 
             topResult.innerHTML = "0";
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     clearCurrentNumber() {
         const dataContent = "CE";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const topResult = this.topResult;
 
         selectedData.onclick = function() {
             topResult.innerHTML = `0`;
 
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 
     clearLastSymbol() {
         const dataContent = "<";
         const selectedData = document.querySelector(`[data-text = "${dataContent}"]`);
-        const fixResultFontSize = this.fixResultFontSize;
+        const setResultFontSize = this.setResultFontSize;
         const operations = this.operations;
         const thisClass = this;
         const topResult = this.topResult;
@@ -353,7 +350,7 @@ class CalculatorOperations extends CalculatorDisplay {
                 topResult.innerHTML = "0";//пишем начальный 0
             }
 
-            fixResultFontSize(thisClass);
+            setResultFontSize(thisClass);
         }
     }
 }
