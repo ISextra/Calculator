@@ -2,13 +2,16 @@ class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
         this.operations = {
             buttons: [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`],
-            numberButtons: [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`, `0` ,`±`],
+            numberButtons: [`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`,`0`, `.`, `±`],
             equalSymbol: "=",
 
             numberOperationButton: `±`,
             basicOperations: [`\xF7`, `\xD7`, `-`, `+`],
             complexOperations: [`%`, `1/x`, `x²`, `\u221Ax`]
         }
+
+        this.lengthForSwitchFontSizeMedium = 10;
+        this.lengthForSwitchFontSizeLow = 16;
 
         this.renderElements(calculatorHTMLClass);
     }
@@ -90,25 +93,23 @@ class CalculatorOperations extends CalculatorDisplay {
         this.clearLastSymbol();
     }
 
-    fixResultFontSize(topResult) {
-        const lengthForSwitchFontSizeMedium = 10;
-        const lengthForSwitchFontSizeLow = 16;
-
-        if (topResult.textContent.length < lengthForSwitchFontSizeMedium) {
-            topResult.style.fontSize = "42px";
+    fixResultFontSize(thisClass) {
+        if (thisClass.topResult.textContent.length < thisClass.lengthForSwitchFontSizeMedium) {
+            thisClass.topResult.style.fontSize = "42px";
         }
 
-        if (topResult.textContent.length > lengthForSwitchFontSizeMedium) {
-            topResult.style.fontSize = "26px";
+        if (thisClass.topResult.textContent.length > thisClass.lengthForSwitchFontSizeMedium) {
+            thisClass.topResult.style.fontSize = "26px";
         }
 
-        if (topResult.textContent.length > lengthForSwitchFontSizeLow) {
-            topResult.style.fontSize = "22px";
+        if (thisClass.topResult.textContent.length > thisClass.lengthForSwitchFontSizeLow) {
+            thisClass.topResult.style.fontSize = "22px";
         }
     }
 
     setDataOnClick() {
         const fixResultFontSize = this.fixResultFontSize;
+        const thisClass = this;
         const topResult = this.topResult;
         const topHistoryData = this.topHistory.dataset;
         const numberButtons = this.operations.numberButtons;
@@ -116,6 +117,7 @@ class CalculatorOperations extends CalculatorDisplay {
 
         numberButtons.forEach(element => {
             const selectedData = document.querySelector(`[data-text = "${element}"]`);
+
             selectedData.onclick = function(event) {
                 const target = event.target;
                 const targetTextContent = target.dataset.text;
@@ -129,7 +131,7 @@ class CalculatorOperations extends CalculatorDisplay {
 
                         break;
                     default:
-                        fixResultFontSize(topResult);
+                        fixResultFontSize(thisClass);
 
                         if (topResult.innerHTML.length > maxLineLength) {
                             break;
@@ -203,7 +205,7 @@ class CalculatorOperations extends CalculatorDisplay {
             }
 
             thisClass.action = dataContent;
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -227,7 +229,7 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistoryData.text = `1/(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -250,7 +252,7 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistoryData.text = `sqr(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -274,7 +276,7 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistoryData.text = `\u221A(${topHistoryData.text})`;
             topHistory.innerHTML = `${topHistoryData.text}`;
 
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -296,7 +298,7 @@ class CalculatorOperations extends CalculatorDisplay {
 
             topHistoryData.text = `negate(${topHistoryData.text})`;
 
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -318,7 +320,7 @@ class CalculatorOperations extends CalculatorDisplay {
             topHistory.innerHTML = "";
 
             topResult.innerHTML = "0";
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -331,7 +333,7 @@ class CalculatorOperations extends CalculatorDisplay {
         selectedData.onclick = function() {
             topResult.innerHTML = `0`;
 
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 
@@ -352,7 +354,7 @@ class CalculatorOperations extends CalculatorDisplay {
                 topResult.innerHTML = "0";//пишем начальный 0
             }
 
-            fixResultFontSize(topResult);
+            fixResultFontSize(thisClass);
         }
     }
 }
