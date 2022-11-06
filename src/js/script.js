@@ -1,4 +1,3 @@
-
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
         this.operations = {
@@ -118,8 +117,7 @@ class CalculatorOperations extends CalculatorDisplay {
         numberButtons.forEach(element => {
             const selectedData = document.querySelector(`[data-text = "${element}"]`);
             selectedData.onclick = function(event) {
-                let target = event.target;
-
+                const target = event.target;
                 const targetTextContent = target.dataset.text;
 
                 switch (targetTextContent) {
@@ -309,13 +307,13 @@ class CalculatorOperations extends CalculatorDisplay {
         const topResult = this.topResult;
         const topHistory = this.topHistory;
         const topHistoryData = this.topHistory.dataset;
+        const thisClass = this;
 
-        let action = this.action;
         let secondNumber = this.secondNumber;
 
         selectedData.onclick = function() {
             secondNumber = "no secondNumber defined";
-            action = "no actions defined";
+            thisClass.action = "no actions defined";
             topHistoryData.text = "0";
             topHistory.innerHTML = "";
 
