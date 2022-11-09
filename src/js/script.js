@@ -1,5 +1,9 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
+        this.firstNumber = 0;
+        this.secondNumber = 0;
+        this.operation = "no operations defined"
+
 
         this.operations = {
             percent: {
@@ -136,11 +140,50 @@ class CalculatorDisplay {
         }
 
         this.renderElements(calculatorHTMLClass);
+        this.handleClick = this.handleClick.bind(this);
     }
+
+    handleClick(event){
+        console.log(event.target);
+        this.setOnClickForComplexOperation(event.target);
+        this.setOnClickForBasicOperation(event.target);
+        this.setOnClickForCleanupOperation(event.target);
+    }
+
+    setOnClickForComplexOperation(operation) {
+        if (operation.operationType !== "complexOperation") {
+            return;
+        }
+
+        console.log(operation.dataset.text, operation.operationType);
+    }
+
+    setOnClickForBasicOperation(operation) {
+        if (operation.operationType !== "basicOperation") {
+            return;
+        }
+
+        console.log(operation.dataset.text, operation.operationType);
+    }
+
+    setOnClickForCleanupOperation(operation) {
+        if (operation.operationType !== "cleanupOperation") {
+            return;
+        }
+
+        console.log(operation.dataset.text, operation.operationType);
+    }
+
+    setResult() {}
+    setHistory() {}
+
+    setFirstNumber() {}
+    setSecondNumber() {}
+    setOperation() {}
+
 
     renderSimilarElements() {
         const appendTarget = document.querySelector('.bottom');
-
         const documentCollection = [];
         let index = 0;
 
@@ -151,40 +194,11 @@ class CalculatorDisplay {
             documentCollection[index].classList.add(this.operations[operation].buttonClass);
             appendTarget.append(documentCollection[index]);
 
-
+            documentCollection[index].onclick = this.handleClick;
 
             index++;
         }
 
-    }
-
-    renderSimilarElements1() {
-        const objectsMassive = this.operations.buttons;
-        const numberButtons = this.operations.numberButtons;
-        const equalSymbol = this.operations.equalSymbol;
-
-        const appendTarget = document.querySelector('.bottom');
-
-        const defaultClass = "bottom-button";
-        const numberClass = "number-button";
-        const equalClass = "red-button";
-
-        const documentCollection = objectsMassive.map((element,index) => {
-            element = document.createElement("button");
-            element.textContent = objectsMassive[index];
-            element.dataset.text = objectsMassive[index];
-            element.classList.add(defaultClass);
-
-            if (numberButtons.includes(objectsMassive[index])) {
-                element.classList.add(numberClass);
-            }
-
-            if (objectsMassive[index] === equalSymbol) {
-                element.classList.add(equalClass);
-            }
-
-            appendTarget.append(element);
-        });
     }
 
     renderElements(calculatorHTMLClass) {
