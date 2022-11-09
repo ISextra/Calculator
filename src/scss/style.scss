@@ -71,23 +71,23 @@ sub sup {
         text-align: right;
       }
     }
-    .bottom {
+    .bottom-button {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      &-button {
-        width: 75px;
-        height: 50px;
-        margin: 1px;
-        font-size: 18px;
-        color: white;
+      width: 75px;
+      height: 50px;
+      margin: 1px;
+      font-size: 18px;
+      color: white;
+      &-action {
         background: #2C2C2C;
       }
-      .number-button {
+      &-number {
         background: black;
       }
-      .red-button {
+      &-red {
         background: #EB801D;
       }
     }
