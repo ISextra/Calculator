@@ -1,5 +1,140 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
+
+        this.operations1 = {
+            percent: {
+                content: "%",
+                buttonColor: "operation",
+                operationType: "complexOperation"
+            },
+
+            clearLine: {
+                content: "CE",
+                buttonColor: "operation",
+                operationType: "cleanupOperation"
+            },
+
+            clearAll: {
+                content: "C",
+                buttonColor: "operation",
+                operationType: "cleanupOperation"
+            },
+
+            clearSymbol: {
+                content: "<",
+                buttonColor: "operation",
+                operationType: "cleanupOperation"
+            },
+
+            reverse: {
+                content: "1/x",
+                buttonColor: "operation",
+                operationType: "complexOperation"
+            },
+
+            square: {
+                content: "x²",
+                buttonColor: "operation",
+                operationType: "complexOperation"
+            },
+
+            squareRoot: {
+                content: "\u221Ax",
+                buttonColor: "operation",
+                operationType: "complexOperation"
+            },
+
+            division: {
+                content: "\xF7",
+                buttonColor: "operation",
+                operationType: "basicOperation"
+            },
+
+            seven: {
+                content: "7",
+                buttonColor: "number"
+            },
+
+            eight: {
+                content: "8",
+                buttonColor: "number"
+            },
+
+            nine: {
+                content: "9",
+                buttonColor: "number"
+            },
+
+            multiplication: {
+                content: "\xD7",
+                buttonColor: "operation",
+                operationType: "basicOperation"
+            },
+
+            four: {
+                content: "4",
+                buttonColor: "number"
+            },
+
+            five: {
+                content: "5",
+                buttonColor: "number"
+            },
+
+            six: {
+                content: "6",
+                buttonColor: "number"
+            },
+
+            subtraction: {
+                content: "-",
+                buttonColor: "operation",
+                operationType: "basicOperation"
+            },
+
+            one: {
+                content: "1",
+                buttonColor: "number"
+            },
+
+            two: {
+                content: "2",
+                buttonColor: "number"
+            },
+
+            three: {
+                content: "3",
+                buttonColor: "number"
+            },
+
+            addition: {
+                content: "+",
+                buttonColor: "operation",
+                operationType: "basicOperation"
+            },
+
+            negate: {
+                content: "±",
+                buttonColor: "number",
+                operationType: "complexOperation"
+            },
+
+            zero: {
+                content: "0",
+                buttonColor: "number"
+            },
+
+            point: {
+                content: ".",
+                buttonColor: "number"
+            },
+
+            equal: {
+                content: ".",
+                buttonColor: "equal"
+            }
+        }
+
         this.operations = {
             buttons: [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`],
             numberButtons: [`0`,`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`, `±`],
