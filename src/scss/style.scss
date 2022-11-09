@@ -10,6 +10,7 @@
 }
 
 @import "fonts.scss";
+@import "colors.scss";
 @import "nullstyle.scss";
 
 ._ibj {
@@ -40,6 +41,7 @@ sub sup {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   .calculator {
     display: flex;
     flex-direction: column;
@@ -47,6 +49,7 @@ sub sup {
     padding: 5px;
     background: #606060;
     width: 322px;
+
     .top {
       display: flex;
       flex-direction: column;
@@ -71,24 +74,40 @@ sub sup {
         text-align: right;
       }
     }
-    .button {
+
+    .bottom {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      width: 75px;
-      height: 50px;
-      margin: 1px;
-      font-size: 18px;
-      color: white;
-      &-action {
-        background: #2C2C2C;
-      }
-      &-number {
-        background: black;
-      }
-      &-red {
-        background: #EB801D;
+
+      &-button {
+        &-operation {
+          width: 75px;
+          height: 50px;
+          margin: 1px;
+          font-size: 18px;
+          color: white;
+          background: $black-2;
+        }
+
+        &-number {
+          width: 75px;
+          height: 50px;
+          margin: 1px;
+          font-size: 18px;
+          color: white;
+          background: black;
+        }
+
+        &-red {
+          width: 75px;
+          height: 50px;
+          margin: 1px;
+          font-size: 18px;
+          color: white;
+          background: $orange-2;
+        }
       }
     }
   }

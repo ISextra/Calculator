@@ -1,154 +1,164 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
 
-        this.operations1 = {
+        this.operations = {
             percent: {
                 content: "%",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "complexOperation"
             },
 
             clearLine: {
                 content: "CE",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "cleanupOperation"
             },
 
             clearAll: {
                 content: "C",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "cleanupOperation"
             },
 
             clearSymbol: {
                 content: "<",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "cleanupOperation"
             },
 
             reverse: {
                 content: "1/x",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "complexOperation"
             },
 
             square: {
                 content: "x²",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "complexOperation"
             },
 
             squareRoot: {
                 content: "\u221Ax",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "complexOperation"
             },
 
             division: {
                 content: "\xF7",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "basicOperation"
             },
 
             seven: {
                 content: "7",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             eight: {
                 content: "8",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             nine: {
                 content: "9",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             multiplication: {
                 content: "\xD7",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "basicOperation"
             },
 
             four: {
                 content: "4",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             five: {
                 content: "5",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             six: {
                 content: "6",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             subtraction: {
                 content: "-",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "basicOperation"
             },
 
             one: {
                 content: "1",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             two: {
                 content: "2",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             three: {
                 content: "3",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             addition: {
                 content: "+",
-                buttonColor: "operation",
+                buttonClass: "bottom-button-operation",
                 operationType: "basicOperation"
             },
 
             negate: {
                 content: "±",
-                buttonColor: "number",
+                buttonClass: "bottom-button-number",
                 operationType: "complexOperation"
             },
 
             zero: {
                 content: "0",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             point: {
                 content: ".",
-                buttonColor: "number"
+                buttonClass: "bottom-button-number"
             },
 
             equal: {
-                content: ".",
-                buttonColor: "equal"
+                content: "=",
+                buttonClass: "bottom-button-red"
             }
-        }
-
-        this.operations = {
-            buttons: [`%`, `CE`, `C`, `<`, `1/x`, `x²`, `\u221Ax`, `\xF7`, `7`, `8`, `9`, `\xD7`, `4`, `5`, `6`, `-`, `1`, `2`, `3`, `+`, `±`, `0`, `.`, `=`],
-            numberButtons: [`0`,`7`, `8`, `9`, `4`, `5`, `6`, `1`, `2`, `3`, `.`, `±`],
-            equalSymbol: "=",
-
-            numberOperationButton: `±`,
-            basicOperations: [`\xF7`, `\xD7`, `-`, `+`],
-            complexOperations: [`%`, `1/x`, `x²`, `\u221Ax`]
         }
 
         this.renderElements(calculatorHTMLClass);
     }
 
     renderSimilarElements() {
+        const appendTarget = document.querySelector('.bottom');
+
+        const documentCollection = [];
+        let index = 0;
+
+        for (let operation in this.operations) {
+            documentCollection[index] = document.createElement("button");
+            documentCollection[index].textContent = this.operations[operation].content;
+            documentCollection[index].dataset.text = this.operations[operation].content;
+            documentCollection[index].classList.add(this.operations[operation].buttonClass);
+            appendTarget.append(documentCollection[index]);
+
+
+
+            index++;
+        }
+
+    }
+
+    renderSimilarElements1() {
         const objectsMassive = this.operations.buttons;
         const numberButtons = this.operations.numberButtons;
         const equalSymbol = this.operations.equalSymbol;
@@ -491,4 +501,4 @@ class CalculatorOperations extends CalculatorDisplay {
     }
 }
 
-const interface1 = new CalculatorOperations(".calculator");
+const interface1 = new CalculatorDisplay(".calculator");
