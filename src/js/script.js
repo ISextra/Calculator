@@ -472,10 +472,22 @@ class CalculatorDisplay {
     }
 
     square() {
-        this.secondNumber = this.secondNumber * this.secondNumber;
+        if (this.secondNumber === this.defaultSecondNumber) {
+            this.secondNumber = "0";
+
+            return
+        }
+
+        this.secondNumber = Number(this.secondNumber) * Number(this.secondNumber);
     }
 
     squareRoot() {
+        if (this.secondNumber === this.defaultSecondNumber) {
+            this.secondNumber = "0";
+
+            return
+        }
+
         this.secondNumber = Math.sqrt(this.secondNumber);
     }
 
