@@ -305,6 +305,11 @@ class CalculatorDisplay {
 
         if (this.firstNumber === this.defaultFirstNumber) { // если первое число не задано
             this.operation = button.dataset.text;
+
+            if (this.secondNumber === this.defaultSecondNumber) {//если сразу нажать действие без заданного числа
+                this.secondNumber = "0";
+            }
+
             this.firstNumber = Number(this.secondNumber); // задаем число и операциию
             this.secondNumber = this.defaultSecondNumber;
 
