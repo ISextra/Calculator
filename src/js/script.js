@@ -387,6 +387,12 @@ class CalculatorDisplay {
 
                 break;
             }
+
+            case "±": {
+                this.negate();
+
+                break;
+            }
         }
 
         this.renderResults();
@@ -479,7 +485,7 @@ class CalculatorDisplay {
                 this.secondNumber = this.firstNumber;
             }
 
-            this.secondNumber = Number(this.secondNumber) / 100;
+            this.secondNumber = `${Number(this.secondNumber) / 100}`;
         }
 
         if (this.operation === this.operations.addition.content || this.operation === this.operations.subtraction.content) {//если был использован знак + или -
@@ -487,7 +493,7 @@ class CalculatorDisplay {
                 this.secondNumber = this.firstNumber;
             }
 
-            this.secondNumber = Number(this.firstNumber) / 100 * Number(this.secondNumber);
+            this.secondNumber = `${Number(this.firstNumber) / 100 * Number(this.secondNumber)}`;
         }
     }
 
@@ -498,7 +504,7 @@ class CalculatorDisplay {
             return;
         }
 
-        this.secondNumber = 1 / this.secondNumber;
+        this.secondNumber = `${1 / Number(this.secondNumber)}`;
     }
 
     square() {
@@ -508,7 +514,7 @@ class CalculatorDisplay {
             return
         }
 
-        this.secondNumber = Number(this.secondNumber) * Number(this.secondNumber);
+        this.secondNumber = `${Number(this.secondNumber) * Number(this.secondNumber)}`;
     }
 
     squareRoot() {
@@ -518,7 +524,22 @@ class CalculatorDisplay {
             return
         }
 
-        this.secondNumber = Math.sqrt(this.secondNumber);
+        this.secondNumber = `${Math.sqrt(this.secondNumber)}`;
+    }
+
+    negate() {
+        if (this.secondNumber === this.defaultSecondNumber) {
+            this.secondNumber = "0";
+
+            return
+        }
+
+        if (!this.secondNumber.includes( "-" )) {
+            this.secondNumber = `-${this.secondNumber}`;
+        }
+        else {
+            this.secondNumber = this.secondNumber.slice(1);
+        }
     }
 
     cleanAll() {
