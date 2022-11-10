@@ -319,25 +319,29 @@ class CalculatorDisplay {
         if (this.secondNumber !== this.defaultSecondNumber) {//если второе число не задано
             switch (this.operation) { //выполняем операции
                 case this.operations.addition.content: {
-                    this.addition(button);
+                    this.firstNumber = this.addition();
+                    this.setResultAfterBasicOperation(button);
 
                     break;
                 }
 
                 case this.operations.subtraction.content: {
-                    this.subtraction(button)
+                    this.firstNumber = this.subtraction();
+                    this.setResultAfterBasicOperation(button);
 
                     break;
                 }
 
                 case this.operations.multiplication.content: {
-                    this.multiplication(button);
+                    this.firstNumber = this.multiplication();
+                    this.setResultAfterBasicOperation(button);
 
                     break;
                 }
 
                 case this.operations.division.content: {
-                    this.division(button);
+                    this.firstNumber = this.division();
+                    this.setResultAfterBasicOperation(button);
 
                     break;
                 }
@@ -392,6 +396,34 @@ class CalculatorDisplay {
         if (button.dataset.type !== "equal") {
             return;
         }
+
+        switch (this.operation) {
+            case this.operations.addition.content: {
+                this.topResult.innerHTML = this.addition();
+
+                break;
+            }
+
+            case this.operations.subtraction.content: {
+                this.topResult.innerHTML = this.subtraction();
+
+                break;
+            }
+
+            case this.operations.multiplication.content: {
+                this.topResult.innerHTML = this.multiplication();
+
+                break;
+            }
+
+            case this.operations.division.content: {
+                this.topResult.innerHTML = this.division();
+
+                break;
+            }
+        }
+
+
     }
 
     setResultFontSize() {
@@ -414,33 +446,26 @@ class CalculatorDisplay {
         // need block some buttons, next clearAll
     }
 
-    addition(button) {
-        this.firstNumber = Number(this.firstNumber) + Number(this.secondNumber);
-        this.topResult.innerHTML =  this.firstNumber;
-        this.secondNumber = this.defaultSecondNumber;
-        this.operation = button.dataset.text;
-
-    }
-
-    subtraction(button) {
-        this.firstNumber = Number(this.firstNumber) - Number(this.secondNumber);
+    setResultAfterBasicOperation(button) {
         this.topResult.innerHTML =  this.firstNumber;
         this.secondNumber = this.defaultSecondNumber;
         this.operation = button.dataset.text;
     }
 
-    multiplication(button) {
-        this.firstNumber = Number(this.firstNumber) * Number(this.secondNumber);
-        this.topResult.innerHTML =  this.firstNumber;
-        this.secondNumber = this.defaultSecondNumber;
-        this.operation = button.dataset.text;
+    addition() {
+        return  Number(this.firstNumber) + Number(this.secondNumber);
     }
 
-    division(button) {
-        this.firstNumber = Number(this.firstNumber) / Number(this.secondNumber);
-        this.topResult.innerHTML =  this.firstNumber;
-        this.secondNumber = this.defaultSecondNumber;
-        this.operation = button.dataset.text;
+    subtraction() {
+        return Number(this.firstNumber) - Number(this.secondNumber);
+    }
+
+    multiplication() {
+        return Number(this.firstNumber) * Number(this.secondNumber);
+    }
+
+    division() {
+        return Number(this.firstNumber) / Number(this.secondNumber);
     }
 
     percent() {
