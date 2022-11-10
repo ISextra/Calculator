@@ -209,9 +209,64 @@ class CalculatorDisplay {
         }
     }
 
+    cleanAll() {
+        this.topResult.innerHTML = "0";
+        this.topHistory.innerHTML = "";
+        this.secondNumber = "0";
+        this.firstNumber = "no firstNumber defined";
+        this.operation = "no operations defined";
+    }
+
+    cleanHistory() {
+        this.topHistory.innerHTML = "";
+        this.secondNumber = "0";
+        this.firstNumber = "no firstNumber defined";
+        this.operation = "no operations defined";
+    }
+
+    cleanResult() {
+        this.topResult.innerHTML = "0";
+        this.secondNumber = "0";
+    }
+
+    cleanLastSymbol() {
+        this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
+    }
+
     setOnClickForCleanupOperation(operation) {
         if (operation.dataset.type !== "cleanupOperation") {
             return;
+        }
+
+        const textOfOperation = operation.dataset.text;
+
+        switch (textOfOperation) {
+            case "C": {
+                this.cleanAll();
+                break;
+            }
+
+            case "CE": {
+                if (this.operation === "=") {
+                    this.cleanAll();
+
+                    break;
+                }
+
+                this.cleanResult()
+                break;
+            }
+
+            case "<": {
+                if (this.operation === "=") {
+                    this.cleanHistory();
+
+                    break;
+                }
+
+                this.cleanLastSymbol();
+                break;
+            }
         }
     }
 
