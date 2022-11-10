@@ -1,8 +1,13 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.secondNumber = "0";
-        this.firstNumber = "no firstNumber defined";
+        this.secondNumber = "no number two";
+        this.firstNumber = "no number one";
         this.operation = "no operations defined";
+
+        this.defaultFirstNumber = "no number one";
+        this.defaultSecondNumber = "no number two";
+        this.defaultOperation = "no operations defined";
+
         this.maxLineLength = 16;
         this.lengthForSwitchFontSizeMedium = 10;
 
@@ -180,6 +185,7 @@ class CalculatorDisplay {
         if (this.topResult.textContent.length > this.maxLineLength) {
             this.topResult.style.fontSize = "22px";
         }
+        console.log(this.secondNumber);
     }
 
     setNumber(button) {
@@ -194,6 +200,10 @@ class CalculatorDisplay {
                     break;
                 }
 
+                if (this.secondNumber === this.defaultSecondNumber) {
+                    this.secondNumber = "0";
+                }
+
                 this.secondNumber = `${this.secondNumber}.`;
 
                 break;
@@ -204,7 +214,7 @@ class CalculatorDisplay {
                     break;
                 }
 
-                if (this.secondNumber === "0") {//если изначально стоит 0
+                if ((this.secondNumber === "0") || (this.secondNumber === this.defaultSecondNumber)) {//если изначально стоит 0 или начальное значение
                     this.secondNumber = `${textOfOperation}`;
 
                     break;
@@ -215,9 +225,52 @@ class CalculatorDisplay {
         }
     }
 
+    percent() {
+        if (this.operation === this.defaultOperation) {//если не было использовано знаков
+            this.cleanAll();
+            return;
+        }
+
+        if (this.operation === this.operations.multiplication.content || this.operation === this.operations.division.content) {//если был использован знак * или /
+            if (this.secondNumber === this.defaultSecondNumber) {//если еще одно число не вписано
+                this.secondNumber = this.firstNumber;
+            }
+
+            this.secondNumber = Number(this.secondNumber) / 100;
+        }
+
+        if (this.operation === this.operations.addition.content || this.operation === this.operations.subtraction.content) {//если был использован знак + или -
+            if (this.secondNumber === this.defaultSecondNumber) {//если еще одно число не вписано
+                this.secondNumber = this.firstNumber;
+            }
+
+            this.secondNumber = Number(this.firstNumber) / 100 * Number(this.secondNumber);
+        }
+    }
+
     setComplexOperation(button) {
         if (button.dataset.type !== "complexOperation") {
             return;
+        }
+
+        switch (button.dataset.text) {
+            case "%": {
+                this.percent();
+
+                break;
+            }
+
+            case "1/x": {
+                break;
+            }
+
+            case "x²": {
+                break;
+            }
+
+            case "\u221Ax": {
+                break;
+            }
         }
     }
 
@@ -228,34 +281,38 @@ class CalculatorDisplay {
 
         this.operation = button.dataset.text;
         this.firstNumber = Number(this.secondNumber);
-        this.secondNumber = "0";
+        this.secondNumber = this.defaultSecondNumber;
     }
 
     cleanAll() {
         this.topResult.innerHTML = "0";
         this.topHistory.innerHTML = "";
-        this.secondNumber = "0";
-        this.firstNumber = "no firstNumber defined";
-        this.operation = "no operations defined";
+        this.secondNumber = this.defaultSecondNumber;
+        this.firstNumber = this.defaultFirstNumber;
+        this.operation = this.defaultOperation;
     }
 
     cleanHistory() {
         this.topHistory.innerHTML = "";
-        this.secondNumber = "0";
-        this.firstNumber = "no firstNumber defined";
-        this.operation = "no operations defined";
+        this.secondNumber = this.defaultSecondNumber;
+        this.firstNumber = this.defaultFirstNumber;
+        this.operation = this.defaultOperation;
     }
 
     cleanResult() {
         this.topResult.innerHTML = "0";
-        this.secondNumber = "0";
+        this.secondNumber = this.defaultSecondNumber;
     }
 
     cleanLastSymbol() {
+        if (this.secondNumber === this.defaultSecondNumber) {
+            return;
+        }
+
         this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
 
         if (this.secondNumber === "") {
-            this.secondNumber = "0";
+            this.secondNumber = this.defaultSecondNumber;
         }
     }
 
@@ -301,13 +358,6 @@ class CalculatorDisplay {
             return;
         }
     }
-
-    setHistory() {}
-
-    setFirstNumber() {}
-    setSecondNumber() {}
-    setOperation() {}
-
 
     renderSimilarElements() {
         const appendTarget = document.querySelector('.bottom');
@@ -357,6 +407,11 @@ class CalculatorDisplay {
     }
 
     renderResults() {
+        if (this.secondNumber === this.defaultSecondNumber) {
+            this.topResult.innerHTML = "0";
+            return;
+        }
+
         this.topResult.innerHTML = this.secondNumber;
     }
 
