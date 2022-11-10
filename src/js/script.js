@@ -157,20 +157,20 @@ class CalculatorDisplay {
     }
 
     handleClick(event) {
-        this.setOnClickForNumber(event.target);
-        this.setOnClickForCleanupOperation(event.target);
-        this.setOnClickForBasicOperation(event.target);
-        this.setOnClickForComplexOperation(event.target);
-        this.setOnClickForEqual(event.target);
+        this.setNumber(event.target);
+        this.setCleanupOperation(event.target);
+        this.setBasicOperation(event.target);
+        this.setComplexOperation(event.target);
+        this.setEqual(event.target);
 
         this.renderResults();
     }
 
-    setOnClickForNumber(operation) {
-        if (operation.dataset.type !== "number") {
+    setNumber(button) {
+        if (button.dataset.type !== "number") {
             return;
         }
-        const textOfOperation = operation.dataset.text;
+        const textOfOperation = button.dataset.text;
 
         switch (textOfOperation) {
             case ".": {
@@ -199,16 +199,20 @@ class CalculatorDisplay {
         }
     }
 
-    setOnClickForComplexOperation(operation) {
-        if (operation.dataset.type !== "complexOperation") {
+    setComplexOperation(button) {
+        if (button.dataset.type !== "complexOperation") {
             return;
         }
     }
 
-    setOnClickForBasicOperation(operation) {
-        if (operation.dataset.type !== "basicOperation") {
+    setBasicOperation(button) {
+        if (button.dataset.type !== "basicOperation") {
             return;
         }
+
+        this.operation = button.dataset.text;
+        this.firstNumber = Number(this.secondNumber);
+        this.secondNumber = "0";
     }
 
     cleanAll() {
@@ -235,12 +239,12 @@ class CalculatorDisplay {
         this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
     }
 
-    setOnClickForCleanupOperation(operation) {
-        if (operation.dataset.type !== "cleanupOperation") {
+    setCleanupOperation(button) {
+        if (button.dataset.type !== "cleanupOperation") {
             return;
         }
 
-        const textOfOperation = operation.dataset.text;
+        const textOfOperation = button.dataset.text;
 
         switch (textOfOperation) {
             case "C": {
@@ -272,8 +276,8 @@ class CalculatorDisplay {
         }
     }
 
-    setOnClickForEqual(operation) {
-        if (operation.dataset.type !== "equal") {
+    setEqual(button) {
+        if (button.dataset.type !== "equal") {
             return;
         }
     }
