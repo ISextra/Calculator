@@ -4,6 +4,7 @@ class CalculatorDisplay {
         this.firstNumber = "no firstNumber defined";
         this.operation = "no operations defined";
         this.maxLineLength = 16;
+        this.lengthForSwitchFontSizeMedium = 10;
 
         this.operations = {
             percent: {
@@ -164,6 +165,21 @@ class CalculatorDisplay {
         this.setEqual(event.target);
 
         this.renderResults();
+        this.setResultFontSize();
+    }
+
+    setResultFontSize() {
+        if (this.topResult.textContent.length < this.lengthForSwitchFontSizeMedium) {
+            this.topResult.style.fontSize = "42px";
+        }
+
+        if (this.topResult.textContent.length > this.lengthForSwitchFontSizeMedium) {
+            this.topResult.style.fontSize = "26px";
+        }
+
+        if (this.topResult.textContent.length > this.maxLineLength) {
+            this.topResult.style.fontSize = "22px";
+        }
     }
 
     setNumber(button) {
@@ -237,6 +253,10 @@ class CalculatorDisplay {
 
     cleanLastSymbol() {
         this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
+
+        if (this.secondNumber === "") {
+            this.secondNumber = "0";
+        }
     }
 
     setCleanupOperation(button) {
