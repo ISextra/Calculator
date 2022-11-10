@@ -162,6 +162,8 @@ class CalculatorDisplay {
         this.setOnClickForBasicOperation(event.target);
         this.setOnClickForComplexOperation(event.target);
         this.setOnClickForEqual(event.target);
+
+        this.renderResults();
     }
 
     setOnClickForNumber(operation) {
@@ -276,7 +278,6 @@ class CalculatorDisplay {
         }
     }
 
-    setResult() {}
     setHistory() {}
 
     setFirstNumber() {}
@@ -329,6 +330,10 @@ class CalculatorDisplay {
         topElement.append(this.topResult);
 
         this.renderSimilarElements();
+    }
+
+    renderResults() {
+        this.topResult.innerHTML = this.secondNumber;
     }
 
 }
