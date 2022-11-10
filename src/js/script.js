@@ -1,9 +1,9 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.firstNumber = 0;
-        this.secondNumber = 0;
-        this.operation = "no operations defined"
-
+        this.secondNumber = "0";
+        this.firstNumber = "no firstNumber defined";
+        this.operation = "no operations defined";
+        this.maxLineLength = 16;
 
         this.operations = {
             percent: {
@@ -151,21 +151,49 @@ class CalculatorDisplay {
 
             }
         }
+
         this.handleClick = this.handleClick.bind(this);
         this.renderElements(calculatorHTMLClass);
     }
 
     handleClick(event) {
-        this.setOnClickForComplexOperation(event.target);//cant take operationType inside setOnClick functions
-        this.setOnClickForBasicOperation(event.target);  //need new dataset data-type for operationType
-        this.setOnClickForCleanupOperation(event.target);
         this.setOnClickForNumber(event.target);
+        this.setOnClickForCleanupOperation(event.target);
+        this.setOnClickForBasicOperation(event.target);
+        this.setOnClickForComplexOperation(event.target);
         this.setOnClickForEqual(event.target);
     }
 
     setOnClickForNumber(operation) {
         if (operation.dataset.type !== "number") {
             return;
+        }
+        const textOfOperation = operation.dataset.text;
+
+        switch (textOfOperation) {
+            case ".": {
+                if (this.secondNumber.includes(".")) {//если точка уже есть в числе
+                    break;
+                }
+
+                this.secondNumber = `${this.secondNumber}.`;
+
+                break;
+            }
+
+            default: {
+                if (this.secondNumber.length > this.maxLineLength) {//если длинна больше допустимой
+                    break;
+                }
+
+                if (this.secondNumber === "0") {//если изначально стоит 0
+                    this.secondNumber = `${textOfOperation}`;
+
+                    break;
+                }
+
+                this.secondNumber = `${this.secondNumber}${textOfOperation}`;
+            }
         }
     }
 
