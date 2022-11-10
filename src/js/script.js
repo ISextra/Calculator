@@ -1,11 +1,11 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.secondNumber = "no number two";
-        this.firstNumber = "no number one";
+        this.secondNumber = "0";
+        this.firstNumber = "0";
         this.operation = "no operations defined";
 
-        this.defaultFirstNumber = "no number one";
-        this.defaultSecondNumber = "no number two";
+        this.defaultFirstNumber = "0";
+        this.defaultSecondNumber = "0";
         this.defaultOperation = "no operations defined";
 
         this.maxLineLength = 16;
@@ -169,8 +169,14 @@ class CalculatorDisplay {
         this.setComplexOperation(event.target);
         this.setEqual(event.target);
 
-        this.renderResults();
         this.setResultFontSize();
+        this.handleException()
+    }
+
+    handleException() {
+        // secondNumber
+        // infinity, Cannot divide by zero
+        // need block some buttons, next clearAll
     }
 
     setResultFontSize() {
@@ -185,7 +191,6 @@ class CalculatorDisplay {
         if (this.topResult.textContent.length > this.maxLineLength) {
             this.topResult.style.fontSize = "22px";
         }
-        console.log(this.secondNumber);
     }
 
     setNumber(button) {
@@ -223,6 +228,8 @@ class CalculatorDisplay {
                 this.secondNumber = `${this.secondNumber}${textOfOperation}`;
             }
         }
+
+        this.renderResults();
     }
 
     percent() {
@@ -248,6 +255,24 @@ class CalculatorDisplay {
         }
     }
 
+    reverse() {
+        if (this.secondNumber === this.defaultSecondNumber) {
+            this.topResult.innerHTML = "Cannot divide by zero";
+
+            return;
+        }
+
+        this.secondNumber = 1 / this.secondNumber;
+    }
+
+    square() {
+        this.secondNumber = this.secondNumber * this.secondNumber;
+    }
+
+    squareRoot() {
+        this.secondNumber = Math.sqrt(this.secondNumber);
+    }
+
     setComplexOperation(button) {
         if (button.dataset.type !== "complexOperation") {
             return;
@@ -261,17 +286,25 @@ class CalculatorDisplay {
             }
 
             case "1/x": {
+                this.reverse();
+
                 break;
             }
 
             case "x²": {
+                this.square();
+
                 break;
             }
 
             case "\u221Ax": {
+                this.squareRoot();
+
                 break;
             }
         }
+
+        this.renderResults();
     }
 
     setBasicOperation(button) {
@@ -282,6 +315,8 @@ class CalculatorDisplay {
         this.operation = button.dataset.text;
         this.firstNumber = Number(this.secondNumber);
         this.secondNumber = this.defaultSecondNumber;
+
+        console.log(this.firstNumber, this.operation);
     }
 
     cleanAll() {
@@ -351,6 +386,8 @@ class CalculatorDisplay {
                 break;
             }
         }
+
+        this.renderResults();
     }
 
     setEqual(button) {
@@ -407,6 +444,8 @@ class CalculatorDisplay {
     }
 
     renderResults() {
+
+
         if (this.secondNumber === this.defaultSecondNumber) {
             this.topResult.innerHTML = "0";
             return;
