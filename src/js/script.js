@@ -1,11 +1,11 @@
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.secondNumber = "0";
-        this.firstNumber = "0";
+        this.secondNumber = "none";
+        this.firstNumber = "none";
         this.operation = "no operations defined";
 
-        this.defaultFirstNumber = "0";
-        this.defaultSecondNumber = "0";
+        this.defaultFirstNumber = "none";
+        this.defaultSecondNumber = "none";
         this.defaultOperation = "no operations defined";
 
         this.maxLineLength = 16;
@@ -303,11 +303,50 @@ class CalculatorDisplay {
             return;
         }
 
-        this.operation = button.dataset.text;
-        this.firstNumber = Number(this.secondNumber);
-        this.secondNumber = this.defaultSecondNumber;
+        if (this.firstNumber === this.defaultFirstNumber) { // если первое число не задано
+            this.operation = button.dataset.text;
+            this.firstNumber = Number(this.secondNumber); // задаем число и операциию
+            this.secondNumber = this.defaultSecondNumber;
 
-        console.log(this.firstNumber, this.operation);
+            return;
+        }
+
+        if (this.secondNumber !== this.defaultSecondNumber) {//если второе число не задано
+            switch (this.operation) { //выполняем операции
+                case this.operations.addition.content: {
+                    this.addition(button);
+
+                    break;
+                }
+
+                case this.operations.subtraction.content: {
+                    this.subtraction(button)
+
+                    break;
+                }
+
+                case this.operations.multiplication.content: {
+                    this.multiplication(button);
+
+                    break;
+                }
+
+                case this.operations.division.content: {
+                    this.division(button);
+
+                    break;
+                }
+            }
+
+            this.secondNumber = this.defaultSecondNumber;
+        }
+        else { //если второе число задано
+            this.operation = button.dataset.text; // то только меняем операцию
+        }
+
+        console.log(this.firstNumber, this.operation , this.secondNumber);
+        //renderResult не выполняется в цонце данного блока, по этому число в поле результата
+        //не изменяется сразу при нажатии на +-*/
     }
 
     setComplexOperation(button) {
@@ -368,6 +407,35 @@ class CalculatorDisplay {
         // secondNumber
         // infinity, Cannot divide by zero
         // need block some buttons, next clearAll
+    }
+
+    addition(button) {
+        this.firstNumber = Number(this.firstNumber) + Number(this.secondNumber);
+        this.topResult.innerHTML =  this.firstNumber;
+        this.secondNumber = this.defaultSecondNumber;
+        this.operation = button.dataset.text;
+
+    }
+
+    subtraction(button) {
+        this.firstNumber = Number(this.firstNumber) - Number(this.secondNumber);
+        this.topResult.innerHTML =  this.firstNumber;
+        this.secondNumber = this.defaultSecondNumber;
+        this.operation = button.dataset.text;
+    }
+
+    multiplication(button) {
+        this.firstNumber = Number(this.firstNumber) * Number(this.secondNumber);
+        this.topResult.innerHTML =  this.firstNumber;
+        this.secondNumber = this.defaultSecondNumber;
+        this.operation = button.dataset.text;
+    }
+
+    division(button) {
+        this.firstNumber = Number(this.firstNumber) / Number(this.secondNumber);
+        this.topResult.innerHTML =  this.firstNumber;
+        this.secondNumber = this.defaultSecondNumber;
+        this.operation = button.dataset.text;
     }
 
     percent() {
@@ -444,8 +512,6 @@ class CalculatorDisplay {
     }
 
     renderResults() {
-
-
         if (this.secondNumber === this.defaultSecondNumber) {
             this.topResult.innerHTML = "0";
             return;
