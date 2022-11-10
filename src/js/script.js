@@ -56,38 +56,44 @@ class CalculatorDisplay {
 
             seven: {
                 content: "7",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             eight: {
                 content: "8",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             nine: {
                 content: "9",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             multiplication: {
                 content: "\xD7",
                 buttonClass: "bottom-button-operation",
-                operationType: "basicOperation"
+                operationType: "basicOperation",
             },
 
             four: {
                 content: "4",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             five: {
                 content: "5",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             six: {
                 content: "6",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             subtraction: {
@@ -98,17 +104,20 @@ class CalculatorDisplay {
 
             one: {
                 content: "1",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             two: {
                 content: "2",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             three: {
                 content: "3",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             addition: {
@@ -125,53 +134,63 @@ class CalculatorDisplay {
 
             zero: {
                 content: "0",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             point: {
                 content: ".",
-                buttonClass: "bottom-button-number"
+                buttonClass: "bottom-button-number",
+                operationType: "number"
             },
 
             equal: {
                 content: "=",
-                buttonClass: "bottom-button-red"
+                buttonClass: "bottom-button-red",
+                operationType: "equal"
+
             }
         }
-
-        this.renderElements(calculatorHTMLClass);
         this.handleClick = this.handleClick.bind(this);
+        this.renderElements(calculatorHTMLClass);
     }
 
-    handleClick(event){
-        console.log(event.target);
-        this.setOnClickForComplexOperation(event.target);
-        this.setOnClickForBasicOperation(event.target);
+    handleClick(event) {
+        this.setOnClickForComplexOperation(event.target);//cant take operationType inside setOnClick functions
+        this.setOnClickForBasicOperation(event.target);  //need new dataset data-type for operationType
         this.setOnClickForCleanupOperation(event.target);
+        this.setOnClickForNumber(event.target);
+        this.setOnClickForEqual(event.target);
+    }
+
+    setOnClickForNumber(operation) {
+        if (operation.dataset.type !== "number") {
+            return;
+        }
     }
 
     setOnClickForComplexOperation(operation) {
-        if (operation.operationType !== "complexOperation") {
+        if (operation.dataset.type !== "complexOperation") {
             return;
         }
-
-        console.log(operation.dataset.text, operation.operationType);
     }
 
     setOnClickForBasicOperation(operation) {
-        if (operation.operationType !== "basicOperation") {
+        if (operation.dataset.type !== "basicOperation") {
             return;
         }
-
-        console.log(operation.dataset.text, operation.operationType);
     }
 
     setOnClickForCleanupOperation(operation) {
-        if (operation.operationType !== "cleanupOperation") {
+        if (operation.dataset.type !== "cleanupOperation") {
             return;
         }
+    }
 
-        console.log(operation.dataset.text, operation.operationType);
+    setOnClickForEqual(operation) {
+        if (operation.dataset.type !== "equal") {
+            return;
+        }
     }
 
     setResult() {}
@@ -191,6 +210,7 @@ class CalculatorDisplay {
             documentCollection[index] = document.createElement("button");
             documentCollection[index].textContent = this.operations[operation].content;
             documentCollection[index].dataset.text = this.operations[operation].content;
+            documentCollection[index].dataset.type = this.operations[operation].operationType;
             documentCollection[index].classList.add(this.operations[operation].buttonClass);
             appendTarget.append(documentCollection[index]);
 
