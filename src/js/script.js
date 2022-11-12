@@ -1,142 +1,190 @@
+const CONSTANTS = {
+    secondNumber: "none",
+    firstNumber: "none",
+    operation: "no operations defined",
+    defaultSecondNumber: "none",
+    defaultFirstNumber: "none",
+    defaultOperation: "no operations defined",
+    maxLineLength: 16,
+    lengthForSwitchFontSizeMedium: 10,
+
+    percent: "%",
+    clearLine: "CE",
+    clearAll: "C",
+    clearSymbol: "<",
+    reverse: "1/x",
+    square: "x²",
+    squareRoot: "\u221Ax",
+    division: "\xF7",
+    seven: "7",
+    eight: "8",
+    nine: "9",
+    multiplication: "\xD7",
+    four: "4",
+    five: "5",
+    six: "6",
+    subtraction: "-",
+    one: "1",
+    two: "2",
+    three: "3",
+    addition: "+",
+    negate: "±",
+    zero: "0",
+    point: ".",
+    equal: "=",
+}
+
+const OPERATIONS = [
+    {
+        content: CONSTANTS.percent,
+        buttonClass: "bottom-button-operation",
+        operationType: "complexOperation"
+    },
+
+    {
+        content: CONSTANTS.clearLine,
+        buttonClass: "bottom-button-operation",
+        operationType: "cleanupOperation"
+    },
+
+    {
+        content: CONSTANTS.clearAll,
+        buttonClass: "bottom-button-operation",
+        operationType: "cleanupOperation"
+    },
+
+    {
+        content: CONSTANTS.clearSymbol,
+        buttonClass: "bottom-button-operation",
+        operationType: "cleanupOperation"
+    },
+
+    {
+        content: CONSTANTS.reverse,
+        buttonClass: "bottom-button-operation",
+        operationType: "complexOperation"
+    },
+
+    {
+        content: CONSTANTS.square,
+        buttonClass: "bottom-button-operation",
+        operationType: "complexOperation"
+    },
+
+    {
+        content: CONSTANTS.squareRoot,
+        buttonClass: "bottom-button-operation",
+        operationType: "complexOperation"
+    },
+
+    {
+        content: CONSTANTS.division,
+        buttonClass: "bottom-button-operation",
+        operationType: "basicOperation"
+    },
+
+    {
+        content: CONSTANTS.seven,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.eight,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.nine,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.multiplication,
+        buttonClass: "bottom-button-operation",
+        operationType: "basicOperation",
+    },
+
+    {
+        content: CONSTANTS.four,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.five,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.six,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.subtraction,
+        buttonClass: "bottom-button-operation",
+        operationType: "basicOperation"
+    },
+
+    {
+        content: CONSTANTS.one,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.two,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.three,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.addition,
+        buttonClass: "bottom-button-operation",
+        operationType: "basicOperation"
+    },
+
+    {
+        content: CONSTANTS.negate,
+        buttonClass: "bottom-button-number",
+        operationType: "complexOperation"
+    },
+
+    {
+        content: CONSTANTS.zero,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.point,
+        buttonClass: "bottom-button-number",
+        operationType: "number"
+    },
+
+    {
+        content: CONSTANTS.equal,
+        buttonClass: "bottom-button-red",
+        operationType: "equal"
+    },
+]
+
+
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.secondNumber = "none";
-        this.firstNumber = "none";
-        this.operation = "no operations defined";
+        this.operations = {//сделать как массив обьектов, вынести вне классов
 
-        this.defaultFirstNumber = "none";
-        this.defaultSecondNumber = "none";
-        this.defaultOperation = "no operations defined";
-
-        this.maxLineLength = 16;
-        this.lengthForSwitchFontSizeMedium = 10;
-
-        this.operations = {
-            percent: {
-                content: "%",
-                buttonClass: "bottom-button-operation",
-                operationType: "complexOperation"
-            },
-
-            clearLine: {
-                content: "CE",
-                buttonClass: "bottom-button-operation",
-                operationType: "cleanupOperation"
-            },
-
-            clearAll: {
-                content: "C",
-                buttonClass: "bottom-button-operation",
-                operationType: "cleanupOperation"
-            },
-
-            clearSymbol: {
-                content: "<",
-                buttonClass: "bottom-button-operation",
-                operationType: "cleanupOperation"
-            },
-
-            reverse: {
-                content: "1/x",
-                buttonClass: "bottom-button-operation",
-                operationType: "complexOperation"
-            },
-
-            square: {
-                content: "x²",
-                buttonClass: "bottom-button-operation",
-                operationType: "complexOperation"
-            },
-
-            squareRoot: {
-                content: "\u221Ax",
-                buttonClass: "bottom-button-operation",
-                operationType: "complexOperation"
-            },
-
-            division: {
-                content: "\xF7",
-                buttonClass: "bottom-button-operation",
-                operationType: "basicOperation"
-            },
-
-            seven: {
-                content: "7",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            eight: {
-                content: "8",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            nine: {
-                content: "9",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            multiplication: {
-                content: "\xD7",
-                buttonClass: "bottom-button-operation",
-                operationType: "basicOperation",
-            },
-
-            four: {
-                content: "4",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            five: {
-                content: "5",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            six: {
-                content: "6",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            subtraction: {
-                content: "-",
-                buttonClass: "bottom-button-operation",
-                operationType: "basicOperation"
-            },
-
-            one: {
-                content: "1",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            two: {
-                content: "2",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            three: {
-                content: "3",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            addition: {
-                content: "+",
-                buttonClass: "bottom-button-operation",
-                operationType: "basicOperation"
-            },
-
-            negate: {
-                content: "±",
-                buttonClass: "bottom-button-number",
-                operationType: "complexOperation"
-            },
 
             zero: {
                 content: "0",
@@ -161,6 +209,8 @@ class CalculatorDisplay {
         this.handleClick = this.handleClick.bind(this);
         this.renderElements(calculatorHTMLClass);
     }
+
+
 
     renderElements(calculatorHTMLClass) {
         this.calculatorHTMLClass = calculatorHTMLClass;
@@ -212,7 +262,7 @@ class CalculatorDisplay {
     handleClick(event) {
         this.setNumber(event.target);
         this.setCleanupOperation(event.target);
-        this.setBasicOperation(event.target);
+        this.setBasicOperation(event.target);//вынести в один switch
         this.setComplexOperation(event.target);
         this.setEqual(event.target);
 
@@ -399,6 +449,9 @@ class CalculatorDisplay {
     }
 
     setEqual(button) {
+
+        const result = list.map(elem => {
+        })
         if (button.dataset.type !== "equal") {
             return;
         }
@@ -479,7 +532,7 @@ class CalculatorDisplay {
             this.cleanAll();
             return;
         }
-
+        //сделать через include
         if (this.operation === this.operations.multiplication.content || this.operation === this.operations.division.content) {//если был использован знак * или /
             if (this.secondNumber === this.defaultSecondNumber) {//если еще одно число не вписано
                 this.secondNumber = this.firstNumber;
