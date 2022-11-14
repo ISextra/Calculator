@@ -8,6 +8,15 @@ const CONSTANTS = {
     maxLineLength: 16,
     lengthForSwitchFontSizeMedium: 10,
 
+    buttonClassOperation: "button-operation",
+    buttonClassNumber: "button-number",
+    buttonClassEqual: "button-equal",
+    operationTypeComplexOperation: "complexOperation",
+    operationTypeCleanupOperation: "cleanupOperation",
+    operationTypeBasicOperation: "basicOperation",
+    operationTypeNumber: "number",
+    operationTypeEqual: "equal",
+
     percent: "%",
     clearLine: "CE",
     clearAll: "C",
@@ -37,202 +46,176 @@ const CONSTANTS = {
 const OPERATIONS = [
     {
         content: CONSTANTS.percent,
-        buttonClass: "bottom-button-operation",
-        operationType: "complexOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeComplexOperation
     },
 
     {
         content: CONSTANTS.clearLine,
-        buttonClass: "bottom-button-operation",
-        operationType: "cleanupOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeCleanupOperation
     },
 
     {
         content: CONSTANTS.clearAll,
-        buttonClass: "bottom-button-operation",
-        operationType: "cleanupOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeCleanupOperation
     },
 
     {
         content: CONSTANTS.clearSymbol,
-        buttonClass: "bottom-button-operation",
-        operationType: "cleanupOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeCleanupOperation
     },
 
     {
         content: CONSTANTS.reverse,
-        buttonClass: "bottom-button-operation",
-        operationType: "complexOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeComplexOperation
     },
 
     {
         content: CONSTANTS.square,
-        buttonClass: "bottom-button-operation",
-        operationType: "complexOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeComplexOperation
     },
 
     {
         content: CONSTANTS.squareRoot,
-        buttonClass: "bottom-button-operation",
-        operationType: "complexOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeComplexOperation
     },
 
     {
         content: CONSTANTS.division,
-        buttonClass: "bottom-button-operation",
-        operationType: "basicOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeBasicOperation
     },
 
     {
         content: CONSTANTS.seven,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.eight,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.nine,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.multiplication,
-        buttonClass: "bottom-button-operation",
-        operationType: "basicOperation",
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeBasicOperation
     },
 
     {
         content: CONSTANTS.four,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.five,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.six,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.subtraction,
-        buttonClass: "bottom-button-operation",
-        operationType: "basicOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeBasicOperation
     },
 
     {
         content: CONSTANTS.one,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.two,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.three,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.addition,
-        buttonClass: "bottom-button-operation",
-        operationType: "basicOperation"
+        buttonClass: CONSTANTS.buttonClassOperation,
+        operationType: CONSTANTS.operationTypeBasicOperation
     },
 
     {
         content: CONSTANTS.negate,
-        buttonClass: "bottom-button-number",
-        operationType: "complexOperation"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeComplexOperation
     },
 
     {
         content: CONSTANTS.zero,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.point,
-        buttonClass: "bottom-button-number",
-        operationType: "number"
+        buttonClass: CONSTANTS.buttonClassNumber,
+        operationType: CONSTANTS.operationTypeNumber
     },
 
     {
         content: CONSTANTS.equal,
-        buttonClass: "bottom-button-red",
-        operationType: "equal"
+        buttonClass: CONSTANTS.buttonClassEqual,
+        operationType: CONSTANTS.operationTypeEqual
     },
 ]
 
 
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.operations = {//сделать как массив обьектов, вынести вне классов
-
-
-            zero: {
-                content: "0",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            point: {
-                content: ".",
-                buttonClass: "bottom-button-number",
-                operationType: "number"
-            },
-
-            equal: {
-                content: "=",
-                buttonClass: "bottom-button-red",
-                operationType: "equal"
-
-            }
-        }
-
         this.handleClick = this.handleClick.bind(this);
         this.renderElements(calculatorHTMLClass);
     }
 
-
-
     renderElements(calculatorHTMLClass) {
-        this.calculatorHTMLClass = calculatorHTMLClass;
-        const mainElement = document.querySelector(this.calculatorHTMLClass);
+        const mainElement = document.querySelector(calculatorHTMLClass);
 
         const topHtml = document.createElement("div");
-        topHtml.classList.add("top");
+        topHtml.classList.add("display");
         mainElement.append(topHtml);
 
-        const topElement = document.querySelector('.top');
+        const topElement = document.querySelector('.display');
 
         this.bottomHtml = document.createElement("div");
-        this.bottomHtml.classList.add("bottom");
+        this.bottomHtml.classList.add("button");
         mainElement.append(this.bottomHtml);
 
         this.topHistory = document.createElement("output");
-        this.topHistory.classList.add("top-history");
+        this.topHistory.classList.add("display-history");
         this.topHistory.dataset.text = "0";
         topElement.append(this.topHistory);
 
         this.topResult = document.createElement("output");
-        this.topResult.classList.add("top-result");
+        this.topResult.classList.add("display-result");
         this.topResult.textContent = '0';
         topElement.append(this.topResult);
 
@@ -240,23 +223,19 @@ class CalculatorDisplay {
     }
 
     renderSimilarElements() {
-        const appendTarget = document.querySelector('.bottom');
-        const documentCollection = [];
-        let index = 0;
+        const appendTarget = document.querySelector('.button');
 
-        for (let operation in this.operations) {
-            documentCollection[index] = document.createElement("button");
-            documentCollection[index].textContent = this.operations[operation].content;
-            documentCollection[index].dataset.text = this.operations[operation].content;
-            documentCollection[index].dataset.type = this.operations[operation].operationType;
-            documentCollection[index].classList.add(this.operations[operation].buttonClass);
-            appendTarget.append(documentCollection[index]);
+        const documentCollection = OPERATIONS.map( (element, index) => {
+            element = document.createElement("button");
+            element.textContent = OPERATIONS[index].content;
+            element.dataset.text = OPERATIONS[index].content;
+            element.dataset.type = OPERATIONS[index].operationType;
+            element.classList.add(OPERATIONS[index].buttonClass);
 
-            documentCollection[index].onclick = this.handleClick;
+            appendTarget.append(element);
 
-            index++;
-        }
-
+            element.onclick = this.handleClick;
+        } );
     }
 
     handleClick(event) {
