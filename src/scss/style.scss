@@ -50,7 +50,7 @@ sub sup {
     background: #606060;
     width: 322px;
 
-    .top {
+    .display {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -75,39 +75,37 @@ sub sup {
       }
     }
 
-    .bottom {
+    .buttons {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
 
-      &-button {
-        &-operation {
-          width: 75px;
-          height: 50px;
-          margin: 1px;
-          font-size: 18px;
-          color: white;
-          background: $black-2;
-        }
+      &-operation {
+        width: 75px;
+        height: 50px;
+        margin: 1px;
+        font-size: 18px;
+        color: white;
+        background: $black-2;
+      }
 
-        &-number {
-          width: 75px;
-          height: 50px;
-          margin: 1px;
-          font-size: 18px;
-          color: white;
-          background: black;
-        }
+      &-number {
+        width: 75px;
+        height: 50px;
+        margin: 1px;
+        font-size: 18px;
+        color: white;
+        background: black;
+      }
 
-        &-red {
-          width: 75px;
-          height: 50px;
-          margin: 1px;
-          font-size: 18px;
-          color: white;
-          background: $orange-2;
-        }
+      &-equal {
+        width: 75px;
+        height: 50px;
+        margin: 1px;
+        font-size: 18px;
+        color: white;
+        background: $orange-2;
       }
     }
   }
