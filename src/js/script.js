@@ -44,6 +44,7 @@ const CONSTANTS = {
 }
 
 const OPERATIONS = [
+
     {
         content: CONSTANTS.percent,
         buttonClass: CONSTANTS.buttonClassOperation,
@@ -226,24 +227,106 @@ class CalculatorDisplay {
         const appendTarget = document.querySelector('.button');
 
         const documentCollection = OPERATIONS.map( (element, index) => {
-            element = document.createElement("button");
-            element.textContent = OPERATIONS[index].content;
-            element.dataset.text = OPERATIONS[index].content;
-            element.dataset.type = OPERATIONS[index].operationType;
-            element.classList.add(OPERATIONS[index].buttonClass);
+            const button = document.createElement("button");
 
-            appendTarget.append(element);
+            button.textContent = element.content;
+            button.dataset.text = element.content;
+            button.dataset.type = element.operationType;
+            button.classList.add(element.buttonClass);
 
-            element.onclick = this.handleClick;
+            appendTarget.append(button);
+
+            button.onclick = this.handleClick;
+            return button;
         } );
     }
 
     handleClick(event) {
-        this.setNumber(event.target);
-        this.setCleanupOperation(event.target);
-        this.setBasicOperation(event.target);//вынести в один switch
-        this.setComplexOperation(event.target);
-        this.setEqual(event.target);
+        const content = event.target.content
+        console.log()
+        switch (content) {
+            case CONSTANTS.multiplication:
+            case CONSTANTS.division:
+            case CONSTANTS.addition:
+            case CONSTANTS.subtraction: {
+                break;
+            }
+
+            case CONSTANTS.percent: {
+                break;
+            }
+
+            case CONSTANTS.square: {
+                break;
+            }
+
+            case CONSTANTS.squareRoot: {
+                break;
+            }
+
+            case CONSTANTS.reverse: {
+                break;
+            }
+            case CONSTANTS.negate: {
+                break;
+            }
+
+            case CONSTANTS.clearAll: {
+                break;
+            }
+
+            case CONSTANTS.clearLine: {
+                break;
+            }
+
+            case CONSTANTS.clearSymbol: {
+                break;
+            }
+
+            case CONSTANTS.point: {
+                break;
+            }
+
+            case CONSTANTS.one: {
+                break;
+            }
+
+            case CONSTANTS.two: {
+                break;
+            }
+
+            case CONSTANTS.tree: {
+                break;
+            }
+
+            case CONSTANTS.four: {
+                break;
+            }
+
+            case CONSTANTS.five: {
+                break;
+            }
+
+            case CONSTANTS.six: {
+                break;
+            }
+
+            case CONSTANTS.seven: {
+                break;
+            }
+
+            case CONSTANTS.eight: {
+                break;
+            }
+
+            case CONSTANTS.nine: {
+                break;
+            }
+
+            case CONSTANTS.equal: {
+                break;
+            }
+        }
 
         this.setResultFontSize();
         this.handleExceptions()
