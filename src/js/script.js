@@ -1,48 +1,47 @@
 const CONSTANTS = {
-    secondNumber: "none",
-    firstNumber: "none",
-    operation: "no operations defined",
-    defaultSecondNumber: "none",
-    defaultFirstNumber: "none",
-    defaultOperation: "no operations defined",
-    maxLineLength: 16,
-    lengthForSwitchFontSizeMedium: 10,
+    SECOND_NUMBER: "none",
+    FIRST_NUMBER: "none",
+    OPERATION: "no operations defined",
+    DEFAULT_SECOND_NUMBER: "none",
+    DEFAULT_FIRST_NUMBER: "none",
+    DEFAULT_OPERATION: "no operations defined",
+    MAX_LINE_LENGTH: 16,
+    LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
 
-    buttonClassOperation: "button-operation",
-    buttonClassNumber: "button-number",
-    buttonClassEqual: "button-equal",
-    operationTypeComplexOperation: "complexOperation",
-    operationTypeCleanupOperation: "cleanupOperation",
-    operationTypeBasicOperation: "basicOperation",
-    operationTypeNumber: "number",
-    operationTypeEqual: "equal",
+    BUTTON_CLASS_OPERATION: "button-operation",
+    BUTTON_CLASS_NUMBER: "button-number",
+    BUTTON_CLASS_EQUAL: "button-equal",
+    OPERATION_TYPE_COMPLEX_OPERATION: "complexOperation",
+    OPERATION_TYPE_CLEANUP_OPERATION: "cleanupOperation",
+    OPERATION_TYPE_BASIC_OPERATION: "basicOperation",
+    OPERATION_TYPE_NUMBER: "number",
+    OPERATION_TYPE_EQUAL: "equal",
 
-    percent: "%",
-    clearLine: "CE",
-    clearAll: "C",
-    clearSymbol: "<",
-    reverse: "1/x",
-    square: "x²",
-    squareRoot: "\u221Ax",
-    division: "\xF7",
-    seven: "7",
-    eight: "8",
-    nine: "9",
-    multiplication: "\xD7",
-    four: "4",
-    five: "5",
-    six: "6",
-    subtraction: "-",
-    one: "1",
-    two: "2",
-    three: "3",
-    addition: "+",
-    negate: "±",
-    zero: "0",
-    point: ".",
-    equal: "=",
+    PERCENT: "%",
+    CLEAN_LINE: "CE",
+    CLEAN_ALL: "C",
+    CLEAN_SYMBOL: "<",
+    REVERSE: "1/x",
+    SQUARE: "x²",
+    SQUARE_ROOT: "\u221Ax",
+    DIVISION: "\xF7",
+    SEVEN: "7",
+    EIGHT: "8",
+    NINE: "9",
+    MULTIPLICATION: "\xD7",
+    FOUR: "4",
+    FIVE: "5",
+    SIX: "6",
+    SUBTRACTION: "-",
+    ONE: "1",
+    TWO: "2",
+    TREE: "3",
+    ADDITION: "+",
+    NEGATE: "±",
+    ZERO: "0",
+    POINT: ".",
+    EQUAL: "=",
 }
-
 const OPERATIONS = [
 
     {
@@ -189,8 +188,6 @@ const OPERATIONS = [
         operationType: CONSTANTS.operationTypeEqual
     },
 ]
-
-
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
         this.handleClick = this.handleClick.bind(this);
@@ -243,7 +240,7 @@ class CalculatorDisplay {
 
     handleClick(event) {
         const content = event.target.content
-        console.log()
+
         switch (content) {
             case CONSTANTS.multiplication:
             case CONSTANTS.division:
@@ -699,5 +696,4 @@ class CalculatorDisplay {
     }
 
 }
-
 const interface1 = new CalculatorDisplay(".calculator");
