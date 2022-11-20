@@ -1,7 +1,10 @@
-const DEFAULT_VALUES = {
+const ACTIVE_VALUES = {
     SECOND_NUMBER: "none",
     FIRST_NUMBER: "none",
     OPERATION: "no operations defined",
+    DOCUMENT_COLLECTION: [],
+}
+const DEFAULT_VALUES = {
     DEFAULT_SECOND_NUMBER: "none",
     DEFAULT_FIRST_NUMBER: "none",
     DEFAULT_OPERATION: "no operations defined",
@@ -9,9 +12,10 @@ const DEFAULT_VALUES = {
     LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
 }
 const BUTTONS_PROPERTY = {
-    BUTTON_CLASS_OPERATION: "button-operation",
-    BUTTON_CLASS_NUMBER: "button-number",
-    BUTTON_CLASS_EQUAL: "button-equal",
+    BUTTON_CLASS_GENERAL: "button-block",
+    BUTTON_CLASS_OPERATION: "operation",
+    BUTTON_CLASS_NUMBER: "number",
+    BUTTON_CLASS_EQUAL: "equal",
     OPERATION_TYPE_COMPLEX_OPERATION: "complexOperation",
     OPERATION_TYPE_CLEANUP_OPERATION: "cleanupOperation",
     OPERATION_TYPE_BASIC_OPERATION: "basicOperation",
@@ -168,7 +172,6 @@ const OPERATIONS = [
 ]
 class CalculatorDisplay {
     constructor(calculatorHTMLClass) {
-        this.handleClick = this.handleClick.bind(this);
         this.renderElements(calculatorHTMLClass);
     }
 
@@ -201,149 +204,18 @@ class CalculatorDisplay {
     renderSimilarElements() {
         const appendTarget = document.querySelector('.button');
 
-        const documentCollection = OPERATIONS.map((element, index) => {
+        DEFAULT_VALUES.DOCUMENT_COLLECTION = OPERATIONS.map((element, index) => {
             const button = document.createElement("button");
 
             button.textContent = element.CONTENT;
             button.dataset.text = element.CONTENT;
             button.dataset.type = element.OPERATION_TYPE;
+            button.classList.add(BUTTONS_PROPERTY.BUTTON_CLASS_GENERAL);
             button.classList.add(element.BUTTON_CLASS);
-            button.onclick = this.handleClick;
 
             appendTarget.append(button);
-
             return button;
         } );
-    }
-
-    handleClick(event) {
-        const content = event.target.CONTENT;
-
-        switch (content) {
-            case BUTTONS_CONTENT.MULTIPLICATION:
-            case BUTTONS_CONTENT.DIVISION:
-            case BUTTONS_CONTENT.ADDITION:
-            case BUTTONS_CONTENT.SUBTRACTION: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.PERCENT: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.SQUARE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.SQUARE_ROOT: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.REVERSE: {
-                break;
-            }
-            case BUTTONS_CONTENT.NEGATE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.CLEAN_ALL: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.CLEAN_LINE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.CLEAN_SYMBOL: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.POINT: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.ONE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.TWO: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.TREE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.FOUR: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.FIVE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.SIX: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.SEVEN: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.EIGHT: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.NINE: {
-                break;
-            }
-
-            case BUTTONS_CONTENT.EQUAL: {
-                break;
-            }
-        }
-
-        this.setResultFontSize();
-        this.handleExceptions()
-    }
-
-    setNumber(button) {
-        if (button.dataset.type !== "number") {
-            return;
-        }
-        const textOfOperation = button.dataset.text;
-
-        switch (textOfOperation) {
-            case ".": {
-                if (this.secondNumber.includes(".")) {//если точка уже есть в числе
-                    break;
-                }
-
-                if (this.secondNumber === this.defaultSecondNumber) {
-                    this.secondNumber = "0";
-                }
-
-                this.secondNumber = `${this.secondNumber}.`;
-
-                break;
-            }
-
-            default: {
-                if (this.secondNumber.length > this.maxLineLength) {//если длинна больше допустимой
-                    break;
-                }
-
-                if ((this.secondNumber === "0") || (this.secondNumber === this.defaultSecondNumber)) {//если изначально стоит 0 или начальное значение
-                    this.secondNumber = `${textOfOperation}`;
-
-                    break;
-                }
-
-                this.secondNumber = `${this.secondNumber}${textOfOperation}`;
-            }
-        }
-
-        this.renderResults();
     }
 
     setCleanupOperation(button) {
@@ -440,7 +312,6 @@ class CalculatorDisplay {
             this.operation = button.dataset.text; // то только меняем операцию
         }
 
-        console.log(this.firstNumber, this.operation , this.secondNumber);
         //renderResult не выполняется в цонце данного блока, по этому число в поле результата
         //не изменяется сразу при нажатии на +-*/
     }
@@ -665,13 +536,75 @@ class CalculatorDisplay {
     }
 
     renderResults() {
-        if (this.secondNumber === this.defaultSecondNumber) {
-            this.topResult.innerHTML = "0";
+        if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
+
             return;
         }
 
-        this.topResult.innerHTML = this.secondNumber;
+        this.topResult.innerHTML = ACTIVE_VALUES.SECOND_NUMBER;
     }
 
 }
-const interface1 = new CalculatorDisplay(".calculator");
+class CalculatorLogicOfNumbers extends CalculatorDisplay {
+    constructor(...args) {
+        super(...args);
+        this.handleClickForNumber = this.handleClickForNumber.bind(this);
+        this.handleClickForNumber();
+    }
+
+    handleClickForNumber() {
+        DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
+            const type = element.dataset.type;
+
+            if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER)
+            {
+                return;
+            }
+
+            element.onclick = this.setNumber;
+        } );
+    }
+
+    setNumber(event) {
+        const button = event.target;
+        const type = button.dataset.type;
+
+        if (type !== BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER) {
+            return;
+        }
+
+        const content = button.dataset.text;
+
+        switch (content) {
+            case BUTTONS_CONTENT.POINT: {
+                if (ACTIVE_VALUES.SECOND_NUMBER.includes(".")) {//если точка уже есть в числе
+                    break;
+                }
+
+                if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+                    ACTIVE_VALUES.SECOND_NUMBER = BUTTONS_CONTENT.ZERO;
+                }
+
+                ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}.`;
+
+                break;
+            }
+
+            default: {
+                if (ACTIVE_VALUES.SECOND_NUMBER.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
+                    break;
+                }
+
+                if ((ACTIVE_VALUES.SECOND_NUMBER === BUTTONS_CONTENT.ZERO) || (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
+                    ACTIVE_VALUES.SECOND_NUMBER = `${content}`;
+
+                    break;
+                }
+
+                ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}${content}`;
+            }
+        }
+    }
+}
+const interface1 = new CalculatorLogicOfNumbers(".calculator");
