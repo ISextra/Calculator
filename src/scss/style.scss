@@ -29,13 +29,6 @@ body {
   font-family: "NunitoSans", "Arial", sans-serif;
   font-size: 0;
 }
-sub sup {
-  margin: 0;
-  padding: 0;
-  top:0;
-  left: 0;
-  font-size: 12px;
-}
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -57,6 +50,7 @@ sub sup {
       text-align: right;
       padding: 0 10px 0 10px;
       height: 100px;
+
       &-history {
         font-size: 14px;
         font-weight: normal;
@@ -80,33 +74,22 @@ sub sup {
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-
-      &-operation {
+      &-block {
         width: 75px;
         height: 50px;
         margin: 1px;
         font-size: 18px;
         color: white;
-        background: $black-2;
       }
-
-      &-number {
-        width: 75px;
-        height: 50px;
-        margin: 1px;
-        font-size: 18px;
-        color: white;
-        background: black;
-      }
-
-      &-equal {
-        width: 75px;
-        height: 50px;
-        margin: 1px;
-        font-size: 18px;
-        color: white;
-        background: $orange-2;
-      }
+    }
+    .operation {
+      background: $black-2;
+    }
+    .number {
+      background: black;
+    }
+    .equal {
+      background: $orange-2;
     }
   }
 }
