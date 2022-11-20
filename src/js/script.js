@@ -1,4 +1,4 @@
-const CONSTANTS = {
+const DEFAULT_VALUES = {
     SECOND_NUMBER: "none",
     FIRST_NUMBER: "none",
     OPERATION: "no operations defined",
@@ -7,7 +7,8 @@ const CONSTANTS = {
     DEFAULT_OPERATION: "no operations defined",
     MAX_LINE_LENGTH: 16,
     LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
-
+}
+const BUTTONS_PROPERTY = {
     BUTTON_CLASS_OPERATION: "button-operation",
     BUTTON_CLASS_NUMBER: "button-number",
     BUTTON_CLASS_EQUAL: "button-equal",
@@ -16,7 +17,8 @@ const CONSTANTS = {
     OPERATION_TYPE_BASIC_OPERATION: "basicOperation",
     OPERATION_TYPE_NUMBER: "number",
     OPERATION_TYPE_EQUAL: "equal",
-
+}
+const BUTTONS_CONTENT = {
     PERCENT: "%",
     CLEAN_LINE: "CE",
     CLEAN_ALL: "C",
@@ -43,149 +45,125 @@ const CONSTANTS = {
     EQUAL: "=",
 }
 const OPERATIONS = [
-
     {
-        content: CONSTANTS.percent,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeComplexOperation
+        CONTENT: BUTTONS_CONTENT.PERCENT,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION
     },
-
     {
-        content: CONSTANTS.clearLine,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeCleanupOperation
+        CONTENT: BUTTONS_CONTENT.CLEAN_LINE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION
     },
-
     {
-        content: CONSTANTS.clearAll,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeCleanupOperation
+        CONTENT: BUTTONS_CONTENT.CLEAN_ALL,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION
     },
-
     {
-        content: CONSTANTS.clearSymbol,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeCleanupOperation
+        CONTENT: BUTTONS_CONTENT.CLEAN_SYMBOL,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION
     },
-
     {
-        content: CONSTANTS.reverse,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeComplexOperation
+        CONTENT: BUTTONS_CONTENT.REVERSE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION
     },
-
     {
-        content: CONSTANTS.square,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeComplexOperation
+        CONTENT: BUTTONS_CONTENT.SQUARE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION
     },
-
     {
-        content: CONSTANTS.squareRoot,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeComplexOperation
+        CONTENT: BUTTONS_CONTENT.SQUARE_ROOT,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION
     },
-
     {
-        content: CONSTANTS.division,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeBasicOperation
+        CONTENT: BUTTONS_CONTENT.DIVISION,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION
     },
-
     {
-        content: CONSTANTS.seven,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.SEVEN,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.eight,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.EIGHT,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.nine,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.NINE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.multiplication,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeBasicOperation
+        CONTENT: BUTTONS_CONTENT.MULTIPLICATION,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION
     },
-
     {
-        content: CONSTANTS.four,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.FOUR,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.five,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.FIVE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.six,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.SIX,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.subtraction,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeBasicOperation
+        CONTENT: BUTTONS_CONTENT.SUBTRACTION,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION
     },
-
     {
-        content: CONSTANTS.one,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.ONE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.two,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.TWO,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.three,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.TREE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.addition,
-        buttonClass: CONSTANTS.buttonClassOperation,
-        operationType: CONSTANTS.operationTypeBasicOperation
+        CONTENT: BUTTONS_CONTENT.ADDITION,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_OPERATION,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION
     },
-
     {
-        content: CONSTANTS.negate,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeComplexOperation
+        CONTENT: BUTTONS_CONTENT.NEGATE,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION
     },
-
     {
-        content: CONSTANTS.zero,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.ZERO,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.point,
-        buttonClass: CONSTANTS.buttonClassNumber,
-        operationType: CONSTANTS.operationTypeNumber
+        CONTENT: BUTTONS_CONTENT.POINT,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER
     },
-
     {
-        content: CONSTANTS.equal,
-        buttonClass: CONSTANTS.buttonClassEqual,
-        operationType: CONSTANTS.operationTypeEqual
+        CONTENT: BUTTONS_CONTENT.EQUAL,
+        BUTTON_CLASS: BUTTONS_PROPERTY.BUTTON_CLASS_EQUAL,
+        OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_EQUAL
     },
 ]
 class CalculatorDisplay {
@@ -226,10 +204,10 @@ class CalculatorDisplay {
         const documentCollection = OPERATIONS.map( (element, index) => {
             const button = document.createElement("button");
 
-            button.textContent = element.content;
-            button.dataset.text = element.content;
-            button.dataset.type = element.operationType;
-            button.classList.add(element.buttonClass);
+            button.textContent = element.CONTENT;
+            button.dataset.text = element.CONTENT;
+            button.dataset.type = element.OPERATION_TYPE;
+            button.classList.add(element.BUTTON_CLASS);
 
             appendTarget.append(button);
 
@@ -239,88 +217,88 @@ class CalculatorDisplay {
     }
 
     handleClick(event) {
-        const content = event.target.content
+        const content = event.target.CONTENT;
 
         switch (content) {
-            case CONSTANTS.multiplication:
-            case CONSTANTS.division:
-            case CONSTANTS.addition:
-            case CONSTANTS.subtraction: {
+            case BUTTONS_CONTENT.MULTIPLICATION:
+            case BUTTONS_CONTENT.DIVISION:
+            case BUTTONS_CONTENT.ADDITION:
+            case BUTTONS_CONTENT.SUBTRACTION: {
                 break;
             }
 
-            case CONSTANTS.percent: {
+            case BUTTONS_CONTENT.PERCENT: {
                 break;
             }
 
-            case CONSTANTS.square: {
+            case BUTTONS_CONTENT.SQUARE: {
                 break;
             }
 
-            case CONSTANTS.squareRoot: {
+            case BUTTONS_CONTENT.SQUARE_ROOT: {
                 break;
             }
 
-            case CONSTANTS.reverse: {
+            case BUTTONS_CONTENT.REVERSE: {
                 break;
             }
-            case CONSTANTS.negate: {
-                break;
-            }
-
-            case CONSTANTS.clearAll: {
+            case BUTTONS_CONTENT.NEGATE: {
                 break;
             }
 
-            case CONSTANTS.clearLine: {
+            case BUTTONS_CONTENT.CLEAN_ALL: {
                 break;
             }
 
-            case CONSTANTS.clearSymbol: {
+            case BUTTONS_CONTENT.CLEAN_LINE: {
                 break;
             }
 
-            case CONSTANTS.point: {
+            case BUTTONS_CONTENT.CLEAN_SYMBOL: {
                 break;
             }
 
-            case CONSTANTS.one: {
+            case BUTTONS_CONTENT.POINT: {
                 break;
             }
 
-            case CONSTANTS.two: {
+            case BUTTONS_CONTENT.ONE: {
                 break;
             }
 
-            case CONSTANTS.tree: {
+            case BUTTONS_CONTENT.TWO: {
                 break;
             }
 
-            case CONSTANTS.four: {
+            case BUTTONS_CONTENT.TREE: {
                 break;
             }
 
-            case CONSTANTS.five: {
+            case BUTTONS_CONTENT.FOUR: {
                 break;
             }
 
-            case CONSTANTS.six: {
+            case BUTTONS_CONTENT.FIVE: {
                 break;
             }
 
-            case CONSTANTS.seven: {
+            case BUTTONS_CONTENT.SIX: {
                 break;
             }
 
-            case CONSTANTS.eight: {
+            case BUTTONS_CONTENT.SEVEN: {
                 break;
             }
 
-            case CONSTANTS.nine: {
+            case BUTTONS_CONTENT.EIGHT: {
                 break;
             }
 
-            case CONSTANTS.equal: {
+            case BUTTONS_CONTENT.NINE: {
+                break;
+            }
+
+            case BUTTONS_CONTENT.EQUAL: {
                 break;
             }
         }
