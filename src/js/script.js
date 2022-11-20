@@ -201,17 +201,17 @@ class CalculatorDisplay {
     renderSimilarElements() {
         const appendTarget = document.querySelector('.button');
 
-        const documentCollection = OPERATIONS.map( (element, index) => {
+        const documentCollection = OPERATIONS.map((element, index) => {
             const button = document.createElement("button");
 
             button.textContent = element.CONTENT;
             button.dataset.text = element.CONTENT;
             button.dataset.type = element.OPERATION_TYPE;
             button.classList.add(element.BUTTON_CLASS);
+            button.onclick = this.handleClick;
 
             appendTarget.append(button);
 
-            button.onclick = this.handleClick;
             return button;
         } );
     }
