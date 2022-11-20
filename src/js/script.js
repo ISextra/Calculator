@@ -503,24 +503,11 @@ class CalculatorDisplay {
         }
     }
 
-    cleanAll() {
-        this.topResult.innerHTML = "0";
-        this.topHistory.innerHTML = "";
-        this.secondNumber = this.defaultSecondNumber;
-        this.firstNumber = this.defaultFirstNumber;
-        this.operation = this.defaultOperation;
-    }
-
     cleanHistory() {
         this.topHistory.innerHTML = "";
         this.secondNumber = this.defaultSecondNumber;
         this.firstNumber = this.defaultFirstNumber;
         this.operation = this.defaultOperation;
-    }
-
-    cleanResult() {
-        this.topResult.innerHTML = "0";
-        this.secondNumber = this.defaultSecondNumber;
     }
 
     cleanLastSymbol() {
@@ -567,14 +554,7 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
     }
 
     setNumber(event) {
-        const button = event.target;
-        const type = button.dataset.type;
-
-        if (type !== BUTTONS_PROPERTY.BUTTON_CLASS_NUMBER) {
-            return;
-        }
-
-        const content = button.dataset.text;
+        const content = event.target.dataset.text;
 
         switch (content) {
             case BUTTONS_CONTENT.POINT: {
@@ -605,6 +585,82 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
                 ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}${content}`;
             }
         }
+
+        console.log("setNumber;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
     }
 }
-const interface1 = new CalculatorLogicOfNumbers(".calculator");
+class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
+    constructor(...args) {
+        super(...args);
+
+        this.cleanup = this.cleanup.bind(this);
+        this.handleClickForCleanupOperation();
+    }
+
+    handleClickForCleanupOperation() {
+        DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
+            const type = element.dataset.type;
+
+            if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION)
+            {
+                return;
+            }
+
+            element.onclick = this.cleanup;
+        } );
+    }
+
+    cleanup(event) {
+        const content = event.target.dataset.text;
+
+        switch (content) {
+            case BUTTONS_CONTENT.CLEAN_ALL: {
+                this.cleanAll();
+
+                break;
+            }
+            case  BUTTONS_CONTENT.CLEAN_LINE: {
+                this.cleanLine();
+
+                break;
+            }
+            case  BUTTONS_CONTENT.CLEAN_SYMBOL: {
+                this.cleanLastSymbol();
+
+                break;
+            }
+        }
+    }
+
+    cleanAll() {
+        this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
+        this.topHistory.innerHTML = "";
+        ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        ACTIVE_VALUES.FIRST_NUMBER = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
+        ACTIVE_VALUES.OPERATION = DEFAULT_VALUES.DEFAULT_OPERATION;
+
+        console.log("cleanAll;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+    }
+
+    cleanLine() {
+        this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
+        ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+
+        console.log("cleanLine;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+    }
+
+    cleanLastSymbol() {
+        if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            return;
+        }
+
+        ACTIVE_VALUES.SECOND_NUMBER = ACTIVE_VALUES.SECOND_NUMBER.slice(0, ACTIVE_VALUES.SECOND_NUMBER.length - 1);
+
+        if (ACTIVE_VALUES.SECOND_NUMBER === "") {
+            ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        }
+
+        console.log("cleanLastSymbol;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+    }
+}
+const interface1 = new CalculatorLogicOfCleanupOperations(".calculator");
