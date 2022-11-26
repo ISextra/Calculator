@@ -12,10 +12,10 @@ const DEFAULT_VALUES = {
     LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
 }
 const BUTTONS_PROPERTY = {
-    BUTTON_CLASS_GENERAL: "button-block",
-    BUTTON_CLASS_OPERATION: "operation",
-    BUTTON_CLASS_NUMBER: "number",
-    BUTTON_CLASS_EQUAL: "equal",
+    BUTTON_CLASS_GENERAL: "button__element",
+    BUTTON_CLASS_OPERATION:"button__element_operation",
+    BUTTON_CLASS_NUMBER: "button__element_number",
+    BUTTON_CLASS_EQUAL: "button__element_equal",
     OPERATION_TYPE_COMPLEX_OPERATION: "complexOperation",
     OPERATION_TYPE_CLEANUP_OPERATION: "cleanupOperation",
     OPERATION_TYPE_BASIC_OPERATION: "basicOperation",
