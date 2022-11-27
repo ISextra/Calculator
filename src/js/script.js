@@ -218,45 +218,6 @@ class CalculatorDisplay {
         } );
     }
 
-    setCleanupOperation(button) {
-        if (button.dataset.type !== "cleanupOperation") {
-            return;
-        }
-
-        const textOfOperation = button.dataset.text;
-
-        switch (textOfOperation) {
-            case "C": {
-                this.cleanAll();
-                break;
-            }
-
-            case "CE": {
-                if (this.operation === "=") {
-                    this.cleanAll();
-
-                    break;
-                }
-
-                this.cleanResult()
-                break;
-            }
-
-            case "<": {
-                if (this.operation === "=") {
-                    this.cleanHistory();
-
-                    break;
-                }
-
-                this.cleanLastSymbol();
-                break;
-            }
-        }
-
-        this.renderResults();
-    }
-
     setBasicOperation(button) {
         if (button.dataset.type !== "basicOperation") {
             return;
@@ -419,22 +380,6 @@ class CalculatorDisplay {
         this.operation = button.dataset.text;
     }
 
-    addition() {
-        return  Number(this.firstNumber) + Number(this.secondNumber);
-    }
-
-    subtraction() {
-        return Number(this.firstNumber) - Number(this.secondNumber);
-    }
-
-    multiplication() {
-        return Number(this.firstNumber) * Number(this.secondNumber);
-    }
-
-    division() {
-        return Number(this.firstNumber) / Number(this.secondNumber);
-    }
-
     percent() {
         if (this.operation === this.defaultOperation) {//если не было использовано знаков
             this.cleanAll();
@@ -510,18 +455,6 @@ class CalculatorDisplay {
         this.operation = this.defaultOperation;
     }
 
-    cleanLastSymbol() {
-        if (this.secondNumber === this.defaultSecondNumber) {
-            return;
-        }
-
-        this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
-
-        if (this.secondNumber === "") {
-            this.secondNumber = this.defaultSecondNumber;
-        }
-    }
-
     renderResults() {
         if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
@@ -536,64 +469,78 @@ class CalculatorDisplay {
 class CalculatorLogicOfNumbers extends CalculatorDisplay {
     constructor(...args) {
         super(...args);
+
         this.handleClickForNumber = this.handleClickForNumber.bind(this);
         this.handleClickForNumber();
+    }
+
+    consoleInfo(text) {
+        console.log(`${text}`, ' firstNumber:',ACTIVE_VALUES.FIRST_NUMBER,'; operation:',ACTIVE_VALUES.OPERATION,'; secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
     }
 
     handleClickForNumber() {
         DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
             const type = element.dataset.type;
 
-            if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER)
-            {
+            if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER) {
                 return;
             }
 
-            element.onclick = this.setNumber;
+            element.onclick = this.onclickNumber;
         } );
     }
 
-    setNumber(event) {
+    onclickNumber(event) {
         const content = event.target.dataset.text;
 
         switch (content) {
             case BUTTONS_CONTENT.POINT: {
-                if (ACTIVE_VALUES.SECOND_NUMBER.includes(".")) {//если точка уже есть в числе
-                    break;
-                }
-
-                if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-                    ACTIVE_VALUES.SECOND_NUMBER = BUTTONS_CONTENT.ZERO;
-                }
-
-                ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}.`;
+                this.setPoint();
 
                 break;
             }
 
             default: {
-                if (ACTIVE_VALUES.SECOND_NUMBER.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
-                    break;
-                }
-
-                if ((ACTIVE_VALUES.SECOND_NUMBER === BUTTONS_CONTENT.ZERO) || (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
-                    ACTIVE_VALUES.SECOND_NUMBER = `${content}`;
-
-                    break;
-                }
-
-                ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}${content}`;
+                this.setNumber(content);
             }
         }
 
-        console.log("setNumber;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+        this.consoleInfo(`setNumber`);
+    }
+
+
+    setPoint() {
+        if (ACTIVE_VALUES.SECOND_NUMBER.includes(".")) {//если точка уже есть в числе
+            return;
+        }
+
+        if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            ACTIVE_VALUES.SECOND_NUMBER = BUTTONS_CONTENT.ZERO;
+        }
+
+        ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}.`;
+    }
+
+    setNumber(content) {
+        if (ACTIVE_VALUES.SECOND_NUMBER.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
+            return;
+        }
+
+        if ((ACTIVE_VALUES.SECOND_NUMBER === BUTTONS_CONTENT.ZERO) ||
+            (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
+            ACTIVE_VALUES.SECOND_NUMBER = `${content}`;
+
+            return;
+        }
+
+        ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}${content}`;
     }
 }
 class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
     constructor(...args) {
         super(...args);
 
-        this.cleanup = this.cleanup.bind(this);
+        this.onclickCleanup = this.onclickCleanup.bind(this);
         this.handleClickForCleanupOperation();
     }
 
@@ -606,11 +553,11 @@ class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
                 return;
             }
 
-            element.onclick = this.cleanup;
+            element.onclick = this.onclickCleanup;
         } );
     }
 
-    cleanup(event) {
+    onclickCleanup(event) {
         const content = event.target.dataset.text;
 
         switch (content) {
@@ -639,18 +586,19 @@ class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
         ACTIVE_VALUES.FIRST_NUMBER = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
         ACTIVE_VALUES.OPERATION = DEFAULT_VALUES.DEFAULT_OPERATION;
 
-        console.log("cleanAll;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+        this.consoleInfo("cleanAll");
     }
 
     cleanLine() {
         this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
         ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
 
-        console.log("cleanLine;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+        this.consoleInfo("cleanLine");
     }
 
     cleanLastSymbol() {
         if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.consoleInfo("cleanLastSymbol");
             return;
         }
 
@@ -660,7 +608,109 @@ class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
             ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         }
 
-        console.log("cleanLastSymbol;", 'secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+        this.consoleInfo("cleanLastSymbol");
     }
 }
-const interface1 = new CalculatorLogicOfCleanupOperations(".calculator");
+class CalculatorLogicOfBasicOperations extends CalculatorLogicOfCleanupOperations {
+    constructor(...args) {
+        super(...args);
+
+        this.onclickBasicOperations = this.onclickBasicOperations.bind(this);
+        this.handleClickForBasicOperations();
+    }
+    handleClickForBasicOperations() {
+        DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
+            const type = element.dataset.type;
+
+            if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION)
+            {
+                return;
+            }
+
+            element.onclick = this.onclickBasicOperations;
+        } );
+    }
+
+    onclickBasicOperations(event) {
+        const content = event.target.dataset.text;
+
+        this.setOperation(content);
+
+        if (ACTIVE_VALUES.FIRST_NUMBER === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если не было значний
+
+            ACTIVE_VALUES.FIRST_NUMBER = BUTTONS_CONTENT.ZERO;
+
+            this.consoleInfo("BasicOperation");
+
+            return;
+        }
+
+        if (ACTIVE_VALUES.FIRST_NUMBER === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            ACTIVE_VALUES.SECOND_NUMBER !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только введенное значение
+
+            ACTIVE_VALUES.FIRST_NUMBER = ACTIVE_VALUES.SECOND_NUMBER;
+            ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+
+            this.consoleInfo("BasicOperation");
+
+            return;
+        }
+
+        if (ACTIVE_VALUES.FIRST_NUMBER !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только первое значение
+
+            this.consoleInfo("BasicOperation");
+
+            return;
+        }
+
+        if (ACTIVE_VALUES.FIRST_NUMBER !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            ACTIVE_VALUES.DEFAULT_SECOND_NUMBER !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) { // если введены оба значения
+
+            switch (content) {
+                case BUTTONS_CONTENT.ADDITION: {
+                    this.addition();
+
+                    break;
+                }
+                case  BUTTONS_CONTENT.SUBTRACTION: {
+                    this.subtraction();
+
+                    break;
+                }
+                case  BUTTONS_CONTENT.MULTIPLICATION: {
+                    this.multiplication();
+
+                    break;
+                }
+                case  BUTTONS_CONTENT.DIVISION: {
+                    this.division();
+
+                    break;
+                }
+            }
+        }
+    }
+
+    setOperation(content) {
+        ACTIVE_VALUES.OPERATION = content;
+    }
+
+    addition() {
+        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) + Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+    }
+
+    subtraction() {
+        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) - Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+    }
+
+    multiplication() {
+        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) * Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+    }
+
+    division() {
+        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) / Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+    }
+}
+const interface1 = new CalculatorLogicOfBasicOperations(".calculator");
