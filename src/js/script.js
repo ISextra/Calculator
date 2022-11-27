@@ -470,7 +470,7 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
     constructor(...args) {
         super(...args);
 
-        this.handleClickForNumber = this.handleClickForNumber.bind(this);
+        this.onclickNumber = this.onclickNumber.bind(this);
         this.handleClickForNumber();
     }
 

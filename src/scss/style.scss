@@ -13,18 +13,6 @@
 @import "colors.scss";
 @import "nullstyle.scss";
 
-._ibj {
-  position: relative;
-}
-._ibj img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top:0;
-  left: 0;
-  object-fit: cover;
-}
-
 body {
   font-family: "NunitoSans", "Arial", sans-serif;
   font-size: 0;
