@@ -1,8 +1,3 @@
-const ACTIVE_VALUES = {
-    SECOND_NUMBER: "none",
-    FIRST_NUMBER: "none",
-    OPERATION: "no operations defined",
-}
 const DEFAULT_VALUES = {
     DEFAULT_SECOND_NUMBER: "none",
     DEFAULT_FIRST_NUMBER: "none",
@@ -172,6 +167,10 @@ const OPERATIONS = [
 ]
 class Calculator {
     constructor(calculatorHTMLClass) {
+        this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.firstNumber = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
+        this.operation = DEFAULT_VALUES.DEFAULT_OPERATION;
+
         this.renderElements(calculatorHTMLClass);
     }
 
@@ -214,6 +213,7 @@ class Calculator {
             button.classList.add(element.BUTTON_CLASS);
 
             appendTarget.append(button);
+
             return button;
         } );
     }
@@ -262,30 +262,30 @@ class CalculatorNumbers extends Calculator {
 
 
     setPoint() {
-        if (ACTIVE_VALUES.SECOND_NUMBER.includes(".")) {//если точка уже есть в числе
+        if (this.secondNumber.includes(".")) {//если точка уже есть в числе
             return;
         }
 
-        if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-            ACTIVE_VALUES.SECOND_NUMBER = BUTTONS_CONTENT.ZERO;
+        if (this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondNumber = BUTTONS_CONTENT.ZERO;
         }
 
-        ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}.`;
+        this.secondNumber = `${this.secondNumber}.`;
     }
 
     setNumber(content) {
-        if (ACTIVE_VALUES.SECOND_NUMBER.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
+        if (this.secondNumber.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
             return;
         }
 
-        if ((ACTIVE_VALUES.SECOND_NUMBER === BUTTONS_CONTENT.ZERO) ||
-            (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
-            ACTIVE_VALUES.SECOND_NUMBER = `${content}`;
+        if ((this.secondNumber === BUTTONS_CONTENT.ZERO) ||
+            (this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
+            this.secondNumber = `${content}`;
 
             return;
         }
 
-        ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}${content}`;
+        this.secondNumber = `${this.secondNumber}${content}`;
     }
 }
 class CalculatorCleanupOperations extends CalculatorNumbers {
@@ -334,30 +334,30 @@ class CalculatorCleanupOperations extends CalculatorNumbers {
     cleanAll() {
         this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
         this.topHistory.innerHTML = "";
-        ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-        ACTIVE_VALUES.FIRST_NUMBER = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
-        ACTIVE_VALUES.OPERATION = DEFAULT_VALUES.DEFAULT_OPERATION;
+        this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.firstNumber = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
+        this.operation = DEFAULT_VALUES.DEFAULT_OPERATION;
 
         this.consoleInfo("cleanAll");
     }
 
     cleanLine() {
         this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
-        ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
 
         this.consoleInfo("cleanLine");
     }
 
     cleanLastSymbol() {
-        if (ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+        if (this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.consoleInfo("cleanLastSymbol");
             return;
         }
 
-        ACTIVE_VALUES.SECOND_NUMBER = ACTIVE_VALUES.SECOND_NUMBER.slice(0, ACTIVE_VALUES.SECOND_NUMBER.length - 1);
+        this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
 
-        if (ACTIVE_VALUES.SECOND_NUMBER === "") {
-            ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        if (this.secondNumber === "") {
+            this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         }
 
         this.consoleInfo("cleanLastSymbol");
@@ -388,37 +388,37 @@ class CalculatorBasicOperations extends CalculatorCleanupOperations {
 
         this.setOperation(content);
 
-        if (ACTIVE_VALUES.FIRST_NUMBER === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-            ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если не было значний
+        if (this.firstNumber === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если не было значний
 
-            ACTIVE_VALUES.FIRST_NUMBER = BUTTONS_CONTENT.ZERO;
-
-            this.consoleInfo("BasicOperation");
-
-            return;
-        }
-
-        if (ACTIVE_VALUES.FIRST_NUMBER === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-            ACTIVE_VALUES.SECOND_NUMBER !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только введенное значение
-
-            ACTIVE_VALUES.FIRST_NUMBER = ACTIVE_VALUES.SECOND_NUMBER;
-            ACTIVE_VALUES.SECOND_NUMBER = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+            this.firstNumber = BUTTONS_CONTENT.ZERO;
 
             this.consoleInfo("BasicOperation");
 
             return;
         }
 
-        if (ACTIVE_VALUES.FIRST_NUMBER !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-            ACTIVE_VALUES.SECOND_NUMBER === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только первое значение
+        if (this.firstNumber === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            this.secondNumber !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только введенное значение
+
+            this.firstNumber = this.secondNumber;
+            this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
 
             this.consoleInfo("BasicOperation");
 
             return;
         }
 
-        if (ACTIVE_VALUES.FIRST_NUMBER !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-            ACTIVE_VALUES.DEFAULT_SECOND_NUMBER !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) { // если введены оба значения
+        if (this.firstNumber !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только первое значение
+
+            this.consoleInfo("BasicOperation");
+
+            return;
+        }
+
+        if (this.firstNumber !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
+            this.secondNumber !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) { // если введены оба значения
 
             switch (content) {
                 case BUTTONS_CONTENT.ADDITION: {
@@ -446,23 +446,23 @@ class CalculatorBasicOperations extends CalculatorCleanupOperations {
     }
 
     setOperation(content) {
-        ACTIVE_VALUES.OPERATION = content;
+        this.operation = content;
     }
 
     addition() {
-        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) + Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+        this.firstNumber = `${Number(this.firstNumber) + Number(this.secondNumber)}`;
     }
 
     subtraction() {
-        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) - Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+        this.firstNumber = `${Number(this.firstNumber) - Number(this.secondNumber)}`;
     }
 
     multiplication() {
-        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) * Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+        this.firstNumber = `${Number(this.firstNumber) * Number(this.secondNumber)}`;
     }
 
     division() {
-        ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) / Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
+        this.firstNumber = `${Number(this.firstNumber) / Number(this.secondNumber)}`;
     }
 }
 const interface1 = new CalculatorBasicOperations(".calculator");
