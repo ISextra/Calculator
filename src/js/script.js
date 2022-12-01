@@ -218,7 +218,7 @@ class CalculatorDisplay {
         } );
     }
 }
-class CalculatorLogicOfNumbers extends CalculatorDisplay {
+class CalculatorNumbers extends CalculatorDisplay {
     constructor(...args) {
         super(...args);
 
@@ -227,7 +227,7 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
     }
 
     consoleInfo(text) {
-        console.log(`${text}`, ' firstNumber:',ACTIVE_VALUES.FIRST_NUMBER,'; operation:',ACTIVE_VALUES.OPERATION,'; secondNumber:',ACTIVE_VALUES.SECOND_NUMBER);
+        console.log(`${text}`, ' firstNumber:',this.firstNumber,'; operation:',this.operation,'; secondNumber:',this.secondNumber);
     }
 
     handleClickForNumber() {
@@ -288,7 +288,7 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
         ACTIVE_VALUES.SECOND_NUMBER = `${ACTIVE_VALUES.SECOND_NUMBER}${content}`;
     }
 }
-class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
+class CalculatorCleanupOperations extends CalculatorNumbers {
     constructor(...args) {
         super(...args);
 
@@ -363,7 +363,7 @@ class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
         this.consoleInfo("cleanLastSymbol");
     }
 }
-class CalculatorLogicOfBasicOperations extends CalculatorLogicOfCleanupOperations {
+class CalculatorBasicOperations extends CalculatorCleanupOperations {
     constructor(...args) {
         super(...args);
 
@@ -465,4 +465,4 @@ class CalculatorLogicOfBasicOperations extends CalculatorLogicOfCleanupOperation
         ACTIVE_VALUES.FIRST_NUMBER = `${Number(ACTIVE_VALUES.FIRST_NUMBER) / Number(ACTIVE_VALUES.SECOND_NUMBER)}`;
     }
 }
-const interface1 = new CalculatorLogicOfBasicOperations(".calculator");
+const interface1 = new CalculatorBasicOperations(".calculator");
