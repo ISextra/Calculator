@@ -2,12 +2,12 @@ const ACTIVE_VALUES = {
     SECOND_NUMBER: "none",
     FIRST_NUMBER: "none",
     OPERATION: "no operations defined",
-    DOCUMENT_COLLECTION: [],
 }
 const DEFAULT_VALUES = {
     DEFAULT_SECOND_NUMBER: "none",
     DEFAULT_FIRST_NUMBER: "none",
     DEFAULT_OPERATION: "no operations defined",
+    DOCUMENT_COLLECTION: [],
     MAX_LINE_LENGTH: 16,
     LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
 }
@@ -470,7 +470,7 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
     constructor(...args) {
         super(...args);
 
-        this.onclickNumber = this.onclickNumber.bind(this);
+        this.onClickNumber = this.onClickNumber.bind(this);
         this.handleClickForNumber();
     }
 
@@ -486,11 +486,11 @@ class CalculatorLogicOfNumbers extends CalculatorDisplay {
                 return;
             }
 
-            element.onclick = this.onclickNumber;
+            element.onclick = this.onClickNumber;
         } );
     }
 
-    onclickNumber(event) {
+    onClickNumber(event) {
         const content = event.target.dataset.text;
 
         switch (content) {
@@ -540,7 +540,7 @@ class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
     constructor(...args) {
         super(...args);
 
-        this.onclickCleanup = this.onclickCleanup.bind(this);
+        this.onClickCleanup = this.onClickCleanup.bind(this);
         this.handleClickForCleanupOperation();
     }
 
@@ -553,11 +553,11 @@ class CalculatorLogicOfCleanupOperations extends CalculatorLogicOfNumbers {
                 return;
             }
 
-            element.onclick = this.onclickCleanup;
+            element.onclick = this.onClickCleanup;
         } );
     }
 
-    onclickCleanup(event) {
+    onClickCleanup(event) {
         const content = event.target.dataset.text;
 
         switch (content) {
@@ -615,7 +615,7 @@ class CalculatorLogicOfBasicOperations extends CalculatorLogicOfCleanupOperation
     constructor(...args) {
         super(...args);
 
-        this.onclickBasicOperations = this.onclickBasicOperations.bind(this);
+        this.onClickBasicOperations = this.onClickBasicOperations.bind(this);
         this.handleClickForBasicOperations();
     }
     handleClickForBasicOperations() {
@@ -627,11 +627,11 @@ class CalculatorLogicOfBasicOperations extends CalculatorLogicOfCleanupOperation
                 return;
             }
 
-            element.onclick = this.onclickBasicOperations;
+            element.onclick = this.onClickBasicOperations;
         } );
     }
 
-    onclickBasicOperations(event) {
+    onClickBasicOperations(event) {
         const content = event.target.dataset.text;
 
         this.setOperation(content);
