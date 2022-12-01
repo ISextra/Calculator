@@ -217,6 +217,10 @@ class Calculator {
             return button;
         } );
     }
+
+    setOperation(content) {
+        this.operation = content;
+    }
 }
 class CalculatorNumbers extends Calculator {
     constructor(...args) {
@@ -443,10 +447,6 @@ class CalculatorBasicOperations extends CalculatorCleanupOperations {
                 }
             }
         }
-    }
-
-    setOperation(content) {
-        this.operation = content;
     }
 
     addition() {
