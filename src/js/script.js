@@ -170,7 +170,7 @@ const OPERATIONS = [
         OPERATION_TYPE: BUTTONS_PROPERTY.OPERATION_TYPE_EQUAL
     },
 ]
-class CalculatorDisplay {
+class Calculator {
     constructor(calculatorHTMLClass) {
         this.renderElements(calculatorHTMLClass);
     }
@@ -218,7 +218,7 @@ class CalculatorDisplay {
         } );
     }
 }
-class CalculatorNumbers extends CalculatorDisplay {
+class CalculatorNumbers extends Calculator {
     constructor(...args) {
         super(...args);
 
