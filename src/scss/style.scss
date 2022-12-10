@@ -10,36 +10,19 @@
 }
 
 @import "fonts.scss";
+@import "colors.scss";
 @import "nullstyle.scss";
-
-._ibj {
-  position: relative;
-}
-._ibj img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top:0;
-  left: 0;
-  object-fit: cover;
-}
 
 body {
   font-family: "NunitoSans", "Arial", sans-serif;
   font-size: 0;
-}
-sub sup {
-  margin: 0;
-  padding: 0;
-  top:0;
-  left: 0;
-  font-size: 12px;
 }
 .wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   .calculator {
     display: flex;
     flex-direction: column;
@@ -47,45 +30,53 @@ sub sup {
     padding: 5px;
     background: #606060;
     width: 322px;
-    .top {
+
+    .display {
       display: flex;
       flex-direction: column;
       justify-content: center;
       text-align: right;
       padding: 0 10px 0 10px;
       height: 100px;
-      &-history {
-        font-size: 20px;
-        font-weight: bold;
+
+      &__history {
+        font-size: 14px;
+        font-weight: normal;
         color: #B8BBD2;
         height: 17px;
         text-align: right;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
-      &-result {
+      &__result {
         font-size: 42px;
         font-weight: bold;
         color: white;
         text-align: right;
       }
     }
-    .bottom {
+
+    .button {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      &-button {
+      &__element {
         width: 75px;
         height: 50px;
         margin: 1px;
         font-size: 18px;
         color: white;
-        background: #2C2C2C;
-      }
-      .number-button {
-        background: black;
-      }
-      .red-button {
-        background: #EB801D;
+        &_operation {
+          background: $black-2;
+        }
+        &_number {
+          background: black;
+        }
+        &_equal {
+          background: $orange-2;
+        }
       }
     }
   }
