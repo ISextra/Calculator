@@ -181,11 +181,11 @@ class Calculator {
         topHtml.classList.add("display");
         mainElement.append(topHtml);
 
-        const topElement = document.querySelector('.display');
-
         this.bottomHtml = document.createElement("div");
         this.bottomHtml.classList.add("button");
         mainElement.append(this.bottomHtml);
+
+        const topElement = document.querySelector('.display');
 
         this.topHistory = document.createElement("output");
         this.topHistory.classList.add("display-history");
@@ -465,4 +465,67 @@ class CalculatorBasicOperations extends CalculatorCleanupOperations {
         this.firstNumber = `${Number(this.firstNumber) / Number(this.secondNumber)}`;
     }
 }
-const interface1 = new CalculatorBasicOperations(".calculator");
+//const interface1 = new CalculatorBasicOperations(".calculator");
+
+//ButtonNumber -> Button -> DomRendererElement
+//ButttonOperation -> Button -> DomRendererElement
+
+//Display -> DomRenderElement
+//renderToDsiplay
+
+//Number / Clenup / ComplexOpration / BasicOperation
+//ButtonNumber / ButtonClenup / ButtonComplexOperation /  ButtonBasicOperation
+
+class DomRendererElement {
+    constructor(calculatorHTMLClass) {
+        this.mainElement = document.querySelector(calculatorHTMLClass);
+        this.topElement = document.querySelector('.display');
+    }
+
+    renderElement(params) {
+        const {
+            tagName,
+            className,
+            rootElement,
+            textContent,
+            datasetText,
+            datasetType,
+        } = params;
+
+        const element = document.createElement(tagName);
+        element.classList.add(className);
+
+        if (textContent) {
+            element.textContent = textContent;
+        }
+
+        if (datasetText) {
+            element.dataset.text = datasetText;
+        }
+
+        if (datasetType) {
+            element.dataset.type = datasetType;
+        }
+
+        rootElement.append(element);
+    }
+}
+
+const ab = new domRendererElement(".calculator");
+ab.renderElement({
+    addedElement: "topHTML",
+    tagName: "div",
+    className: "display",
+    rootElement: document.querySelector(".calculator"),
+})
+ab.renderElement({
+    addedElement: "bottomHTML",
+    tagName: "div",
+    className: "button",
+    rootElement: document.querySelector(".calculator"),
+})
+//             button.textContent = element.CONTENT;
+//             button.dataset.text = element.CONTENT;
+//             button.dataset.type = element.OPERATION_TYPE;
+//             button.classList.add(BUTTONS_PROPERTY.BUTTON_CLASS_GENERAL);
+//             button.classList.add(element.BUTTON_CLASS);
