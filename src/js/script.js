@@ -9,7 +9,7 @@ const DEFAULT_VALUES = {
 const ELEMENTS_PROPERTY = {
     TAG_NAME_FOR_BUTTONS: "button",
     TAG_NAME_FOR_DISPLAY: "div",
-    ROOT_FOR_BUTTONS: ".bottom",
+    ROOT_FOR_BUTTONS: ".button",
     ROOT_FOR_MAIN: ".calculator",
     ROOT_FOR_DISPlAY: ".display",
     DISPLAY_CLASS: "display",
@@ -552,24 +552,19 @@ class DomRendererElement {
             datasetText,
             datasetType,
         } = params;
-
         const rootElement = document.querySelector(rootClass);
         const element = document.createElement(tagName);
-
         element.classList.add(className);
-
         if (textContent) {
             element.textContent = textContent;
         }
-
         if (datasetText) {
             element.dataset.text = datasetText;
         }
-
         if (datasetType) {
             element.dataset.type = datasetType;
         }
-
+        console.log('--------------');
         rootElement.append(element);
 
         return element;
@@ -596,8 +591,6 @@ class Display extends DomRendererElement {
                 rootClass: item.ROOT_ELEMENT,
             })
         });
-
-        console.log(this.renderedDisplayList)
     }
 }
 
@@ -611,7 +604,9 @@ class Buttons extends DomRendererElement {
     }
 
     renderAllButtonsFromList(list) {
-        return list.map(item => {
+        let list1 = [];
+
+        list1 = list.map(item => {
             return this.renderElement({
                 tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
                 className: item.BUTTON_CLASS,
@@ -620,7 +615,10 @@ class Buttons extends DomRendererElement {
                 datasetText: item.CONTENT,
                 datasetType: item.OPERATION_TYPE,
             })
-        });
+       });
+
+        console.log(list1);
+        return list1;
     }
 }
 
@@ -636,9 +634,8 @@ class ButtonNumber extends Buttons{
 
     renderTheList() {
         this.numberList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER);
-        console.log(this.numberList, 123);
+        console.log(this.numberList);
         this.renderedNumberList = this.renderAllButtonsFromList(this.numberList);
-
     }
 }
 
@@ -702,13 +699,14 @@ class Operations {
     }
 }
 
-const af = new Operations([new ButtonNumber(new Display()),
-    new ButtonCleanup(new Display()),
-    new ButtonComplexOperation(new Display()),
-    new ButtonBasicOperation(new Display())
-]);
+const af = new Operations([new ButtonNumber(new Display())]);
 
 
 //const ab = new ButtonNumber();
 
 //, new ButtonCleanup(), new ButtonComplexOperation(), new ButtonBasicOperation()
+
+//,
+//     new ButtonCleanup(new Display()),
+//     new ButtonComplexOperation(new Display()),
+//     new ButtonBasicOperation(new Display()
