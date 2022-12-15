@@ -554,7 +554,11 @@ class DomRendererElement {
         } = params;
         const rootElement = document.querySelector(rootClass);
         const element = document.createElement(tagName);
-        element.classList.add(className);
+
+        className.forEach(item => {
+            element.classList.add(`${item}`);
+        });
+
         if (textContent) {
             element.textContent = textContent;
         }
@@ -564,6 +568,7 @@ class DomRendererElement {
         if (datasetType) {
             element.dataset.type = datasetType;
         }
+
         console.log('--------------');
         rootElement.append(element);
 
@@ -587,7 +592,7 @@ class Display extends DomRendererElement {
         this.renderedDisplayList = this.displayList.map(item => {
             return this.renderElement({
                 tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
-                className: item.BUTTON_CLASS,
+                className: [item.BUTTON_CLASS],
                 rootClass: item.ROOT_ELEMENT,
             })
         });
@@ -609,7 +614,7 @@ class Buttons extends DomRendererElement {
         list1 = list.map(item => {
             return this.renderElement({
                 tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
-                className: item.BUTTON_CLASS,
+                className: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.BUTTON_CLASS_GENERAL],
                 rootClass: item.ROOT_ELEMENT,
                 textContent: item.CONTENT,
                 datasetText: item.CONTENT,
