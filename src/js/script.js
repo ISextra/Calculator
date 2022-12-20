@@ -543,7 +543,7 @@ class DomRendererElement {
         }
     }
 
-    renderElement(params) {
+    setPropertiesForElement(params) {
         const {
             tagName,
             className,
@@ -569,10 +569,11 @@ class DomRendererElement {
             element.dataset.type = datasetType;
         }
 
-        console.log('--------------');
-        rootElement.append(element);
-
         return element;
+    }
+
+    renderElement(element, rootElement) {
+        rootElement.append(element);
     }
 }
 
@@ -590,7 +591,7 @@ class Display extends DomRendererElement {
         this.displayList = ELEMENTS.filter(item => item.OPERATION_TYPE === ELEMENTS_PROPERTY.DISPLAY_TYPE);
 
         this.renderedDisplayList = this.displayList.map(item => {
-            return this.renderElement({
+            return this.setPropertiesForElement({
                 tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
                 className: [item.BUTTON_CLASS],
                 rootClass: item.ROOT_ELEMENT,
@@ -608,11 +609,11 @@ class Buttons extends DomRendererElement {
         return ELEMENTS.filter(item => item.OPERATION_TYPE === type);
     }
 
-    renderAllButtonsFromList(list) {
+    setPropertiesForElementsInList(list) {
         let list1 = [];
 
         list1 = list.map(item => {
-            return this.renderElement({
+            return this.setPropertiesForElement({
                 tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
                 className: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.BUTTON_CLASS_GENERAL],
                 rootClass: item.ROOT_ELEMENT,
@@ -625,70 +626,99 @@ class Buttons extends DomRendererElement {
         console.log(list1);
         return list1;
     }
+
+
 }
 
 class ButtonNumber extends Buttons{
-    constructor(display, calculatorHTMLClass) {
+    constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
-
-        this.display = display;
         this.numberList = [];
+        this.renderedNumberList = [];
 
         this.renderTheList();
     }
 
     renderTheList() {
         this.numberList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER);
-        console.log(this.numberList);
-        this.renderedNumberList = this.renderAllButtonsFromList(this.numberList);
+
+        this.renderedNumberList = this.setPropertiesForElementsInList(this.numberList);
+        console.log(this.renderedNumberList);
     }
 }
 
 class ButtonCleanup extends Buttons{
-    constructor(display, calculatorHTMLClass) {
+    constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
 
         this.cleanupList = [];
+        this.renderedCleanupList = [];
 
         this.renderTheList();
+
     }
 
     renderTheList() {
         this.cleanupList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION);
+        this.renderedCleanupList = this.setPropertiesForElementsInList(this.cleanupList);
+        console.log(this.renderedCleanupList)
     }
 }
 
-class ButtonComplexOperation  extends Buttons{
-    constructor(display, calculatorHTMLClass) {
+class ButtonComplexOperation extends Buttons{
+    constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
 
         this.complexOperationList = [];
-
+        this.renderedComplexOperationList = [];
         this.renderTheList();
     }
 
     renderTheList() {
         this.complexOperationList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION);
+        this.renderedComplexOperationList = this.setPropertiesForElementsInList(this.complexOperationList);
+        console.log(this.renderedComplexOperationList)
     }
 
 }
 
-class ButtonBasicOperation  extends Buttons{
-    constructor(display, calculatorHTMLClass) {
+class ButtonBasicOperation extends Buttons{
+    constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
 
         this.baiscOperationList = [];
+        this.renderedBaiscOperationList = [];
 
         this.renderTheList();
     }
 
     renderTheList() {
         this.baiscOperationList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION);
+        this.renderedBaiscOperationList = this.setPropertiesForElementsInList(this.baiscOperationList);
+        console.log(this.renderedBaiscOperationList)
+    }
+}
+
+class ButtonEqual extends Buttons{
+    constructor(calculatorHTMLClass) {
+        super(calculatorHTMLClass);
+
+        this.equalList = [];
+        this.renderedEqualList = [];
+
+        this.renderTheList();
+    }
+
+    renderTheList() {
+        this.equalList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL);
+        this.renderedEqualList = this.setPropertiesForElementsInList(this.equalList);
+        console.log(this.renderedEqualList)
     }
 }
 
 class Operations {
-    constructor([root]) {
+    constructor(display, [root]) {
+        this.display = display;
         this.root = root;
         this.firstArg = null;
         this.seconArg = null;
@@ -704,7 +734,7 @@ class Operations {
     }
 }
 
-const af = new Operations([new ButtonNumber(new Display())]);
+const af = new Operations(new Display, [new ButtonNumber(), new ButtonCleanup(), new ButtonComplexOperation(), new ButtonBasicOperation(), new ButtonEqual()]);
 
 
 //const ab = new ButtonNumber();
