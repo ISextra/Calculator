@@ -12,10 +12,6 @@ const ELEMENTS_PROPERTY = {
     ROOT_FOR_BUTTONS: ".button",
     ROOT_FOR_MAIN: ".calculator",
     ROOT_FOR_DISPlAY: ".display",
-    DISPLAY_CLASS: "display",
-    DISPLAY_CLASS1: "button",
-    DISPLAY_CLASS2: "display-history",
-    DISPLAY_CLASS3: "display-result",
     DISPLAY_TYPE: "displayElement",
     BUTTON_CLASS_GENERAL: "button__element",
     BUTTON_CLASS_OPERATION:"button__element_operation",
@@ -46,175 +42,229 @@ const BUTTONS_CONTENT = {
     SUBTRACTION: "-",
     ONE: "1",
     TWO: "2",
-    TREE: "3",
+    THREE: "3",
     ADDITION: "+",
     NEGATE: "±",
     ZERO: "0",
     POINT: ".",
     EQUAL: "=",
 }
+const MAIN_ELEMENTS_CLASSES = {
+    CLASS_DISPlAY: "display",
+    CLASS_BUTTON: "button",
+    CLASS_HISTORY: "display-history",
+    CLASS_RESULT: "display-result",
+    CLASS_PERCENT: "button-percent",
+    CLASS_CLEAN_ALL: "button-cleanAll",
+    CLASS_CLEAN_LINE: "button-cleanLine",
+    CLASS_CLEAN_SYMBOL: "button-cleanSymbol",
+    CLASS_REVERSE: "button-reverse",
+    CLASS_SQUARE: "button-square",
+    CLASS_SQUARE_ROOT: "button-squareRoot",
+    CLASS_DIVISION: "button-division",
+    CLASS_SEVEN: "button-seven",
+    CLASS_EIGHT: "button-eight",
+    CLASS_NINE: "button-nine",
+    CLASS_MULTIPLICATION: "button-multiplication",
+    CLASS_FOUR: "button-four",
+    CLASS_FIVE: "button-five",
+    CLASS_SIX: "button-six",
+    CLASS_SUBTRACTION: "button-subtraction",
+    CLASS_ONE: "button-one",
+    CLASS_TWO: "button-two",
+    CLASS_THREE: "button-three",
+    CLASS_ADDITION: "button-addition",
+    CLASS_NEGATE: "button-negate",
+    CLASS_ZERO: "button-zero",
+    CLASS_POINT: "button-point",
+    CLASS_EQUAL: "button-equal",
+}
 const ELEMENTS = [
     {
-        BUTTON_CLASS: ELEMENTS_PROPERTY.DISPLAY_CLASS,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_DISPlAY,
         OPERATION_TYPE: ELEMENTS_PROPERTY.DISPLAY_TYPE,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_MAIN
     },
     {
-        BUTTON_CLASS: ELEMENTS_PROPERTY.DISPLAY_CLASS1,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_BUTTON,
         OPERATION_TYPE: ELEMENTS_PROPERTY.DISPLAY_TYPE,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_MAIN
     },
     {
-        BUTTON_CLASS: ELEMENTS_PROPERTY.DISPLAY_CLASS2,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_HISTORY,
         OPERATION_TYPE: ELEMENTS_PROPERTY.DISPLAY_TYPE,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_DISPlAY
     },
     {
-        BUTTON_CLASS: ELEMENTS_PROPERTY.DISPLAY_CLASS3,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_RESULT,
         OPERATION_TYPE: ELEMENTS_PROPERTY.DISPLAY_TYPE,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_DISPlAY
     },
     {
         CONTENT: BUTTONS_CONTENT.PERCENT,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_PERCENT,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: ELEMENTS_PROPERTY.CLEAN_LINE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_CLEAN_LINE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.CLEAN_ALL,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_CLEAN_ALL,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.CLEAN_SYMBOL,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_CLEAN_SYMBOL,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.REVERSE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_REVERSE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.SQUARE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_SQUARE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.SQUARE_ROOT,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_SQUARE_ROOT,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.DIVISION,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_DIVISION,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.SEVEN,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_SEVEN,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.EIGHT,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_EIGHT,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.NINE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_NINE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.MULTIPLICATION,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_MULTIPLICATION,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.FOUR,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_FOUR,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.FIVE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_FIVE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.SIX,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_SIX,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.SUBTRACTION,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_SUBTRACTION,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.ONE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_ONE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.TWO,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_TWO,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
-        CONTENT: BUTTONS_CONTENT.TREE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        CONTENT: BUTTONS_CONTENT.THREE,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_THREE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.ADDITION,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_ADDITION,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_OPERATION,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.NEGATE,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_NEGATE,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.ZERO,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_ZERO,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.POINT,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_POINT,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
     {
         CONTENT: BUTTONS_CONTENT.EQUAL,
-        BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_EQUAL,
+        BUTTON_CLASS: MAIN_ELEMENTS_CLASSES.CLASS_EQUAL,
+        BUTTON_TYPE_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_EQUAL,
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL,
         ROOT_ELEMENT: ELEMENTS_PROPERTY.ROOT_FOR_BUTTONS
     },
@@ -569,11 +619,17 @@ class DomRendererElement {
             element.dataset.type = datasetType;
         }
 
+        rootElement.append(element);
+
         return element;
     }
 
     renderElement(element, rootElement) {
         rootElement.append(element);
+    }
+
+    renderAllElementsFromList(list) {
+
     }
 }
 
@@ -603,6 +659,8 @@ class Display extends DomRendererElement {
 class Buttons extends DomRendererElement {
     constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
+
+        this.generalList = [];
     }
 
     createButtonList(type) {
@@ -615,7 +673,7 @@ class Buttons extends DomRendererElement {
         list1 = list.map(item => {
             return this.setPropertiesForElement({
                 tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
-                className: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.BUTTON_CLASS_GENERAL],
+                className: [item.BUTTON_CLASS, item.BUTTON_TYPE_CLASS, ELEMENTS_PROPERTY.BUTTON_CLASS_GENERAL],
                 rootClass: item.ROOT_ELEMENT,
                 textContent: item.CONTENT,
                 datasetText: item.CONTENT,
@@ -623,27 +681,26 @@ class Buttons extends DomRendererElement {
             })
        });
 
-        console.log(list1);
         return list1;
     }
-
-
 }
 
 class ButtonNumber extends Buttons{
     constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
+
         this.numberList = [];
-        this.renderedNumberList = [];
+        this.renderedList = [];
 
         this.renderTheList();
     }
 
     renderTheList() {
         this.numberList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER);
+        this.renderedList = this.setPropertiesForElementsInList(this.numberList);
 
-        this.renderedNumberList = this.setPropertiesForElementsInList(this.numberList);
-        console.log(this.renderedNumberList);
+        console.log(this.renderedList)
+        console.log(this.renderedList)
     }
 }
 
@@ -652,7 +709,7 @@ class ButtonCleanup extends Buttons{
         super(calculatorHTMLClass);
 
         this.cleanupList = [];
-        this.renderedCleanupList = [];
+        this.renderedList = [];
 
         this.renderTheList();
 
@@ -660,8 +717,9 @@ class ButtonCleanup extends Buttons{
 
     renderTheList() {
         this.cleanupList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION);
-        this.renderedCleanupList = this.setPropertiesForElementsInList(this.cleanupList);
-        console.log(this.renderedCleanupList)
+        this.renderedList = this.setPropertiesForElementsInList(this.cleanupList);
+
+        console.log(this.renderedList)
     }
 }
 
@@ -670,16 +728,17 @@ class ButtonComplexOperation extends Buttons{
         super(calculatorHTMLClass);
 
         this.complexOperationList = [];
-        this.renderedComplexOperationList = [];
+        this.renderedList = [];
+
         this.renderTheList();
     }
 
     renderTheList() {
         this.complexOperationList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION);
-        this.renderedComplexOperationList = this.setPropertiesForElementsInList(this.complexOperationList);
-        console.log(this.renderedComplexOperationList)
-    }
+        this.renderedList = this.setPropertiesForElementsInList(this.complexOperationList);
 
+        console.log(this.renderedList)
+    }
 }
 
 class ButtonBasicOperation extends Buttons{
@@ -687,15 +746,16 @@ class ButtonBasicOperation extends Buttons{
         super(calculatorHTMLClass);
 
         this.baiscOperationList = [];
-        this.renderedBaiscOperationList = [];
+        this.renderedList = [];
 
         this.renderTheList();
     }
 
     renderTheList() {
         this.baiscOperationList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION);
-        this.renderedBaiscOperationList = this.setPropertiesForElementsInList(this.baiscOperationList);
-        console.log(this.renderedBaiscOperationList)
+        this.renderedList = this.setPropertiesForElementsInList(this.baiscOperationList);
+
+        console.log(this.renderedList)
     }
 }
 
@@ -704,20 +764,21 @@ class ButtonEqual extends Buttons{
         super(calculatorHTMLClass);
 
         this.equalList = [];
-        this.renderedEqualList = [];
+        this.renderedList = [];
 
         this.renderTheList();
     }
 
     renderTheList() {
         this.equalList = this.createButtonList(ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL);
-        this.renderedEqualList = this.setPropertiesForElementsInList(this.equalList);
-        console.log(this.renderedEqualList)
+        this.renderedList = this.setPropertiesForElementsInList(this.equalList);
+
+        console.log(this.renderedList[0].dataset.text)
     }
 }
 
 class Operations {
-    constructor(display, [root]) {
+    constructor(display, ...root) {
         this.display = display;
         this.root = root;
         this.firstArg = null;
@@ -728,13 +789,14 @@ class Operations {
     }
 
     logic() {
+        console.log(this.root)
         // switch () {
         //     case
         // }
     }
 }
 
-const af = new Operations(new Display, [new ButtonNumber(), new ButtonCleanup(), new ButtonComplexOperation(), new ButtonBasicOperation(), new ButtonEqual()]);
+const af = new Operations(new Display, new ButtonNumber(), new ButtonCleanup(), new ButtonComplexOperation(), new ButtonBasicOperation(), new ButtonEqual());
 
 
 //const ab = new ButtonNumber();
