@@ -184,133 +184,6 @@ const ELEMENTS = [
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL,
     },
 ]
-// class Calculator {
-//     constructor(calculatorHTMLClass) {
-//         this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-//         this.firstNumber = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
-//         this.operation = DEFAULT_VALUES.DEFAULT_OPERATION;
-//
-//         this.renderElements(calculatorHTMLClass);
-//     }
-//
-//     renderElements(calculatorHTMLClass) {
-//         const mainElement = document.querySelector(calculatorHTMLClass);
-//
-//         const topHtml = document.createElement("div");
-//         topHtml.classList.add("display");
-//         mainElement.append(topHtml);
-//
-//         this.bottomHtml = document.createElement("div");
-//         this.bottomHtml.classList.add("button");
-//         mainElement.append(this.bottomHtml);
-//
-//         const topElement = document.querySelector('.display');
-//
-//         this.topHistory = document.createElement("output");
-//         this.topHistory.classList.add("display-history");
-//         this.topHistory.dataset.text = "0";
-//         topElement.append(this.topHistory);
-//
-//         this.topResult = document.createElement("output");
-//         this.topResult.classList.add("display-result");
-//         this.topResult.textContent = '0';
-//         topElement.append(this.topResult);
-//
-//         this.renderSimilarElements();
-//     }
-//
-//     renderSimilarElements() {
-//         const appendTarget = document.querySelector('.button');
-//
-//         DEFAULT_VALUES.DOCUMENT_COLLECTION = OPERATIONS.map((element, index) => {
-//             const button = document.createElement("button");
-//
-//             button.textContent = element.CONTENT;
-//             button.dataset.text = element.CONTENT;
-//             button.dataset.type = element.OPERATION_TYPE;
-//             button.classList.add(BUTTONS_PROPERTY.BUTTON_CLASS_GENERAL);
-//             button.classList.add(element.BUTTON_CLASS);
-//
-//             appendTarget.append(button);
-//
-//             return button;
-//         } );
-//     }
-//
-//     setOperation(content) {
-//         this.operation = content;
-//     }
-// }
-// class CalculatorNumbers extends Calculator {
-//     constructor(...args) {
-//         super(...args);
-//
-//         this.onClickNumber = this.onClickNumber.bind(this);
-//         this.handleClickForNumber();
-//     }
-//
-//     consoleInfo(text) {
-//         console.log(`${text}`, ' firstNumber:',this.firstNumber,'; operation:',this.operation,'; secondNumber:',this.secondNumber);
-//     }
-//
-//     handleClickForNumber() {
-//         DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
-//             const type = element.dataset.type;
-//
-//             if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_NUMBER) {
-//                 return;
-//             }
-//
-//             element.onclick = this.onClickNumber;
-//         } );
-//     }
-//
-//     onClickNumber(event) {
-//         const content = event.target.dataset.text;
-//
-//         switch (content) {
-//             case BUTTONS_CONTENT.POINT: {
-//                 this.setPoint();
-//
-//                 break;
-//             }
-//
-//             default: {
-//                 this.setNumber(content);
-//             }
-//         }
-//
-//         this.consoleInfo(`setNumber`);
-//     }
-//
-//
-//     setPoint() {
-//         if (this.secondNumber.includes(".")) {//если точка уже есть в числе
-//             return;
-//         }
-//
-//         if (this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-//             this.secondNumber = BUTTONS_CONTENT.ZERO;
-//         }
-//
-//         this.secondNumber = `${this.secondNumber}.`;
-//     }
-//
-//     setNumber(content) {
-//         if (this.secondNumber.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
-//             return;
-//         }
-//
-//         if ((this.secondNumber === BUTTONS_CONTENT.ZERO) ||
-//             (this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
-//             this.secondNumber = `${content}`;
-//
-//             return;
-//         }
-//
-//         this.secondNumber = `${this.secondNumber}${content}`;
-//     }
-// }
 // class CalculatorCleanupOperations extends CalculatorNumbers {
 //     constructor(...args) {
 //         super(...args);
@@ -354,37 +227,6 @@ const ELEMENTS = [
 //         }
 //     }
 //
-//     cleanAll() {
-//         this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
-//         this.topHistory.innerHTML = "";
-//         this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-//         this.firstNumber = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
-//         this.operation = DEFAULT_VALUES.DEFAULT_OPERATION;
-//
-//         this.consoleInfo("cleanAll");
-//     }
-//
-//     cleanLine() {
-//         this.topResult.innerHTML = BUTTONS_CONTENT.ZERO;
-//         this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-//
-//         this.consoleInfo("cleanLine");
-//     }
-//
-//     cleanLastSymbol() {
-//         if (this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-//             this.consoleInfo("cleanLastSymbol");
-//             return;
-//         }
-//
-//         this.secondNumber = this.secondNumber.slice(0, this.secondNumber.length - 1);
-//
-//         if (this.secondNumber === "") {
-//             this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-//         }
-//
-//         this.consoleInfo("cleanLastSymbol");
-//     }
 // }
 // class CalculatorBasicOperations extends CalculatorCleanupOperations {
 //     constructor(...args) {
@@ -586,9 +428,9 @@ class Calculator {
 
         this.render();
     }
-//
+
     render() {
-        const buttons = ELEMENTS.map(item => {
+        this.buttons = ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
 
                 case ELEMENTS_PROPERTY.DISPLAY_TYPE: {
@@ -658,7 +500,7 @@ class Calculator {
             }
         });
 
-    this.root.append(...buttons);
+    this.root.append(...this.buttons);
     }
 }
 
@@ -669,6 +511,167 @@ class Operations extends Calculator {
         this.firstArg = null;
         this.seconArg = null;
         this.currentOperation = null;
+
+        this.historyElement = this.buttons.filter(item => {
+            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS2);
+        });
+
+        this.resultElement = this.buttons.filter(item => {
+            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS3);
+        });
+
+        this.onClickNumber = this.onClickNumber.bind(this);
+        this.cleanAll = this.cleanAll.bind(this);
+        this.cleanLine = this.cleanLine.bind(this);
+        this.cleanLastSymbol = this.cleanLastSymbol.bind(this);
+
+        this.logic();
+    }
+
+    consoleInfo(text) {
+        console.log(`${text}`, ' firstNumber:', this.firstArg, '; operation:', this.currentOperation, '; secondNumber:', this.seconArg);
+    }
+
+    setOperation(content) {
+        this.currentOperation = content;
+    }
+
+    setHistory(history) {
+        this.historyElement.innerHTML = history;
+    }
+
+    setResult(result) {
+        this.resultElement.innerHTML = result;
+    }
+
+    setPoint() {
+        if (this.seconArg?.includes(".")) {//если точка уже есть в числе
+            return;
+        }
+
+        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.seconArg = BUTTONS_CONTENT.ZERO;
+        }
+
+        this.seconArg = `${this.seconArg}.`;
+    }
+
+    setNumber(content) {
+        if (this.seconArg?.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
+            return;
+        }
+
+        if ((this.seconArg === BUTTONS_CONTENT.ZERO) ||
+            (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
+            this.seconArg = `${content}`;
+
+            return;
+        }
+
+        this.seconArg = `${this.seconArg}${content}`;
+    }
+
+    onClickNumber(event) {
+        const content = event.target.dataset.text;
+
+        switch (content) {
+            case BUTTONS_CONTENT.POINT: {
+                this.setPoint();
+
+                break;
+            }
+
+            default: {
+                this.setNumber(content);
+            }
+        }
+
+        this.consoleInfo(`setNumber`);
+    }
+
+
+    cleanAll() {
+        //this.setResult(BUTTONS_CONTENT.ZERO);
+        //this.setHistory("");
+
+        this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.firstArg = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
+        this.currentOperation = DEFAULT_VALUES.DEFAULT_OPERATION;
+
+        this.consoleInfo("cleanAll");
+    }
+
+    cleanLine() {
+        //this.setResult(BUTTONS_CONTENT.ZERO);
+        this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+
+        this.consoleInfo("cleanLine");
+    }
+
+    cleanLastSymbol() {
+        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.consoleInfo("cleanLastSymbol");
+            return;
+        }
+
+        this.seconArg = this.seconArg?.slice(0, this.seconArg?.length - 1);
+
+        if (this.seconArg === "") {
+            this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        }
+
+        this.consoleInfo("cleanLastSymbol");
+    }
+
+    logic() {
+        this.buttons.forEach(item => {
+            switch (item.dataset.text) {
+                case BUTTONS_CONTENT.PERCENT: {
+                    break;
+                }
+                case BUTTONS_CONTENT.CLEAN_LINE: {
+                    item.onclick = this.cleanLine;
+                    break;
+                }
+                case BUTTONS_CONTENT.CLEAN_ALL: {
+                    item.onclick = this.cleanAll;
+                    break;
+                }
+                case BUTTONS_CONTENT.CLEAN_SYMBOL: {
+                    item.onclick = this.cleanLastSymbol;
+                    break;
+                }
+                case BUTTONS_CONTENT.REVERSE: {
+                    break;
+                }
+                case BUTTONS_CONTENT.SQUARE: {
+                    break;
+                }
+                case BUTTONS_CONTENT.SQUARE_ROOT: {
+                    break;
+                }
+                case BUTTONS_CONTENT.DIVISION: {
+                    break;
+                }
+                case BUTTONS_CONTENT.MULTIPLICATION: {
+                    break;
+                }
+                case BUTTONS_CONTENT.SUBTRACTION: {
+                    break;
+                }
+                case BUTTONS_CONTENT.NEGATE: {
+                    break;
+                }
+                case BUTTONS_CONTENT.EQUAL: {
+                    break;
+                }
+                default: {
+                    if (item.dataset.type === ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER) {
+                        item.onclick = this.onClickNumber;
+                    }
+                }
+            }
+        })
     }
 }
 
