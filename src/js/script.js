@@ -2,7 +2,6 @@ const DEFAULT_VALUES = {
     DEFAULT_SECOND_NUMBER: null,
     DEFAULT_FIRST_NUMBER: null,
     DEFAULT_OPERATION: null,
-    DOCUMENT_COLLECTION: [],
     MAX_LINE_LENGTH: 16,
     LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
 }
@@ -368,6 +367,11 @@ class Operations extends Calculator {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS3);
         });
 
+        this.bindFunctions();
+        this.logic();
+    }
+
+    bindFunctions() {
         this.onClickNumber = this.onClickNumber.bind(this);
         this.onClickBasicOperation= this.onClickBasicOperation.bind(this);
         this.cleanAll = this.cleanAll.bind(this);
@@ -379,8 +383,6 @@ class Operations extends Calculator {
         this.squareRoot = this.squareRoot.bind(this);
         this.negate = this.negate.bind(this);
         this.equal = this.equal.bind(this);
-
-        this.logic();
     }
 
     consoleInfo(text) {
