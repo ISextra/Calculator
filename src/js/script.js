@@ -184,158 +184,6 @@ const ELEMENTS = [
         OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL,
     },
 ]
-// class CalculatorCleanupOperations extends CalculatorNumbers {
-//     constructor(...args) {
-//         super(...args);
-//
-//         this.onClickCleanup = this.onClickCleanup.bind(this);
-//         this.handleClickForCleanupOperation();
-//     }
-//
-//     handleClickForCleanupOperation() {
-//         DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
-//             const type = element.dataset.type;
-//
-//             if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION)
-//             {
-//                 return;
-//             }
-//
-//             element.onclick = this.onClickCleanup;
-//         } );
-//     }
-//
-//     onClickCleanup(event) {
-//         const content = event.target.dataset.text;
-//
-//         switch (content) {
-//             case BUTTONS_CONTENT.CLEAN_ALL: {
-//                 this.cleanAll();
-//
-//                 break;
-//             }
-//             case  BUTTONS_CONTENT.CLEAN_LINE: {
-//                 this.cleanLine();
-//
-//                 break;
-//             }
-//             case  BUTTONS_CONTENT.CLEAN_SYMBOL: {
-//                 this.cleanLastSymbol();
-//
-//                 break;
-//             }
-//         }
-//     }
-//
-// }
-// class CalculatorBasicOperations extends CalculatorCleanupOperations {
-//     constructor(...args) {
-//         super(...args);
-//
-//         this.onClickBasicOperations = this.onClickBasicOperations.bind(this);
-//         this.handleClickForBasicOperations();
-//     }
-//     handleClickForBasicOperations() {
-//         DEFAULT_VALUES.DOCUMENT_COLLECTION.forEach( element => {
-//             const type = element.dataset.type;
-//
-//             if (type !== BUTTONS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION)
-//             {
-//                 return;
-//             }
-//
-//             element.onclick = this.onClickBasicOperations;
-//         } );
-//     }
-//
-//     onClickBasicOperations(event) {
-//         const content = event.target.dataset.text;
-//
-//         this.setOperation(content);
-//
-//         if (this.firstNumber === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-//             this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если не было значний
-//
-//             this.firstNumber = BUTTONS_CONTENT.ZERO;
-//
-//             this.consoleInfo("BasicOperation");
-//
-//             return;
-//         }
-//
-//         if (this.firstNumber === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-//             this.secondNumber !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только введенное значение
-//
-//             this.firstNumber = this.secondNumber;
-//             this.secondNumber = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-//
-//             this.consoleInfo("BasicOperation");
-//
-//             return;
-//         }
-//
-//         if (this.firstNumber !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-//             this.secondNumber === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если только первое значение
-//
-//             this.consoleInfo("BasicOperation");
-//
-//             return;
-//         }
-//
-//         if (this.firstNumber !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER &&
-//             this.secondNumber !== DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) { // если введены оба значения
-//
-//             switch (content) {
-//                 case BUTTONS_CONTENT.ADDITION: {
-//                     this.addition();
-//
-//                     break;
-//                 }
-//                 case  BUTTONS_CONTENT.SUBTRACTION: {
-//                     this.subtraction();
-//
-//                     break;
-//                 }
-//                 case  BUTTONS_CONTENT.MULTIPLICATION: {
-//                     this.multiplication();
-//
-//                     break;
-//                 }
-//                 case  BUTTONS_CONTENT.DIVISION: {
-//                     this.division();
-//
-//                     break;
-//                 }
-//             }
-//         }
-//     }
-//
-//     addition() {
-//         this.firstNumber = `${Number(this.firstNumber) + Number(this.secondNumber)}`;
-//     }
-//
-//     subtraction() {
-//         this.firstNumber = `${Number(this.firstNumber) - Number(this.secondNumber)}`;
-//     }
-//
-//     multiplication() {
-//         this.firstNumber = `${Number(this.firstNumber) * Number(this.secondNumber)}`;
-//     }
-//
-//     division() {
-//         this.firstNumber = `${Number(this.firstNumber) / Number(this.secondNumber)}`;
-//     }
-// }
-// const interface1 = new CalculatorBasicOperations(".calculator");
-
-//ButtonNumber -> Button -> DomRendererElement
-//ButttonOperation -> Button -> DomRendererElement
-
-//Display -> DomRenderElement
-//renderToDsiplay
-
-//Number / Clenup / ComplexOpration / BasicOperation
-//ButtonNumber / ButtonClenup / ButtonComplexOperation /  ButtonBasicOperation
 
 class DomRendererElement {
     constructor(calculatorHTMLClass) {
@@ -521,9 +369,16 @@ class Operations extends Calculator {
         });
 
         this.onClickNumber = this.onClickNumber.bind(this);
+        this.onClickBasicOperation= this.onClickBasicOperation.bind(this);
         this.cleanAll = this.cleanAll.bind(this);
         this.cleanLine = this.cleanLine.bind(this);
         this.cleanLastSymbol = this.cleanLastSymbol.bind(this);
+        this.percent = this.percent.bind(this);
+        this.reverse = this.reverse.bind(this);
+        this.square = this.square.bind(this);
+        this.squareRoot = this.squareRoot.bind(this);
+        this.negate = this.negate.bind(this);
+        this.equal = this.equal.bind(this);
 
         this.logic();
     }
@@ -562,7 +417,7 @@ class Operations extends Calculator {
         }
 
         if ((this.seconArg === BUTTONS_CONTENT.ZERO) ||
-            (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0 или начальное значение
+            (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
             this.seconArg = `${content}`;
 
             return;
@@ -574,21 +429,25 @@ class Operations extends Calculator {
     onClickNumber(event) {
         const content = event.target.dataset.text;
 
-        switch (content) {
-            case BUTTONS_CONTENT.POINT: {
-                this.setPoint();
+        if (content === BUTTONS_CONTENT.POINT) {
+            this.setPoint();
+            this.consoleInfo(`setNumber`);
 
-                break;
-            }
-
-            default: {
-                this.setNumber(content);
-            }
+            return;
         }
 
+        this.setNumber(content);
         this.consoleInfo(`setNumber`);
     }
 
+    onClickBasicOperation(event) {
+        const content = event.target.dataset.text;
+
+        this.firstArg = this.seconArg;
+
+        this.setOperation(content);
+        this.consoleInfo(`setOperation`);
+    }
 
     cleanAll() {
         //this.setResult(BUTTONS_CONTENT.ZERO);
@@ -596,13 +455,14 @@ class Operations extends Calculator {
 
         this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         this.firstArg = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
-        this.currentOperation = DEFAULT_VALUES.DEFAULT_OPERATION;
 
+        this.setOperation(DEFAULT_VALUES.DEFAULT_OPERATION);
         this.consoleInfo("cleanAll");
     }
 
     cleanLine() {
         //this.setResult(BUTTONS_CONTENT.ZERO);
+
         this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
 
         this.consoleInfo("cleanLine");
@@ -611,63 +471,195 @@ class Operations extends Calculator {
     cleanLastSymbol() {
         if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.consoleInfo("cleanLastSymbol");
+
             return;
         }
 
         this.seconArg = this.seconArg?.slice(0, this.seconArg?.length - 1);
 
-        if (this.seconArg === "") {
+        if (this.seconArg === "" || this.seconArg === "-") {
             this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         }
 
         this.consoleInfo("cleanLastSymbol");
     }
 
+    percent() {
+        if (!this.firstArg) {
+            this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+            this.consoleInfo("percent");
+
+            return;
+        }
+
+        if (this.currentOperation === BUTTONS_CONTENT.ADDITION || this.currentOperation === BUTTONS_CONTENT.SUBTRACTION) {
+            this.seconArg = this.firstArg / 100 * this.seconArg;
+            this.consoleInfo("percent");
+
+            return;
+        }
+
+        if (this.currentOperation === BUTTONS_CONTENT.MULTIPLICATION || this.currentOperation === BUTTONS_CONTENT.DIVISION) {
+            this.seconArg = this.firstArg / 100;
+            this.consoleInfo("percent");
+
+            return;
+        }
+    }
+
+    reverse() {
+        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.consoleInfo("reverse");//нельзя делить на ноль (пустое значение)
+
+            console.log("Cannot divide by zero");
+
+            return;
+        }
+
+        this.seconArg = `${1 / Number(this.seconArg)}`;
+
+        this.consoleInfo("reverse");
+    }
+
+    square() {
+        this.seconArg = `${Math.pow(Number(this.seconArg), 2)}`;
+
+        this.consoleInfo("square");
+    }
+
+    squareRoot() {
+        this.seconArg = `${Math.sqrt(Number(this.seconArg))}`;
+
+        this.consoleInfo("squareRoot");
+    }
+
+    negate() {
+        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER && this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
+            this.consoleInfo("negate");
+
+            return;
+        }
+
+        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.seconArg = `${Number(this.seconArg) * -1}`;
+            this.consoleInfo("negate");
+
+            return;
+        }
+
+        this.seconArg = `${Number(this.seconArg) * -1}`;
+        this.consoleInfo("negate");
+    }
+
+    equal() {
+        if (this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
+            this.seconArg = `${Number(this.seconArg)}`;
+            this.consoleInfo("equal");
+
+            return;
+        }
+
+        switch (this.currentOperation) {
+            case BUTTONS_CONTENT.ADDITION: {
+                this.addition();
+
+                break;
+            }
+            case BUTTONS_CONTENT.SUBTRACTION: {
+                this.subtraction();
+
+                break;
+            }
+            case BUTTONS_CONTENT.MULTIPLICATION: {
+                this.multiplication();
+
+                break;
+            }
+            case  BUTTONS_CONTENT.DIVISION: {
+                this.division();
+
+                break;
+            }
+        }
+
+        this.consoleInfo("equal");
+    }
+
+    addition() {
+        this.firstArg = `${Number(this.firstArg) + Number(this.seconArg)}`;
+    }
+
+    subtraction() {
+        this.firstArg = `${Number(this.firstArg) - Number(this.seconArg)}`
+    }
+
+    multiplication() {
+        this.firstArg = `${Number(this.firstArg) * Number(this.seconArg)}`
+    }
+
+    division() {
+        this.firstArg = `${Number(this.firstArg) / Number(this.seconArg)}`
+    }
+
     logic() {
         this.buttons.forEach(item => {
             switch (item.dataset.text) {
                 case BUTTONS_CONTENT.PERCENT: {
+                    item.onclick = this.percent;
+
                     break;
                 }
                 case BUTTONS_CONTENT.CLEAN_LINE: {
                     item.onclick = this.cleanLine;
+
                     break;
                 }
                 case BUTTONS_CONTENT.CLEAN_ALL: {
                     item.onclick = this.cleanAll;
+
                     break;
                 }
                 case BUTTONS_CONTENT.CLEAN_SYMBOL: {
                     item.onclick = this.cleanLastSymbol;
+
                     break;
                 }
                 case BUTTONS_CONTENT.REVERSE: {
+                    item.onclick = this.reverse;
+
                     break;
                 }
                 case BUTTONS_CONTENT.SQUARE: {
+                    item.onclick = this.square;
+
                     break;
                 }
                 case BUTTONS_CONTENT.SQUARE_ROOT: {
-                    break;
-                }
-                case BUTTONS_CONTENT.DIVISION: {
-                    break;
-                }
-                case BUTTONS_CONTENT.MULTIPLICATION: {
-                    break;
-                }
-                case BUTTONS_CONTENT.SUBTRACTION: {
+                    item.onclick = this.squareRoot;
+
                     break;
                 }
                 case BUTTONS_CONTENT.NEGATE: {
+                    item.onclick = this.negate;
+
                     break;
                 }
                 case BUTTONS_CONTENT.EQUAL: {
+                    item.onclick = this.equal;
+
                     break;
                 }
                 default: {
                     if (item.dataset.type === ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER) {
                         item.onclick = this.onClickNumber;
+
+                        break;
+                    }
+
+                    if (item.dataset.type === ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION) {
+                        item.onclick = this.onClickBasicOperation;
+
+                        break;
                     }
                 }
             }
