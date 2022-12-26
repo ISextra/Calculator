@@ -369,6 +369,8 @@ class Operations extends Calculator {
 
         this.bindFunctions();
         this.logic();
+
+        //console.log(this.resultElement);
     }
 
     bindFunctions() {
@@ -394,11 +396,12 @@ class Operations extends Calculator {
     }
 
     setHistory(history) {
-        this.historyElement.innerHTML = history;
+        this.historyElement[0].innerHTML = history;
     }
 
     setResult(result) {
-        this.resultElement.innerHTML = result;
+        //this.resultElement[0].innerHTML = result;
+        console.log(true);
     }
 
     setPoint() {
@@ -473,6 +476,7 @@ class Operations extends Calculator {
     cleanLastSymbol() {
         if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.consoleInfo("cleanLastSymbol");
+            this.setResult();
 
             return;
         }
@@ -484,6 +488,7 @@ class Operations extends Calculator {
         }
 
         this.consoleInfo("cleanLastSymbol");
+        this.setResult();
     }
 
     percent() {
@@ -563,28 +568,21 @@ class Operations extends Calculator {
 
         switch (this.currentOperation) {
             case BUTTONS_CONTENT.ADDITION: {
-                this.addition();
-
-                break;
+                return this.addition();
             }
             case BUTTONS_CONTENT.SUBTRACTION: {
-                this.subtraction();
-
-                break;
+                return this.subtraction();
             }
             case BUTTONS_CONTENT.MULTIPLICATION: {
-                this.multiplication();
-
-                break;
+                return this.multiplication();
             }
             case  BUTTONS_CONTENT.DIVISION: {
-                this.division();
-
-                break;
+                return this.division();
             }
         }
 
         this.consoleInfo("equal");
+        //this.setResult(`${this.seconArg}`);
     }
 
     addition() {
@@ -669,6 +667,32 @@ class Operations extends Calculator {
     }
 }
 
-const af = new Operations({
+//обект с значениями операций
+// значения - описания
+// на основании операции заполнять дисплей
+// class operationLogger(history)
+
+class OperationsLogger{
+    constructor(history, result) {
+
+        this.displayValues = {
+            history: history,
+            result: result
+        }
+    }
+
+    setResult() {
+        //super.setResult(result);
+        console.log(false);
+    }
+}
+
+class History extends Operations {
+    constructor({root}) {
+        super({root});
+    }
+}
+
+const af = new OperationsLogger({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
 });
