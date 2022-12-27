@@ -2,6 +2,7 @@ const DEFAULT_VALUES = {
     DEFAULT_SECOND_NUMBER: null,
     DEFAULT_FIRST_NUMBER: null,
     DEFAULT_OPERATION: null,
+    DEFAULT_RESULT: null,
     MAX_LINE_LENGTH: 16,
     LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM: 10,
 }
@@ -356,8 +357,10 @@ class Operations extends Calculator {
         super({root});
 
         this.firstArg = null;
-        this.seconArg = null;
+        this.secondArg = null;
         this.currentOperation = null;
+        this.result = null;
+        this.secondArgDeleteFlag = true;
 
         this.historyElement = this.buttons.filter(item => {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS2);
@@ -369,8 +372,6 @@ class Operations extends Calculator {
 
         this.bindFunctions();
         this.logic();
-
-        //console.log(this.resultElement);
     }
 
     bindFunctions() {
@@ -388,47 +389,78 @@ class Operations extends Calculator {
     }
 
     consoleInfo(text) {
-        console.log(`${text}`, ' firstNumber:', this.firstArg, '; operation:', this.currentOperation, '; secondNumber:', this.seconArg);
+        console.log(`${text}`, ' firstNumber:', this.firstArg, '; operation:', this.currentOperation, '; secondNumber:', this.secondArg, '; result:', this.result);
     }
 
     setOperation(content) {
         this.currentOperation = content;
     }
 
-    setHistory(history) {
-        this.historyElement[0].innerHTML = history;
+    setSecondArgDeleteFlag(flag) {
+        this.secondArgDeleteFlag = flag;
     }
 
-    setResult(result) {
-        //this.resultElement[0].innerHTML = result;
-        console.log(true);
+    setHistoryData() {
+        throw new Error("setHistoryData logic not added here, you probably search History.setHistoryData");
+    }
+
+    getHistoryFirstArg() {
+        throw new Error("getHistoryFirstArg logic not added here, you probably search History.getHistoryFirstArg");
+    }
+
+    setHistoryFirstArg(operation) {
+        throw new Error("setHistoryFirstArg logic not added here, you probably search History.setHistoryFirstArg");
+    }
+
+    getHistorySecondArg() {
+        throw new Error("getHistorySecondArg logic not added here, you probably search History.getHistorySecondArg");
+    }
+
+    setHistorySecondArg(operation) {
+        throw new Error("setHistorySecondArg logic not added here, you probably search History.setHistorySecondArg");
     }
 
     setPoint() {
-        if (this.seconArg?.includes(".")) {//если точка уже есть в числе
+        if (!this.secondArgDeleteFlag) {
+            this.secondArg = `${BUTTONS_CONTENT.ZERO}.`;
+
+            this.setSecondArgDeleteFlag(1);
+
             return;
         }
 
-        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-            this.seconArg = BUTTONS_CONTENT.ZERO;
+        if (this.secondArg?.includes(".")) {//если точка уже есть в числе
+            return;
         }
 
-        this.seconArg = `${this.seconArg}.`;
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondArg = BUTTONS_CONTENT.ZERO;
+        }
+
+        this.secondArg = `${this.secondArg}.`;
     }
 
     setNumber(content) {
-        if (this.seconArg?.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
+        if (this.secondArg?.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
             return;
         }
 
-        if ((this.seconArg === BUTTONS_CONTENT.ZERO) ||
-            (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
-            this.seconArg = `${content}`;
+        if (!this.secondArgDeleteFlag) {
+            this.secondArg = `${content}`;
+
+            this.setSecondArgDeleteFlag(1);
 
             return;
         }
 
-        this.seconArg = `${this.seconArg}${content}`;
+        if ((this.secondArg === BUTTONS_CONTENT.ZERO) ||
+            (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
+            this.secondArg = `${content}`;
+
+            return;
+        }
+
+        this.secondArg = `${this.secondArg}${content}`;
     }
 
     onClickNumber(event) {
@@ -448,8 +480,9 @@ class Operations extends Calculator {
     onClickBasicOperation(event) {
         const content = event.target.dataset.text;
 
-        this.firstArg = this.seconArg;
+        this.firstArg = this.secondArg;
 
+        this.setSecondArgDeleteFlag(0);
         this.setOperation(content);
         this.consoleInfo(`setOperation`);
     }
@@ -458,8 +491,9 @@ class Operations extends Calculator {
         //this.setResult(BUTTONS_CONTENT.ZERO);
         //this.setHistory("");
 
-        this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         this.firstArg = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
+        this.result = DEFAULT_VALUES.DEFAULT_RESULT;
 
         this.setOperation(DEFAULT_VALUES.DEFAULT_OPERATION);
         this.consoleInfo("cleanAll");
@@ -468,46 +502,56 @@ class Operations extends Calculator {
     cleanLine() {
         //this.setResult(BUTTONS_CONTENT.ZERO);
 
-        this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
 
         this.consoleInfo("cleanLine");
     }
 
     cleanLastSymbol() {
-        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+        if (!this.secondArgDeleteFlag) {
             this.consoleInfo("cleanLastSymbol");
-            this.setResult();
 
             return;
         }
 
-        this.seconArg = this.seconArg?.slice(0, this.seconArg?.length - 1);
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.consoleInfo("cleanLastSymbol");
 
-        if (this.seconArg === "" || this.seconArg === "-") {
-            this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+            return;
+        }
+
+        this.secondArg = this.secondArg?.slice(0, this.secondArg?.length - 1);
+
+        if (this.secondArg === "" || this.secondArg === "-") {
+            this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         }
 
         this.consoleInfo("cleanLastSymbol");
-        this.setResult();
     }
 
     percent() {
         if (!this.firstArg) {
-            this.seconArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+            this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+
+            this.setSecondArgDeleteFlag(0);
             this.consoleInfo("percent");
 
             return;
         }
 
         if (this.currentOperation === BUTTONS_CONTENT.ADDITION || this.currentOperation === BUTTONS_CONTENT.SUBTRACTION) {
-            this.seconArg = this.firstArg / 100 * this.seconArg;
+            this.secondArg = `${this.firstArg / 100 * this.secondArg}`;
+
+            this.setSecondArgDeleteFlag(0);
             this.consoleInfo("percent");
 
             return;
         }
 
         if (this.currentOperation === BUTTONS_CONTENT.MULTIPLICATION || this.currentOperation === BUTTONS_CONTENT.DIVISION) {
-            this.seconArg = this.firstArg / 100;
+            this.secondArg = `${this.firstArg / 100}`;
+
+            this.setSecondArgDeleteFlag(0);
             this.consoleInfo("percent");
 
             return;
@@ -515,7 +559,7 @@ class Operations extends Calculator {
     }
 
     reverse() {
-        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.consoleInfo("reverse");//нельзя делить на ноль (пустое значение)
 
             console.log("Cannot divide by zero");
@@ -523,82 +567,102 @@ class Operations extends Calculator {
             return;
         }
 
-        this.seconArg = `${1 / Number(this.seconArg)}`;
+        this.secondArg = `${1 / Number(this.secondArg)}`;
 
+        this.setSecondArgDeleteFlag(0);
         this.consoleInfo("reverse");
     }
 
     square() {
-        this.seconArg = `${Math.pow(Number(this.seconArg), 2)}`;
+        this.secondArg = `${Math.pow(Number(this.secondArg), 2)}`;
 
+        this.setSecondArgDeleteFlag(0);
         this.consoleInfo("square");
     }
 
     squareRoot() {
-        this.seconArg = `${Math.sqrt(Number(this.seconArg))}`;
+        this.secondArg = `${Math.sqrt(Number(this.secondArg))}`;
 
+        this.setSecondArgDeleteFlag(0);
         this.consoleInfo("squareRoot");
     }
 
     negate() {
-        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER && this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER && this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
             this.consoleInfo("negate");
 
             return;
         }
 
-        if (this.seconArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-            this.seconArg = `${Number(this.seconArg) * -1}`;
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondArg = `${Number(this.secondArg) * -1}`;
             this.consoleInfo("negate");
 
             return;
         }
 
-        this.seconArg = `${Number(this.seconArg) * -1}`;
+        this.secondArg = `${Number(this.secondArg) * -1}`;
         this.consoleInfo("negate");
     }
 
     equal() {
         if (this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
-            this.seconArg = `${Number(this.seconArg)}`;
+            this.result = `${Number(this.secondArg)}`;
             this.consoleInfo("equal");
+            this.setSecondArgDeleteFlag(0);
+            this.setHistoryData();
+            this.cleanAll()
 
             return;
         }
 
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondArg = this.firstArg;
+        }
+
         switch (this.currentOperation) {
             case BUTTONS_CONTENT.ADDITION: {
-                return this.addition();
+                this.addition();
+
+                break;
             }
             case BUTTONS_CONTENT.SUBTRACTION: {
-                return this.subtraction();
+                this.subtraction();
+
+                break;
             }
             case BUTTONS_CONTENT.MULTIPLICATION: {
-                return this.multiplication();
+                this.multiplication();
+
+                break;
             }
             case  BUTTONS_CONTENT.DIVISION: {
-                return this.division();
+                this.division();
+
+                break;
             }
         }
 
         this.consoleInfo("equal");
-        //this.setResult(`${this.seconArg}`);
+        this.setSecondArgDeleteFlag(0);
+        this.setHistoryData();
+        this.cleanAll()
     }
 
     addition() {
-        this.firstArg = `${Number(this.firstArg) + Number(this.seconArg)}`;
+        this.result = `${Number(this.firstArg) + Number(this.secondArg)}`;
     }
 
     subtraction() {
-        this.firstArg = `${Number(this.firstArg) - Number(this.seconArg)}`
+        this.result = `${Number(this.firstArg) - Number(this.secondArg)}`
     }
 
     multiplication() {
-        this.firstArg = `${Number(this.firstArg) * Number(this.seconArg)}`
+        this.result = `${Number(this.firstArg) * Number(this.secondArg)}`
     }
 
     division() {
-        this.firstArg = `${Number(this.firstArg) / Number(this.seconArg)}`
+        this.result = `${Number(this.firstArg) / Number(this.secondArg)}`
     }
 
     logic() {
@@ -672,27 +736,72 @@ class Operations extends Calculator {
 // на основании операции заполнять дисплей
 // class operationLogger(history)
 
+//если при % было изменено число, второй аргумент стирается из истории
+//если оба аргумента введены, можно несколько раз нижимать знак равно
+
 class OperationsLogger{
-    constructor(history, result) {
+    constructor(historyFirstArg, operation, historySecondArg, result) {
 
         this.displayValues = {
-            history: history,
-            result: result
+            historyFirstArg: historyFirstArg,
+            historyOperation: operation,
+            historySecondArg: historySecondArg,
+            result: result,
         }
-    }
-
-    setResult() {
-        //super.setResult(result);
-        console.log(false);
     }
 }
 
 class History extends Operations {
     constructor({root}) {
         super({root});
+
+        this.historyFirstArg = null;
+        this.historySecondArg = null;
+
+        this.historyList = [];
     }
+
+    getHistoryElement(operation, arg) {
+        switch (operation) {
+            case BUTTONS_CONTENT.SQUARE: {
+                return `sqr(${arg})`;
+            }
+            case BUTTONS_CONTENT.SQUARE_ROOT: {
+                return `\u221A(${arg})`;
+            }
+            case BUTTONS_CONTENT.REVERSE: {
+                return `1/(${arg})`;
+            }
+            case BUTTONS_CONTENT.NEGATE: {
+                return `negate/(${arg})`;
+            }
+        }
+    }
+
+    setHistoryData() {
+        this.historyList.push(new OperationsLogger(this.firstArg, this.currentOperation, this.secondArg, this.result))
+        console.log(this.historyList);
+    }
+
+    getHistoryFirstArg() {
+        return this.historyFirstArg;
+    }
+
+    setHistoryFirstArg(operation) {
+        this.historyFirstArg = this.getHistoryElement(operation, this.firstArg);
+    }
+
+    getHistorySecondArg() {
+        return this.historySecondArg;
+    }
+
+    setHistorySecondArg(operation) {
+        this.historySecondArg = this.getHistoryElement(operation, this.secondArg);
+    }
+
+
 }
 
-const af = new OperationsLogger({
+const af = new History({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
 });
