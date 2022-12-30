@@ -25,35 +25,34 @@ body {
 
   .calculator {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     margin-top: 100px;
     padding: 5px;
-    background: #606060;
-    width: 322px;
+    background: $gray-2;
+    width: 320px;
 
     .display {
       display: flex;
       flex-direction: column;
       justify-content: center;
       text-align: right;
-      padding: 0 10px 0 10px;
-      height: 100px;
+      margin: 10px;
+      width: 315px;
 
       &__history {
         font-size: 14px;
-        font-weight: normal;
-        color: #B8BBD2;
         height: 17px;
-        text-align: right;
+        font-weight: normal;
+        color: $white-5;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
       &__result {
         font-size: 42px;
+        height: 42px;
         font-weight: bold;
-        color: white;
-        text-align: right;
+        color: $white-3;
       }
     }
 
