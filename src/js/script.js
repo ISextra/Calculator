@@ -24,6 +24,7 @@ const ELEMENTS_PROPERTY = {
     OPERATION_TYPE_COMPLEX_OPERATION: "complexOperation",
     OPERATION_TYPE_CLEANUP_OPERATION: "cleanupOperation",
     OPERATION_TYPE_BASIC_OPERATION: "basicOperation",
+    OPERATION_TYPE_POINT: "pointOperation",
     OPERATION_TYPE_NUMBER: "number",
     OPERATION_TYPE_EQUAL: "equal",
     OPERATION_TYPE_OTHER: "other"
@@ -177,7 +178,7 @@ const ELEMENTS = [
     {
         CONTENT: BUTTONS_CONTENT.POINT,
         BUTTON_CLASS: ELEMENTS_PROPERTY.BUTTON_CLASS_NUMBER,
-        OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER,
+        OPERATION_TYPE: ELEMENTS_PROPERTY.OPERATION_TYPE_POINT,
     },
     {
         CONTENT: BUTTONS_CONTENT.EQUAL,
@@ -278,10 +279,6 @@ class Calculator {
         this.render();
 
     }
-    //!!
-    renderDisplay() {
-
-    }
     render() {
         this.buttons = ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
@@ -295,6 +292,17 @@ class Calculator {
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER: {
+                    const button = new ButtonNumber();
+
+                    return button.render({
+                        tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
+                        classNames: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.BUTTON_CLASS_GENERAL],
+                        textContent: item.CONTENT,
+                        datasetText: item.CONTENT,
+                        datasetType: item.OPERATION_TYPE,
+                    });
+                }
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_POINT: {
                     const button = new ButtonNumber();
 
                     return button.render({
@@ -358,309 +366,487 @@ class Calculator {
 
 class History {
     constructor() {
-        this.historyList = null;
-        this.lastOperationType = null;
-        this.lastHistoryArgument = null;
+        this.historyHTMLElement = null;
+        this.historyList = [];
+
+        this.historyElement = {
+            firstArg: null,
+            currentOperation: null,
+            secondArg: null,
+            result: null
+        }
+
+        this.copyOfHistoryElement = Object.assign({}, this.historyElement);
+    }
+
+    setHistoryElement(element) {
+       this.historyHTMLElement = element;
+    }
+
+    pushInHistoryList () {
+        this.historyList.push(this.copyOfHistoryElement);
+    }
+
+    showHistoryList() {
+        console.log(this.historyList);
     }
 
     cleanHistoryList() {
-        this.historyList = null;
-        this.lastOperationType = null;
-        this.lastHistoryArgument = null;
+        this.historyList = [];
     }
 
-    set operationType(type) {
-        this.lastOperationType = type;
+    cleanCurrentOperation() {
+        this.historyElement.currentOperation = null;
     }
 
-    changeToHistoryElement(operation, arg) {
-        if (this.lastOperationType === ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION) {
-            this.arg = this.lastHistoryArgument;
-        }
-        else {
-            this.arg = arg;
-        }
+    cleanLine() {
+        this.historyElement.secondArg = null;
+    }
 
+    cleanAll() {
+        this.historyElement.firstArg = null;
+        this.historyElement.currentOperation = null;
+        this.historyElement.secondArg = null;
+        this.historyElement.result = null;
+    }
+
+    setHistoryData(element) {
+        const {
+            firstArg,
+            currentOperation,
+            secondArg,
+            result
+        } = element;
+
+
+        if (currentOperation !== undefined) {
+            this.historyElement.currentOperation = currentOperation;
+        }
+        if (secondArg !== undefined) {
+            this.historyElement.secondArg = secondArg;
+        }
+        if (firstArg !== undefined) {
+            this.historyElement.firstArg = firstArg;
+        }
+        if (result !== undefined) {
+            this.historyElement.result = result;
+        }
+    }
+
+    changeToHistoryElement(operation) {
         switch (operation) {
             case BUTTONS_CONTENT.SQUARE: {
-                return `sqr(${this.arg})`;
+                this.historyElement.secondArg = `sqr(${this.historyElement.secondArg})`;
+
+                break;
             }
             case BUTTONS_CONTENT.SQUARE_ROOT: {
-                return `\u221A(${this.arg})`;
+                this.historyElement.secondArg = `sqrt(${this.historyElement.secondArg})`;
+
+                break;
             }
             case BUTTONS_CONTENT.REVERSE: {
-                return `1/(${this.arg})`;
+                this.historyElement.secondArg = `reciproc(${this.historyElement.secondArg})`;
+
+                break;
             }
             case BUTTONS_CONTENT.NEGATE: {
-                return `negate(${this.arg})`;
+                this.historyElement.secondArg = `negate(${this.historyElement.secondArg})`;
+
+                break;
             }
         }
     }
 
-    setHistoryData(arg, type, content) {
-        switch (type) {
-            case ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION: {
-                this.lastHistoryArgument = null;
+    additionFirstArg() {
 
-                if (this.lastOperationType === ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION) {
-                    this.historyList = `${this.historyList.slice(0, -2)} ${content}`;
-                    console.log(this.historyList.slice(0, -2))
-                }
-                else if (!this.historyList) {
-                    this.historyList = `${arg} ${content}`;
-                }
-                else {
-                    this.historyList = `${this.historyList} ${content}`;
-                }
-
-                this.operationType = ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION;
-
-                break;
-            }
-            case ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION: {
-                if (!this.historyList) {
-                    this.lastHistoryArgument = arg;
-                    this.historyList = `${this.changeToHistoryElement(content, this.lastHistoryArgument)}`;
-                }
-                else {
-                    this.historyList = `${this.changeToHistoryElement(content, this.historyList)}`;
-                }
-
-                this.operationType = ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION;
-                this.lastHistoryArgument = this.changeToHistoryElement(content, arg);
-                break;
-            }
+        if (this.historyElement.firstArg === null) {
+            this.historyElement.firstArg = `${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation} `;
         }
+        else {
+            this.historyElement.firstArg = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`;
+        }
+
     }
+
+    refreshCopyWithoutNulls() {
+        this.copyOfHistoryElement = Object.assign({}, this.historyElement);
+
+        Object.keys(this.copyOfHistoryElement).forEach(function(key) {
+            if (this[key] === null) {
+                this[key] = "";
+            }
+            else{
+                while (this[key].includes(" null ")) {
+                    this[key] = this[key].replace(" null ", "");
+                }
+            }
+        }, this.copyOfHistoryElement);
+    }
+
+    setResultOfComplexOperationToDisplay() {
+        this.refreshCopyWithoutNulls();
+
+        this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg}`
+    }
+
+    setResultToDisplay() {
+        this.refreshCopyWithoutNulls();
+
+        this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`
+    }
+
 }
 
 class Operations extends Calculator {
-    constructor({root}, {history}) {
+    constructor({root},{history}, showConsoleInfo) {
         super({root});
         this.history = history;
 
-        this.historyElement = this.buttons.filter(item => {
+        this.history.setHistoryElement(this.buttons.filter(item => {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS2);
-        });
+        })[0]);
 
-        this.resultElement = this.buttons.filter(item => {
+        this.resultHTMLElement = this.buttons.filter(item => {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS3);
-        });
+        })[0];
 
+        this.resultHTMLElement.innerHTML = "0";
         this.firstArg = null;
         this.secondArg = null;
         this.currentOperation = null;
         this.result = null;
-        this.isPossibleDeletingFromDisplay = true;
         this.isEqualPressed = false;
+        this.isOperationPressed = false;
+        this.isComplexOperationPressed = false;
+        this.isNeededCleanResult = false;
+        this.consoleInfoFlag = false;
+
 
         this.bindFunctions();
         this.logic();
+        if (showConsoleInfo) {
+            this.showConsoleInfo(showConsoleInfo);
+        }
+
     }
 
     bindFunctions() {
         this.onClickNumber = this.onClickNumber.bind(this);
-        this.onClickBasicOperation= this.onClickBasicOperation.bind(this);
-        this.cleanAll = this.cleanAll.bind(this);
-        this.cleanLine = this.cleanLine.bind(this);
-        this.cleanLastSymbol = this.cleanLastSymbol.bind(this);
-        this.percent = this.percent.bind(this);
-        this.reverse = this.reverse.bind(this);
-        this.square = this.square.bind(this);
-        this.squareRoot = this.squareRoot.bind(this);
-        this.negate = this.negate.bind(this);
-        this.equal = this.equal.bind(this);
+        this.onClickPoint = this.onClickPoint.bind(this);
+        this.onClickNegate = this.onClickNegate.bind(this);
+        this.onClickBasicOperation = this.onClickBasicOperation.bind(this);
+        this.onClickCleanAll = this.onClickCleanAll.bind(this);
+        this.onClickCleanLine = this.onClickCleanLine.bind(this);
+        this.onClickCleanLastSymbol = this.onClickCleanLastSymbol.bind(this);
+        this.onClickPercent = this.onClickPercent.bind(this);
+        this.onClickReverse = this.onClickReverse.bind(this);
+        this.onClickSquare = this.onClickSquare.bind(this);
+        this.onClickSquareRoot = this.onClickSquareRoot.bind(this);
+        this.onClickEqual= this.onClickEqual.bind(this);
+    }
+
+    showConsoleInfo(flag) {
+        this.consoleInfoFlag = flag;
     }
 
     consoleInfo(text) {
+        if (!this.consoleInfoFlag) {
+            return;
+        }
+
         console.log(`${text}`, ' firstNumber:', this.firstArg, '; operation:', this.currentOperation, '; secondNumber:', this.secondArg, '; result:', this.result);
+        console.log(`Oper: ${this.isOperationPressed} ComplexOper: ${this.isComplexOperationPressed} Equal: ${this.isEqualPressed}`)
+    }
+
+    setResultToDisplay(content) {
+        if (content?.length > DEFAULT_VALUES.LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM) {//если длинна больше допустимой
+            this.resultHTMLElement.style.fontSize = "26px";
+        }
+        else {
+            this.resultHTMLElement.style.fontSize = "42px";
+        }
+
+        this.resultHTMLElement.innerHTML = content;
     }
 
     setOperation(content) {
         this.currentOperation = content;
     }
 
+    setIsOperationPressed(flag) {
+        this.isOperationPressed = flag;
+    }
+
+    getIsOperationPressed() {
+        return this.isOperationPressed;
+    }
+
+    setIsComplexOperationPressed(flag) {
+        this.isComplexOperationPressed = flag;
+    }
+
+    getIsComplexOperationPressed() {
+        return this.isComplexOperationPressed;
+    }
+
+    setIsNeededCleanResult(flag) {
+        this.isNeededCleanResult = flag;
+    }
+
+    getIsNeededCleanResult() {
+        return this.isNeededCleanResult;
+    }
+
     setIsEqualPressed(flag) {
         this.isEqualPressed = flag;
     }
 
-    setIsPossibleDeletingFromDisplay(flag) {
-        this.isPossibleDeletingFromDisplay = flag;
+    getIsEqualPressed() {
+        return this.isEqualPressed;
     }
 
-    setPoint() {
-        if (!this.isPossibleDeletingFromDisplay) {
-            this.secondArg = `${BUTTONS_CONTENT.ZERO}.`;
-            this.resultElement[0].innerHTML = `${this.secondArg}`;
+    onClickPoint() {
+        if (this.getIsComplexOperationPressed()) {//Если была нажата комп. операция, то стираем из истории предидущее действие из истории
+            this.history.cleanLine();
+            this.history.cleanCurrentOperation();
+            this.history.setResultToDisplay();
+        }
 
-            //this.history.operationType(ELEMENTS_PROPERTY.OPERATION_TYPE_OTHER);
-            this.setIsPossibleDeletingFromDisplay(1);
+        if (this.getIsNeededCleanResult()) {//если была нажата операция, стираем строку с дисплея
+            this.history.setHistoryData({
+                currentOperation: this.currentOperation,
+                secondArg:this.secondArg});
+            this.history.additionFirstArg();
+            this.secondArg = BUTTONS_CONTENT.ZERO;
+            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}.`);
+            this.setIsNeededCleanResult(false);
+            this.setIsOperationPressed(false);
+            this.setIsComplexOperationPressed(false);
+            this.setIsEqualPressed(false);
+            this.consoleInfo(`setPoint`);
 
             return;
         }
 
         if (this.secondArg?.includes(".")) {//если точка уже есть в числе
-            return;
-        }
-
-        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-            this.secondArg = BUTTONS_CONTENT.ZERO;
-            this.resultElement[0].innerHTML = `${this.secondArg}`;
-
-            //this.history.operationType(ELEMENTS_PROPERTY.OPERATION_TYPE_OTHER);
-        }
-
-        this.secondArg = `${this.secondArg}.`;
-        this.resultElement[0].innerHTML = `${this.secondArg}`;
-
-        //this.history.operationType = ELEMENTS_PROPERTY.OPERATION_TYPE_OTHER;
-    }
-
-    setNumber(content) {
-        if (this.secondArg?.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
-            return;
-        }
-
-        if (!this.isPossibleDeletingFromDisplay) {
-            this.secondArg = `${content}`;
-            this.resultElement[0].innerHTML = `${this.secondArg}`;
-
-            //this.history.operationType = ELEMENTS_PROPERTY.OPERATION_TYPE_OTHER;
-            this.setIsPossibleDeletingFromDisplay(1);
+            this.consoleInfo(`setPoint`);
 
             return;
         }
 
         if ((this.secondArg === BUTTONS_CONTENT.ZERO) ||
             (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
-            this.secondArg = `${content}`;
-            this.resultElement[0].innerHTML = `${this.secondArg}`;
+            this.secondArg = `${BUTTONS_CONTENT.ZERO}.`;
 
-            //this.history.operationType = ELEMENTS_PROPERTY.OPERATION_TYPE_OTHER;
+            this.setResultToDisplay(`${this.secondArg}`);
+            this.consoleInfo(`setNumber`);
 
             return;
         }
-
-        this.secondArg = `${this.secondArg}${content}`;
-        this.resultElement[0].innerHTML = `${this.secondArg}`;
-
-        //this.history.operationType = ELEMENTS_PROPERTY.OPERATION_TYPE_OTHER;
     }
 
     onClickNumber(event) {
         const content = event.target.dataset.text;
 
-        if (content === BUTTONS_CONTENT.POINT) {
-            this.setPoint();
+        if (this.getIsComplexOperationPressed()) {
+            this.history.cleanLine();
+            this.history.cleanCurrentOperation();
+            this.history.setResultToDisplay();
+        }
+
+        if (this.getIsNeededCleanResult()) {//если была нажата операция, стираем строку с дисплея
+            this.history.setHistoryData({
+                currentOperation: this.currentOperation,
+                secondArg:this.secondArg});
+            this.history.additionFirstArg();
+            this.secondArg = BUTTONS_CONTENT.ZERO;
+            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+            this.setIsNeededCleanResult(false);
+            this.setIsOperationPressed(false);
+            this.setIsComplexOperationPressed(false);
+            this.setIsEqualPressed(false);
+            this.consoleInfo(`setNumber`);
+        }
+
+        if (this.secondArg?.length > DEFAULT_VALUES.MAX_LINE_LENGTH) {//если длинна больше допустимой
+            return;
+        }
+
+        if ((this.secondArg === BUTTONS_CONTENT.ZERO) ||
+            (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
+            this.secondArg = `${content}`;
+
+            this.setResultToDisplay(`${this.secondArg}`);
             this.consoleInfo(`setNumber`);
 
             return;
         }
 
-        this.setNumber(content);
+        this.secondArg = `${this.secondArg}${content}`;
+        this.setResultToDisplay(`${this.secondArg}`);
+        this.setIsOperationPressed(false);
+        this.setIsComplexOperationPressed(false);
+        this.setIsEqualPressed(false);
         this.consoleInfo(`setNumber`);
     }
 
     onClickBasicOperation(event) {
         const content = event.target.dataset.text;
-        this.firstArg = this.secondArg;
 
-        this.setIsPossibleDeletingFromDisplay(0);
-        this.setOperation(content);
+        if (this.firstArg === null && this.secondArg === null) {//все значения не были заданы
+            this.secondArg = `${0}`;
+        }
 
-        if (!this.isPossibleDeletingFromDisplay) {
-            this.history.setHistoryData(this.result, ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION, this.currentOperation);
+        if (!this.getIsOperationPressed() && this.firstArg !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {//последовательный подсчет (без нажатия на =)
+            if (this.result !== null){
+                this.firstArg = this.result;
+            }
+
+            if (this.getIsEqualPressed()) {
+                this.secondArg = this.result
+            }
+
+            this.execBasicOperation(this.result);
+            this.setResultToDisplay(`${this.result}`);
+            this.consoleInfo(`equal`);
+            this.setOperation(content);
+
+            if (this.getIsComplexOperationPressed()) {
+                this.history.setHistoryData({
+                    currentOperation: this.currentOperation})
+            }
+            else {
+                this.history.setHistoryData({
+                    currentOperation: this.currentOperation,
+                    secondArg:this.secondArg});
+            }
+
+            this.history.setResultToDisplay()
+            this.setIsOperationPressed(true);
+            this.setIsComplexOperationPressed(false);
+            this.setIsNeededCleanResult(true);
+            this.setIsEqualPressed(false);
+
+            return;
+        }
+
+        if (this.result === DEFAULT_VALUES.DEFAULT_RESULT) {
+            this.firstArg = this.secondArg;
         }
         else {
-            this.history.setHistoryData(this.secondArg, ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION, this.currentOperation);
+            this.firstArg = this.result;
         }
 
+        if (this.getIsEqualPressed()) {
+            this.secondArg = this.result
+        }
 
-        this.historyElement[0].innerHTML = this.history.historyList;
+        this.setOperation(content);
 
+        if (this.getIsComplexOperationPressed()) {
+            this.history.setHistoryData({
+                currentOperation: this.currentOperation})
+        }
+        else {
+            this.history.setHistoryData({
+                currentOperation: this.currentOperation,
+                secondArg:this.secondArg});
+        }
+
+        this.history.setResultToDisplay()
+        this.setIsOperationPressed(true);
+        this.setIsComplexOperationPressed(false);
+        this.setIsNeededCleanResult(true);
+        this.setIsEqualPressed(false);
         this.consoleInfo(`setOperation`);
     }
 
-    cleanAll() {
+    onClickCleanAll() {
         this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         this.firstArg = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
         this.result = DEFAULT_VALUES.DEFAULT_RESULT;
-
-        this.history.cleanHistoryList();
-
-        this.historyElement[0].innerHTML = this.history.historyList;
-        this.resultElement[0].innerHTML = `${BUTTONS_CONTENT.ZERO}`;
-
+        this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         this.setOperation(DEFAULT_VALUES.DEFAULT_OPERATION);
+        this.history.cleanAll();
+        this.history.setResultToDisplay();
+        this.setIsOperationPressed(false);
+        this.setIsComplexOperationPressed(false);
+        this.setIsEqualPressed(false);
         this.consoleInfo("cleanAll");
     }
 
-    cleanLine() {
-        this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-        this.resultElement[0].innerHTML = `${BUTTONS_CONTENT.ZERO}`;
+    onClickCleanLine() {
+        if (this.getIsOperationPressed() || this.getIsComplexOperationPressed()) {
+            this.secondArg = BUTTONS_CONTENT.ZERO;
 
+            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+            this.history.setResultToDisplay();
+            this.consoleInfo("cleanLine");
+
+            return;
+        }
+
+        this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+        this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+        this.history.cleanLine();
+        this.history.setResultToDisplay();
         this.consoleInfo("cleanLine");
     }
 
-    cleanLastSymbol() {
-        if (!this.isPossibleDeletingFromDisplay) {
+    onClickCleanLastSymbol() {
+        if (this.getIsOperationPressed() || this.getIsComplexOperationPressed() || this.getIsEqualPressed()) {
             this.consoleInfo("cleanLastSymbol");
 
             return;
         }
 
-        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если нет значения
             this.consoleInfo("cleanLastSymbol");
 
             return;
         }
 
         this.secondArg = this.secondArg?.slice(0, this.secondArg?.length - 1);
-        this.resultElement[0].innerHTML = `${this.secondArg}`;
+        this.setResultToDisplay(`${this.secondArg}`);
 
-        if (this.secondArg === "" || this.secondArg === "-") {
+        if (this.secondArg === "" || this.secondArg === "-") {//если после стирания остался '-' или ничего
             this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-            this.resultElement[0].innerHTML = `${BUTTONS_CONTENT.ZERO}`;
+            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         }
 
         this.consoleInfo("cleanLastSymbol");
     }
 
-    percent() {
-        if (!this.firstArg) {
+    onClickPercent() {
+        if (!this.firstArg) {//для вычисления необходимы все переменные
             this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
             this.result = BUTTONS_CONTENT.ZERO;
-            this.resultElement[0].innerHTML = `${this.result}`;
-
-            this.history.cleanHistoryList();
-            this.setIsPossibleDeletingFromDisplay(0);
+            this.setResultToDisplay(`${this.result}`);
+            this.setIsComplexOperationPressed(true);
             this.consoleInfo("percent");
 
             return;
         }
 
-        if (this.currentOperation === BUTTONS_CONTENT.ADDITION || this.currentOperation === BUTTONS_CONTENT.SUBTRACTION) {
-            this.result = `${this.firstArg / 100 * this.secondArg}`;
-            this.resultElement[0].innerHTML = `${this.result}`;
-
-            this.setIsPossibleDeletingFromDisplay(0);
-            this.consoleInfo("percent");
-
-            return;
+        if (this.getIsComplexOperationPressed()) {
+            this.history.cleanLine();
+            this.history.cleanCurrentOperation();
         }
 
-        if (this.currentOperation === BUTTONS_CONTENT.MULTIPLICATION || this.currentOperation === BUTTONS_CONTENT.DIVISION) {
-            this.secondArg = `${this.firstArg / 100}`;
-            this.resultElement[0].innerHTML = `${this.result}`;
-
-            this.setIsPossibleDeletingFromDisplay(0);
-            this.consoleInfo("percent");
-
-            return;
-        }
+        //this.history.additionFirstArg();
+        this.secondArg = `${this.firstArg / 100 * this.secondArg}`;
+        this.history.setHistoryData({
+            currentOperation: null,
+            secondArg:this.secondArg});
+        this.history.setResultToDisplay();
+        this.setResultToDisplay(`${this.secondArg}`);
+        this.setIsComplexOperationPressed(true);
+        this.setIsNeededCleanResult(true);
+        this.consoleInfo("percent");
     }
 
-    reverse() {
+    onClickReverse() {
         if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.consoleInfo("reverse");//нельзя делить на ноль (пустое значение)
 
@@ -669,54 +855,138 @@ class Operations extends Calculator {
             return;
         }
 
-        this.result = `${1 / Number(this.secondArg)}`;
-        this.history.setHistoryData(this.secondArg, ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION, BUTTONS_CONTENT.REVERSE)
-        this.historyElement[0].innerHTML = this.history.historyList;
-        this.resultElement[0].innerHTML = this.result;
+        if (this.getIsOperationPressed()) {
+            this.history.additionFirstArg();
+        }
 
-        this.setIsPossibleDeletingFromDisplay(0);
+        if (!this.getIsComplexOperationPressed()) {//начальная передача числа при последовательном нажатии на компл. операции
+            this.history.setHistoryData({
+                secondArg:this.secondArg});
+        }
+
+        this.history.changeToHistoryElement(BUTTONS_CONTENT.REVERSE);
+        this.history.setResultOfComplexOperationToDisplay();
+        this.secondArg = `${1 / Number(this.secondArg)}`;
+        this.setResultToDisplay(this.secondArg);
+        this.setIsComplexOperationPressed(true);
+        this.setIsOperationPressed(false);
+        this.setIsNeededCleanResult(true);
         this.consoleInfo("reverse");
     }
 
-    square() {
-        this.result = `${Math.pow(Number(this.secondArg), 2)}`;
-        this.history.setHistoryData(this.secondArg, ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION, BUTTONS_CONTENT.SQUARE)
-        this.historyElement[0].innerHTML = this.history.historyList;
-        this.resultElement[0].innerHTML = this.result;
+    onClickSquare() {
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondArg = BUTTONS_CONTENT.ZERO;
+        }
 
-        this.setIsPossibleDeletingFromDisplay(0);
+        if (this.getIsOperationPressed()) {
+            this.history.additionFirstArg();
+        }
+
+        if (!this.getIsComplexOperationPressed()) {//начальная передача числа при последовательном нажатии на компл. операции
+            this.history.setHistoryData({
+                secondArg:this.secondArg});
+        }
+
+        this.history.changeToHistoryElement(BUTTONS_CONTENT.SQUARE);
+        this.history.setResultOfComplexOperationToDisplay();
+        this.secondArg = `${Math.pow(Number(this.secondArg), 2)}`;
+        this.setResultToDisplay(this.secondArg);
+        this.setIsComplexOperationPressed(true);
+        this.setIsOperationPressed(false);
+        this.setIsNeededCleanResult(true);
         this.consoleInfo("square");
     }
 
-    squareRoot() {
-        this.result = `${Math.sqrt(Number(this.secondArg))}`;
-        this.resultElement[0].innerHTML = this.result;
-        this.history.setHistoryData(this.secondArg, ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION, BUTTONS_CONTENT.SQUARE_ROOT)
-        this.historyElement[0].innerHTML = this.history.historyList;
+    onClickSquareRoot() {
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondArg = BUTTONS_CONTENT.ZERO;
+        }
 
+        if (this.getIsOperationPressed()) {
+            this.history.additionFirstArg();
+        }
 
-        this.setIsPossibleDeletingFromDisplay(0);
+        if (!this.getIsComplexOperationPressed()) {//начальная передача числа при последовательном нажатии на компл. операции
+            this.history.setHistoryData({
+                secondArg:this.secondArg});
+        }
+
+        this.history.changeToHistoryElement(BUTTONS_CONTENT.SQUARE_ROOT);
+        this.history.setResultOfComplexOperationToDisplay();
+        this.secondArg = `${Math.sqrt(Number(this.secondArg))}`;
+        this.setResultToDisplay(this.secondArg);
+        this.setIsComplexOperationPressed(true);
+        this.setIsOperationPressed(false);
+        this.setIsNeededCleanResult(true);
         this.consoleInfo("squareRoot");
     }
 
-    negate() {
-        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER && this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
-            this.consoleInfo("negate");
+    onClickNegate() {
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.secondArg = BUTTONS_CONTENT.ZERO;
+        }
+
+        if (this.getIsOperationPressed()) {
+            this.history.additionFirstArg();
+        }
+
+        if (!this.getIsComplexOperationPressed()) {//начальная передача числа при последовательном нажатии на компл. операции
+            this.history.setHistoryData({
+                secondArg:this.secondArg});
+        }
+
+        this.history.changeToHistoryElement(BUTTONS_CONTENT.NEGATE);
+        this.history.setResultOfComplexOperationToDisplay();
+        this.secondArg = `${Number(this.secondArg) * -1}`;
+        this.setResultToDisplay(this.secondArg);
+        this.setIsComplexOperationPressed(true);
+        this.setIsOperationPressed(false);
+        this.setIsNeededCleanResult(true);
+        this.consoleInfo("negate");
+    }
+
+    onClickEqual() {
+        if (this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
+            this.result = `${Number(this.secondArg)}`;
+            this.setResultToDisplay(this.result);
+            this.history.setHistoryData({result: this.result})
+            this.history.pushInHistoryList();
+            this.history.cleanAll();
+            this.history.setHistoryData({
+                secondArg:this.result});
+            this.setIsEqualPressed(true);
+            this.setIsOperationPressed(true);
+            this.consoleInfo("equal");
 
             return;
         }
 
-        this.result = `${Number(this.secondArg) * -1}`;
-        this.resultElement[0].innerHTML = this.result;
-        this.history.setHistoryData(this.secondArg, ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION, BUTTONS_CONTENT.NEGATE)
-        this.historyElement[0].innerHTML = this.history.historyList;
+        if (this.getIsEqualPressed()) {
+         this.firstArg = this.result;
+        }
 
-        this.consoleInfo("negate");
+        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если не было введенного значения после выбора знака
+            this.secondArg = this.firstArg;
+        }
+
+        this.execBasicOperation(this.result);
+        this.setResultToDisplay(this.result);
+        this.history.setHistoryData({result: this.result})
+        this.history.pushInHistoryList();
+        this.history.cleanAll();
+        this.history.setResultToDisplay();
+        this.history.setHistoryData({
+            secondArg:this.result});
+        this.setIsEqualPressed(true);
+        this.setIsOperationPressed(true);
+        this.setIsNeededCleanResult(true);
+        this.consoleInfo("equal");
     }
 
     execBasicOperation(param) {
         if (!param) {
-            param =this.firstArg;
+            param = this.firstArg;
         }
 
         switch (this.currentOperation) {
@@ -743,41 +1013,6 @@ class Operations extends Calculator {
         }
     }
 
-    equal() {
-        if (this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
-            this.result = `${Number(this.secondArg)}`;
-
-            this.consoleInfo("equal");
-            this.setIsPossibleDeletingFromDisplay(0);
-            this.setIsEqualPressed(1);
-            this.history.cleanHistoryList();
-
-            this.historyElement[0].innerHTML = this.history.historyList;
-            this.resultElement[0].innerHTML = this.result;
-
-            return;
-        }
-
-        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-            this.secondArg = this.firstArg;
-        }
-
-        if (this.isEqualPressed) {
-            this.execBasicOperation(this.result);
-        }
-        else {
-            this.execBasicOperation(this.firstArg);
-        }
-
-        this.consoleInfo("equal");
-        this.setIsPossibleDeletingFromDisplay(0);
-        this.setIsEqualPressed(1);
-        this.history.cleanHistoryList();
-
-        this.historyElement[0].innerHTML = this.history.historyList;
-        this.resultElement[0].innerHTML = this.result;
-    }
-
     addition(param) {
         this.result = `${Number(param) + Number(this.secondArg)}`;
     }
@@ -787,76 +1022,201 @@ class Operations extends Calculator {
     }
 
     multiplication(param) {
-                this.result = `${Number(param) * Number(this.secondArg)}`
+        this.result = `${Number(param) * Number(this.secondArg)}`
     }
 
     division(param) {
         this.result = `${Number(param) / Number(this.secondArg)}`
     }
 
+    numberOperations(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.ONE: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.TWO: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.THREE: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.FOUR: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.FIVE: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.SIX: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.SEVEN: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.EIGHT: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.NINE: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+            case BUTTONS_CONTENT.ZERO: {
+                item.onclick = this.onClickNumber;
+
+                break;
+            }
+        }
+    }
+
+    pointOperation(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.POINT: {
+                item.onclick = this.onClickPoint;
+
+                break;
+            }
+        }
+    }
+
+    cleanupOperations(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.CLEAN_LINE: {
+                item.onclick = this.onClickCleanLine;
+
+                break;
+            }
+            case BUTTONS_CONTENT.CLEAN_ALL: {
+                item.onclick = this.onClickCleanAll;
+
+                break;
+            }
+            case BUTTONS_CONTENT.CLEAN_SYMBOL: {
+                item.onclick = this.onClickCleanLastSymbol;
+
+                break;
+            }
+        }
+    }
+
+    complexOperations(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.PERCENT: {
+                item.onclick = this.onClickPercent;
+
+                break;
+            }
+            case BUTTONS_CONTENT.SQUARE: {
+                item.onclick = this.onClickSquare;
+
+                break;
+            }
+            case BUTTONS_CONTENT.SQUARE_ROOT: {
+                item.onclick = this.onClickSquareRoot;
+
+                break;
+            }
+            case BUTTONS_CONTENT.REVERSE: {
+                item.onclick = this.onClickReverse;
+
+                break;
+            }
+            case BUTTONS_CONTENT.NEGATE: {
+                item.onclick = this.onClickNegate;
+
+                break;
+            }
+        }
+    }
+
+    basicOperations(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.ADDITION: {
+                item.onclick = this.onClickBasicOperation;
+
+                break;
+            }
+            case BUTTONS_CONTENT.SUBTRACTION: {
+                item.onclick = this.onClickBasicOperation;
+
+                break;
+            }
+            case BUTTONS_CONTENT.MULTIPLICATION: {
+                item.onclick = this.onClickBasicOperation;
+
+                break;
+            }
+            case BUTTONS_CONTENT.DIVISION: {
+                item.onclick = this.onClickBasicOperation;
+
+                break;
+            }
+        }
+    }
+
+    equalOperation(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.EQUAL: {
+                item.onclick = this.onClickEqual;
+
+                break;
+            }
+        }
+    }
+
     logic() {
         this.buttons.forEach(item => {
-            switch (item.dataset.text) {
-                case BUTTONS_CONTENT.PERCENT: {
-                    item.onclick = this.percent;
+            switch (item.dataset.type) {
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER: {
+                    this.numberOperations(item);
 
                     break;
                 }
-                case BUTTONS_CONTENT.CLEAN_LINE: {
-                    item.onclick = this.cleanLine;
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_POINT: {
+                    this.pointOperation(item);
 
                     break;
                 }
-                case BUTTONS_CONTENT.CLEAN_ALL: {
-                    item.onclick = this.cleanAll;
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION: {
+                    this.cleanupOperations(item);
 
                     break;
                 }
-                case BUTTONS_CONTENT.CLEAN_SYMBOL: {
-                    item.onclick = this.cleanLastSymbol;
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION: {
+                    this.complexOperations(item);
 
                     break;
                 }
-                case BUTTONS_CONTENT.REVERSE: {
-                    item.onclick = this.reverse;
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION: {
+                    this.basicOperations(item);
 
                     break;
                 }
-                case BUTTONS_CONTENT.SQUARE: {
-                    item.onclick = this.square;
+                case ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL: {
+                    this.equalOperation(item);
 
                     break;
                 }
-                case BUTTONS_CONTENT.SQUARE_ROOT: {
-                    item.onclick = this.squareRoot;
-
+                case ELEMENTS_PROPERTY.DISPLAY_TYPE: {
                     break;
                 }
-                case BUTTONS_CONTENT.NEGATE: {
-                    item.onclick = this.negate;
-
-                    break;
-                }
-                case BUTTONS_CONTENT.EQUAL: {
-                    item.onclick = this.equal;
-
-                    break;
-                }
-                //!! сделать методы для каждого типа кнопок со свичами
-                //!! в каждом методе для каждого типа если надо свич с логикой с конкретной операцией
                 default: {
-                    if (item.dataset.type === ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER) {
-                        item.onclick = this.onClickNumber;
-                        //!! разделить логику для чисел и точки, соответственно вынести точку из типа OPERATION_TYPE_NUMBER
-                        break;
-                    }
-
-                    if (item.dataset.type === ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION) {
-                        item.onclick = this.onClickBasicOperation;
-
-                        break;
-                    }
-                    //!! error для несуществующего типа
+                    console.warn(`Element ${item.dataset.type} has no initialized logic`);
                 }
             }
         })
@@ -874,8 +1234,22 @@ class Operations extends Calculator {
 //переделать части истории в массив
 //инициализ экз класса history выше (классе калькулятр, передать экземпляр параметром)
 
+//--------------
+
+//isOperationPressed
+//если была нажата операция и введено какое либо число, то нажатие на операцию вызовет срабатывание equal
+//если была нажата операция, любая комплексная операция или equal сработает на введенное значение или предыдущий результат (если не было введено)
+
+//isComplexOperationPressed
+//если была нажата комплексная операция, то любае нажатие на число (или точку) вызовет срабатывание cleanAll
+//вычисления после нажатия закидывать в result
+
+//оставлять secondNumber и с использованием isOperationPressed стирать его при опр условиях(работает для последовательных баз операций)
+//
+
 const af = new Operations({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
     }, {
-    history: new History()
-    });
+    history: new History(),
+    },
+    true);
