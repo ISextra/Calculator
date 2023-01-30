@@ -228,6 +228,7 @@ class DomRendererElement {
         }
         if (switchOfButtonsClickability) {
             element.style.color = "gray";
+            element.style.cursor = "inherit";
         }
 
         return element;
@@ -1296,6 +1297,6 @@ const calculator = new Calculator({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
     history: new History(),
     showConsoleInfo: false,
-    switchOfButtonsClickability: false,
+    switchOfButtonsClickability: true,
     },
 );
