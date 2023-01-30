@@ -207,6 +207,7 @@ class DomRendererElement {
             textContent,
             datasetText,
             datasetType,
+            switchOfButtonsClickability
         } = params;
 
         const element = document.createElement(tagName);
@@ -224,6 +225,9 @@ class DomRendererElement {
         }
         if (datasetType) {
             element.dataset.type = datasetType;
+        }
+        if (switchOfButtonsClickability) {
+            element.style.color = "gray";
         }
 
         return element;
@@ -278,18 +282,31 @@ class Calculator {
             root,
             history,
             showConsoleInfo,
+            switchOfButtonsClickability,
         } = rootData
 
         this.root = root;
+        this.switchOfButtonsClickability = false;
+        this.showConsoleInfo = false;
+
+        if (typeof switchOfButtonsClickability !== undefined) {
+            this.switchOfButtonsClickability = switchOfButtonsClickability;
+        }
+
+        if (typeof showConsoleInfo !== undefined) {
+            this.showConsoleInfo =  showConsoleInfo;
+        }
 
         this.render();
 
-        this.operations = new Operations({
-                buttons: this.buttons,
-                history: history,
-                showConsoleInfo: showConsoleInfo
-            },
-        );
+        if (!this.switchOfButtonsClickability) {
+            this.operations = new Operations({
+                    buttons: this.buttons,
+                    history: history,
+                    showConsoleInfo: this.showConsoleInfo,
+                },
+            );
+        }
     }
     render() {
         this.buttons = ELEMENTS.map(item => {
@@ -301,6 +318,7 @@ class Calculator {
                         tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
                         classNames: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.DISPLAY_CLASS],
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER: {
@@ -312,6 +330,7 @@ class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_POINT: {
@@ -323,6 +342,7 @@ class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION: {
@@ -334,6 +354,7 @@ class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION: {
@@ -345,6 +366,7 @@ class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION: {
@@ -356,6 +378,7 @@ class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL: {
@@ -367,6 +390,7 @@ class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
             }
@@ -1271,6 +1295,7 @@ class Operations {
 const calculator = new Calculator({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
     history: new History(),
-    showConsoleInfo: true,
+    showConsoleInfo: false,
+    switchOfButtonsClickability: false,
     },
 );
