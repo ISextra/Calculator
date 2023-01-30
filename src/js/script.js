@@ -623,6 +623,17 @@ class Operations {
         return this.isEqualPressed;
     }
 
+    processingDivideByZero() {
+        if (Number(this.secondArg) === 0 || this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
+            this.onClickCleanAll();
+            this.setResultToDisplay("Cant divide by zero");
+
+            return true;
+        }
+
+        return false;
+    }
+
     onClickPoint() {
         if (this.getIsComplexOperationPressed()) {//Если была нажата комп. операция, то стираем из истории предидущее действие из истории
             this.history.cleanLine();
@@ -717,6 +728,10 @@ class Operations {
         }
 
         if (!this.getIsOperationPressed() && this.firstArg !== DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {//последовательный подсчет (без нажатия на =)
+            if (this.processingDivideByZero()) {
+                return;
+            }
+
             if (this.result !== null){
                 this.firstArg = this.result;
             }
@@ -866,11 +881,7 @@ class Operations {
     }
 
     onClickReverse() {
-        if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
-            this.consoleInfo("reverse");//нельзя делить на ноль (пустое значение)
-
-            console.log("Cannot divide by zero");
-
+        if (this.processingDivideByZero()) {
             return;
         }
 
@@ -999,7 +1010,6 @@ class Operations {
         }
 
         this.execBasicOperation(this.result);
-        this.setResultToDisplay(this.result);
         this.history.setHistoryData({result: this.result})
         this.history.pushInHistoryList();
         this.history.cleanAll();
@@ -1035,7 +1045,6 @@ class Operations {
             }
             case  BUTTONS_CONTENT.DIVISION: {
                 this.division(param);
-
                 break;
             }
         }
@@ -1043,18 +1052,26 @@ class Operations {
 
     addition(param) {
         this.result = `${Number(param) + Number(this.secondArg)}`;
+        this.setResultToDisplay(this.result);
     }
 
     subtraction(param) {
-        this.result = `${Number(param) - Number(this.secondArg)}`
+        this.result = `${Number(param) - Number(this.secondArg)}`;
+        this.setResultToDisplay(this.result);
     }
 
     multiplication(param) {
-        this.result = `${Number(param) * Number(this.secondArg)}`
+        this.result = `${Number(param) * Number(this.secondArg)}`;
+        this.setResultToDisplay(this.result);
     }
 
     division(param) {
+        if (this.processingDivideByZero()) {
+            return;
+        }
+
         this.result = `${Number(param) / Number(this.secondArg)}`
+        this.setResultToDisplay(this.result);
     }
 
     numberOperations(item) {
