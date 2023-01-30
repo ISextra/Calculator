@@ -273,11 +273,23 @@ class ButtonEqual extends Button{
 }
 
 class Calculator {
-    constructor({root}) {
+    constructor(rootData) {
+        const {
+            root,
+            history,
+            showConsoleInfo,
+        } = rootData
+
         this.root = root;
 
         this.render();
 
+        this.operations = new Operations({
+                buttons: this.buttons,
+                history: history,
+                showConsoleInfo: showConsoleInfo
+            },
+        );
     }
     render() {
         this.buttons = ELEMENTS.map(item => {
@@ -418,7 +430,6 @@ class History {
             result
         } = element;
 
-
         if (currentOperation !== undefined) {
             this.historyElement.currentOperation = currentOperation;
         }
@@ -459,11 +470,9 @@ class History {
     }
 
     additionFirstArg() {
-
         if (this.historyElement.firstArg === null) {
             this.historyElement.firstArg = `${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation} `;
-        }
-        else {
+        } else {
             this.historyElement.firstArg = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`;
         }
 
@@ -475,8 +484,7 @@ class History {
         Object.keys(this.copyOfHistoryElement).forEach(function(key) {
             if (this[key] === null) {
                 this[key] = "";
-            }
-            else{
+            } else {
                 while (this[key].includes(" null ")) {
                     this[key] = this[key].replace(" null ", "");
                 }
@@ -495,22 +503,31 @@ class History {
 
         this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`
     }
-
 }
 
-class Operations extends Calculator {
-    constructor({root},{history}, showConsoleInfo) {
-        super({root});
+class Operations {
+    constructor(operationsData) {
+        const {
+            buttons,
+            history,
+            showConsoleInfo,
+        } = operationsData
+
+        this.buttons = buttons;
         this.history = history;
+        this.isShownConsoleInfo = showConsoleInfo;
 
-        this.history.setHistoryElement(this.buttons.filter(item => {
+        const [historyElement] = this.buttons.filter(item => {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS2);
-        })[0]);
+        });
 
-        this.resultHTMLElement = this.buttons.filter(item => {
+        this.history.setHistoryElement(historyElement);
+
+        const [resultElement] = this.buttons.filter(item => {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS3);
-        })[0];
+        });
 
+        this.resultHTMLElement = resultElement;
         this.resultHTMLElement.innerHTML = "0";
         this.firstArg = null;
         this.secondArg = null;
@@ -520,15 +537,14 @@ class Operations extends Calculator {
         this.isOperationPressed = false;
         this.isComplexOperationPressed = false;
         this.isNeededCleanResult = false;
-        this.consoleInfoFlag = false;
-
+        this.isShownConsoleInfo = false;
 
         this.bindFunctions();
-        this.logic();
+        this.setOperationsLogic();
+
         if (showConsoleInfo) {
             this.showConsoleInfo(showConsoleInfo);
         }
-
     }
 
     bindFunctions() {
@@ -547,11 +563,11 @@ class Operations extends Calculator {
     }
 
     showConsoleInfo(flag) {
-        this.consoleInfoFlag = flag;
+        this.isShownConsoleInfo = flag;
     }
 
     consoleInfo(text) {
-        if (!this.consoleInfoFlag) {
+        if (!this.isShownConsoleInfo) {
             return;
         }
 
@@ -560,14 +576,15 @@ class Operations extends Calculator {
     }
 
     setResultToDisplay(content) {
+        this.resultHTMLElement.innerHTML = content;
+
         if (content?.length > DEFAULT_VALUES.LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM) {//если длинна больше допустимой
             this.resultHTMLElement.style.fontSize = "26px";
-        }
-        else {
-            this.resultHTMLElement.style.fontSize = "42px";
+
+            return
         }
 
-        this.resultHTMLElement.innerHTML = content;
+        this.resultHTMLElement.style.fontSize = "42px";
     }
 
     setOperation(content) {
@@ -660,6 +677,7 @@ class Operations extends Calculator {
                 currentOperation: this.currentOperation,
                 secondArg:this.secondArg});
             this.history.additionFirstArg();
+
             this.secondArg = BUTTONS_CONTENT.ZERO;
             this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
             this.setIsNeededCleanResult(false);
@@ -715,8 +733,7 @@ class Operations extends Calculator {
             if (this.getIsComplexOperationPressed()) {
                 this.history.setHistoryData({
                     currentOperation: this.currentOperation})
-            }
-            else {
+            } else {
                 this.history.setHistoryData({
                     currentOperation: this.currentOperation,
                     secondArg:this.secondArg});
@@ -733,8 +750,7 @@ class Operations extends Calculator {
 
         if (this.result === DEFAULT_VALUES.DEFAULT_RESULT) {
             this.firstArg = this.secondArg;
-        }
-        else {
+        } else {
             this.firstArg = this.result;
         }
 
@@ -747,8 +763,7 @@ class Operations extends Calculator {
         if (this.getIsComplexOperationPressed()) {
             this.history.setHistoryData({
                 currentOperation: this.currentOperation})
-        }
-        else {
+        } else {
             this.history.setHistoryData({
                 currentOperation: this.currentOperation,
                 secondArg:this.secondArg});
@@ -766,6 +781,7 @@ class Operations extends Calculator {
         this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
         this.firstArg = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
         this.result = DEFAULT_VALUES.DEFAULT_RESULT;
+
         this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         this.setOperation(DEFAULT_VALUES.DEFAULT_OPERATION);
         this.history.cleanAll();
@@ -788,6 +804,7 @@ class Operations extends Calculator {
         }
 
         this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
+
         this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         this.history.cleanLine();
         this.history.setResultToDisplay();
@@ -808,6 +825,7 @@ class Operations extends Calculator {
         }
 
         this.secondArg = this.secondArg?.slice(0, this.secondArg?.length - 1);
+
         this.setResultToDisplay(`${this.secondArg}`);
 
         if (this.secondArg === "" || this.secondArg === "-") {//если после стирания остался '-' или ничего
@@ -822,6 +840,7 @@ class Operations extends Calculator {
         if (!this.firstArg) {//для вычисления необходимы все переменные
             this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
             this.result = BUTTONS_CONTENT.ZERO;
+
             this.setResultToDisplay(`${this.result}`);
             this.setIsComplexOperationPressed(true);
             this.consoleInfo("percent");
@@ -834,8 +853,8 @@ class Operations extends Calculator {
             this.history.cleanCurrentOperation();
         }
 
-        //this.history.additionFirstArg();
         this.secondArg = `${this.firstArg / 100 * this.secondArg}`;
+
         this.history.setHistoryData({
             currentOperation: null,
             secondArg:this.secondArg});
@@ -866,7 +885,9 @@ class Operations extends Calculator {
 
         this.history.changeToHistoryElement(BUTTONS_CONTENT.REVERSE);
         this.history.setResultOfComplexOperationToDisplay();
+
         this.secondArg = `${1 / Number(this.secondArg)}`;
+
         this.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
@@ -890,7 +911,9 @@ class Operations extends Calculator {
 
         this.history.changeToHistoryElement(BUTTONS_CONTENT.SQUARE);
         this.history.setResultOfComplexOperationToDisplay();
+
         this.secondArg = `${Math.pow(Number(this.secondArg), 2)}`;
+
         this.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
@@ -914,7 +937,9 @@ class Operations extends Calculator {
 
         this.history.changeToHistoryElement(BUTTONS_CONTENT.SQUARE_ROOT);
         this.history.setResultOfComplexOperationToDisplay();
+
         this.secondArg = `${Math.sqrt(Number(this.secondArg))}`;
+
         this.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
@@ -938,7 +963,9 @@ class Operations extends Calculator {
 
         this.history.changeToHistoryElement(BUTTONS_CONTENT.NEGATE);
         this.history.setResultOfComplexOperationToDisplay();
+
         this.secondArg = `${Number(this.secondArg) * -1}`;
+
         this.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
@@ -949,6 +976,7 @@ class Operations extends Calculator {
     onClickEqual() {
         if (this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
             this.result = `${Number(this.secondArg)}`;
+
             this.setResultToDisplay(this.result);
             this.history.setHistoryData({result: this.result})
             this.history.pushInHistoryList();
@@ -963,7 +991,7 @@ class Operations extends Calculator {
         }
 
         if (this.getIsEqualPressed()) {
-         this.firstArg = this.result;
+            this.firstArg = this.result;
         }
 
         if (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {//если не было введенного значения после выбора знака
@@ -1179,7 +1207,7 @@ class Operations extends Calculator {
         }
     }
 
-    logic() {
+    setOperationsLogic() {
         this.buttons.forEach(item => {
             switch (item.dataset.type) {
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER: {
@@ -1216,40 +1244,16 @@ class Operations extends Calculator {
                     break;
                 }
                 default: {
-                    console.warn(`Element ${item.dataset.type} has no initialized logic`);
+                    console.warn(`Element ${item.dataset.type} has no initialized setOperationsLogic`);
                 }
             }
         })
     }
 }
 
-//обект с значениями операций
-// значения - описания
-// на основании операции заполнять дисплей
-// class operationLogger(history)
-
-//если при % было изменено число, второй аргумент стирается из истории
-//если оба аргумента введены, можно несколько раз нижимать знак равно
-
-//переделать части истории в массив
-//инициализ экз класса history выше (классе калькулятр, передать экземпляр параметром)
-
-//--------------
-
-//isOperationPressed
-//если была нажата операция и введено какое либо число, то нажатие на операцию вызовет срабатывание equal
-//если была нажата операция, любая комплексная операция или equal сработает на введенное значение или предыдущий результат (если не было введено)
-
-//isComplexOperationPressed
-//если была нажата комплексная операция, то любае нажатие на число (или точку) вызовет срабатывание cleanAll
-//вычисления после нажатия закидывать в result
-
-//оставлять secondNumber и с использованием isOperationPressed стирать его при опр условиях(работает для последовательных баз операций)
-//
-
-const af = new Operations({
+const calculator = new Calculator({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
-    }, {
     history: new History(),
+    showConsoleInfo: true,
     },
-    true);
+);
