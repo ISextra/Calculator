@@ -7,7 +7,7 @@ import History from "./history.js";
 const calculator = new Calculator({
     root: document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_MAIN),
     history: new History(),
-    showConsoleInfo: false,
-    switchOfButtonsClickability: true,
+    showConsoleInfo: true,
+    switchOfButtonsClickability: false,
     },
 );

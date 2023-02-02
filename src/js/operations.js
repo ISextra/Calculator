@@ -13,14 +13,19 @@ export default class Operations {
         this.isShownConsoleInfo = showConsoleInfo;
 
         const [historyElement] = this.buttons.filter(item => {
-            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS2);
+            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS_HISTORY_RESULT);
         });
 
-        this.history.setHistoryElement(historyElement);
+        this.historyElement = historyElement;
+        this.history.setHistoryElement(this.historyElement);
 
         const [resultElement] = this.buttons.filter(item => {
             return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS3);
         });
+
+        this.history.setMoveButtons(this.buttons.filter(item => {
+            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS_MOVE_BUTTON);
+        }));
 
         this.resultHTMLElement = resultElement;
         this.resultHTMLElement.innerHTML = "0";
@@ -55,6 +60,8 @@ export default class Operations {
         this.onClickSquare = this.onClickSquare.bind(this);
         this.onClickSquareRoot = this.onClickSquareRoot.bind(this);
         this.onClickEqual= this.onClickEqual.bind(this);
+        this.onClickMoveHistoryLeft= this.onClickMoveHistoryLeft.bind(this);
+        this.onClickMoveHistoryRight= this.onClickMoveHistoryRight.bind(this);
     }
 
     showConsoleInfo(flag) {
@@ -215,7 +222,7 @@ export default class Operations {
         this.consoleInfo(`setNumber`);
     }
 
-    onClickBasicOperation(event) {
+    onClickBasicOperation(event) {//---
         const content = event.target.dataset.text;
 
         if (this.firstArg === null && this.secondArg === null) {//все значения не были заданы
@@ -517,6 +524,16 @@ export default class Operations {
         this.consoleInfo("equal");
     }
 
+    onClickMoveHistoryLeft() {
+        this.historyElement.scrollLeft -= 35;
+        this.consoleInfo("moveHistory");
+    }
+
+    onClickMoveHistoryRight() {
+        this.historyElement.scrollLeft += 35;
+        this.consoleInfo("moveHistory");
+    }
+
     execBasicOperation(param) {
         if (!param) {
             param = this.firstArg;
@@ -719,6 +736,21 @@ export default class Operations {
         }
     }
 
+    moveOperation(item) {
+        switch (item.dataset.text) {
+            case BUTTONS_CONTENT.MOVE_LEFT: {
+                item.onclick = this.onClickMoveHistoryLeft;
+
+                break;
+            }
+            case BUTTONS_CONTENT.MOVE_RIGHT: {
+                item.onclick = this.onClickMoveHistoryRight;
+
+                break;
+            }
+        }
+    }
+
     setOperationsLogic() {
         this.buttons.forEach(item => {
             switch (item.dataset.type) {
@@ -752,11 +784,19 @@ export default class Operations {
 
                     break;
                 }
+                case ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON: {
+                    this.moveOperation(item);
+
+                    break;
+                }
                 case ELEMENTS_PROPERTY.DISPLAY_TYPE: {
                     break;
                 }
+                case ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT: {
+                    break;
+                }
                 default: {
-                    console.warn(`Element ${item.dataset.type} has no initialized setOperationsLogic`);
+                    console.warn(`Element ${item.dataset.type} has no initialized logic \n\tat setOperationsLogic() \n\tat operation.js`);
                 }
             }
         })

@@ -19,6 +19,26 @@ export default class History {
         this.historyHTMLElement = element;
     }
 
+    setMoveButtons(buttons) {
+        this.moveButtons = buttons;
+    }
+
+    showMoveButtons() {
+        this.moveButtons.forEach(item => {
+            item.style.visibility = "visible";
+        });
+    }
+
+    hideMoveButtons() {
+        this.moveButtons.forEach(item => {
+            item.style.visibility = "hidden";
+        });
+    }
+
+    moveToHistoryEnd() {
+        this.historyHTMLElement.scrollLeft = 1e9;
+    }
+
     pushInHistoryList () {
         this.historyList.push(this.copyOfHistoryElement);
     }
@@ -44,6 +64,7 @@ export default class History {
         this.historyElement.currentOperation = null;
         this.historyElement.secondArg = null;
         this.historyElement.result = null;
+        this.hideMoveButtons();
     }
 
     setHistoryData(element) {
@@ -120,11 +141,25 @@ export default class History {
         this.refreshCopyWithoutNulls();
 
         this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg}`
+
+        if (this.historyHTMLElement.textContent.length > 19) {
+            this.moveToHistoryEnd();
+            this.showMoveButtons();
+        } else {
+            this.hideMoveButtons();
+        }
     }
 
     setResultToDisplay() {
         this.refreshCopyWithoutNulls();
 
         this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`
+
+        if (this.historyHTMLElement.textContent.length > 19) {
+            this.moveToHistoryEnd();
+            this.showMoveButtons();
+        } else {
+            this.hideMoveButtons();
+        }
     }
 }

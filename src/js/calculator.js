@@ -1,7 +1,7 @@
 import Operations from "./operations.js";
 import {ButtonNumber, ButtonCleanup, ButtonComplexOperation, ButtonBasicOperation, ButtonEqual} from "./button_childs.js"
 import {Display} from "./dom-render-elemen_childs.js";
-import {ELEMENTS, ELEMENTS_PROPERTY} from "./global_elements.js";
+import {ELEMENTS, HISTORY_ELEMENTS, ELEMENTS_PROPERTY} from "./global_elements.js";
 
 export default class Calculator {
     constructor(rootData) {
@@ -32,7 +32,7 @@ export default class Calculator {
                     history: history,
                     showConsoleInfo: this.showConsoleInfo,
                 },
-            );
+            )
         }
     }
     render() {
@@ -120,9 +120,43 @@ export default class Calculator {
                         switchOfButtonsClickability: this.switchOfButtonsClickability
                     });
                 }
+                default: {
+                    return;
+                }
             }
         });
 
         this.root.append(...this.buttons);
+        this.rootForHistoryElements = document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_HISTORY_ELEMENTS)
+
+        this.historyElements = HISTORY_ELEMENTS.map(item => {
+            switch (item.OPERATION_TYPE) {
+                case ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT: {
+                    const display = new Display();
+
+                    return display.render({
+                        tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
+                        classNames: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.DISPLAY_CLASS],
+                        datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
+                    });
+                }
+                case ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON: {
+                    const button = new ButtonNumber();
+
+                    return button.render({
+                        tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
+                        classNames: [item.BUTTON_CLASS],
+                        textContent: item.CONTENT,
+                        datasetText: item.CONTENT,
+                        datasetType: item.OPERATION_TYPE,
+                        switchOfButtonsClickability: this.switchOfButtonsClickability
+                    });
+                }
+            }
+        });
+
+        this.rootForHistoryElements.append(...this.historyElements);
+        this.buttons.push(...this.historyElements);
     }
 }
