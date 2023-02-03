@@ -1,6 +1,5 @@
 let project_folder="dist";
 let source_folder="src";
-
 let fs = require('fs');
 
 let path={
@@ -14,7 +13,7 @@ let path={
     src: {
         html: [source_folder + "/*.html", "!" + source_folder + "/_*.html"],
         css: source_folder + "/scss/style.scss",
-        js: source_folder + "/js/script.js",
+        js: source_folder + "/js/*.js",
         img: source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}",
         fonts: source_folder + "/fonts/*.ttf",
     },
@@ -29,6 +28,7 @@ let path={
 
 let { src, dest } = require('gulp'),
     gulp = require('gulp'),
+    sourcemaps = require('gulp-sourcemaps'),
     browsersync = require("browser-sync").create(),
     fileinclude =  require("gulp-file-include"),
     del = require("del"),
@@ -45,7 +45,7 @@ let { src, dest } = require('gulp'),
     fonter = require('gulp-fonter');
 
 
-function browserSync(params){
+function browserSync(){
     browsersync.init({
         server:{
             baseDir:"./" + project_folder + "/"
@@ -57,6 +57,7 @@ function browserSync(params){
 
 function css(){
     return src(path.src.css)
+        .pipe(sourcemaps.init())
         .pipe(
             scss({
                 outputStyle: 'expanded'
@@ -68,16 +69,17 @@ function css(){
         .pipe(
             autoprefixer({
                 overrideBrowserslist:["last 5 versions"],
-                cascade: true
+                cascade: false
             })
         )
         .pipe(dest(path.build.css))
         .pipe(clean_css())
         .pipe(
             rename({
-                extname: ".min.css"
+                extname: ".css"
             })
         )
+        .pipe(sourcemaps.write('.'))
         .pipe(dest(path.build.css))
         .pipe(browsersync.stream())
 }
@@ -91,16 +93,14 @@ function html(){
 
 function js(){
     return src(path.src.js)
-        .pipe(fileinclude())
-        .pipe(dest(path.build.js))
+        .pipe(sourcemaps.init())
         .pipe(
             uglify()
         )
-        .pipe(
-            rename({
-                extname: ".min.js"
-            })
-        )
+        .pipe(rename({
+            extname: ".js"
+        }))
+        .pipe(sourcemaps.write('.'))
         .pipe(dest(path.build.js))
         .pipe(browsersync.stream())
 }
@@ -143,7 +143,7 @@ gulp.task('otf2ttf',function() {
         .pipe(dest(source_folder+'/fonts/'));
 })
 
-function fontsStyle(params) {
+function fontsStyle() {
 
     let file_content = fs.readFileSync(source_folder + '/scss/fonts.scss');
     if (file_content == '') {
@@ -166,14 +166,14 @@ function fontsStyle(params) {
 
 function cb() { }
 
-function watchFiles(params){
+function watchFiles(){
     gulp.watch([path.watch.html], html);
     gulp.watch([path.watch.css], css);
     gulp.watch([path.watch.js], js);
     gulp.watch([path.watch.img], images);
 }
 
-function clean(params){
+function clean(){
     return del(path.clean);
 }
 

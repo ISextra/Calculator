@@ -36,19 +36,35 @@ body {
       flex-direction: column;
       justify-content: center;
       text-align: right;
-      margin: 10px;
       width: 315px;
 
       &__history {
-        font-size: 22px;
+        display: flex;
+        flex-direction: row;
+        margin: 10px 0 10px 0;
         height: 17px;
-        font-weight: normal;
-        color: $white-5;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        &_move-button {
+          visibility: hidden;
+          height: 17px;
+          width: 17px;
+          background: $black-2;
+          color: white;
+        }
+        &_history-result {
+          align-self: center;
+          overflow: hidden;
+          height: 17px;
+          width: 256px;
+          margin: 0 10px 0 10px;
+          font-size: 22px;
+          font-weight: normal;
+          white-space: nowrap;
+          text-align: end;
+          color: $white-5;
+        }
       }
       &__result {
+        margin: 10px;
         font-size: 42px;
         height: 42px;
         font-weight: bold;
