@@ -1,34 +1,21 @@
-import {BUTTONS_CONTENT, DEFAULT_VALUES, ELEMENTS_PROPERTY} from "./global_elements.js";
+import {BUTTONS_CONTENT, DEFAULT_VALUES, ELEMENTS_PROPERTY} from "./constants.js";
 
 export default class Operations {
     constructor(operationsData) {
+        if (operationsData) {}
+
         const {
-            buttons,
+            display,
             history,
             showConsoleInfo,
-        } = operationsData
+            switchOfButtonsClickAbility,
+        } = operationsData;
 
-        this.buttons = buttons;
+        this.display = display;
         this.history = history;
         this.isShownConsoleInfo = showConsoleInfo;
+        this.switchOfButtonsClickAbility = switchOfButtonsClickAbility;
 
-        const [historyElement] = this.buttons.filter(item => {
-            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS_HISTORY_RESULT);
-        });
-
-        this.historyElement = historyElement;
-        this.history.setHistoryElement(this.historyElement);
-
-        const [resultElement] = this.buttons.filter(item => {
-            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS3);
-        });
-
-        this.history.setMoveButtons(this.buttons.filter(item => {
-            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS_MOVE_BUTTON);
-        }));
-
-        this.resultHTMLElement = resultElement;
-        this.resultHTMLElement.innerHTML = "0";
         this.firstArg = null;
         this.secondArg = null;
         this.currentOperation = null;
@@ -40,7 +27,6 @@ export default class Operations {
         this.isShownConsoleInfo = false;
 
         this.bindFunctions();
-        this.setOperationsLogic();
 
         if (showConsoleInfo) {
             this.showConsoleInfo(showConsoleInfo);
@@ -75,18 +61,6 @@ export default class Operations {
 
         console.log(`${text}`, ' firstNumber:', this.firstArg, '; operation:', this.currentOperation, '; secondNumber:', this.secondArg, '; result:', this.result);
         console.log(`Oper: ${this.isOperationPressed} ComplexOper: ${this.isComplexOperationPressed} Equal: ${this.isEqualPressed}`)
-    }
-
-    setResultToDisplay(content) {
-        this.resultHTMLElement.innerHTML = content;
-
-        if (content?.length > DEFAULT_VALUES.LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM) {//если длинна больше допустимой
-            this.resultHTMLElement.style.fontSize = "26px";
-
-            return
-        }
-
-        this.resultHTMLElement.style.fontSize = "42px";
     }
 
     setOperation(content) {
@@ -128,7 +102,7 @@ export default class Operations {
     processingDivideByZero() {
         if (Number(this.secondArg) === 0 || this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER) {
             this.onClickCleanAll();
-            this.setResultToDisplay("Cant divide by zero");
+            this.display.setResultToDisplay("Cant divide by zero");
 
             return true;
         }
@@ -149,7 +123,7 @@ export default class Operations {
                 secondArg:this.secondArg});
             this.history.additionFirstArg();
             this.secondArg = BUTTONS_CONTENT.ZERO;
-            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}.`);
+            this.display.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}.`);
             this.setIsNeededCleanResult(false);
             this.setIsOperationPressed(false);
             this.setIsComplexOperationPressed(false);
@@ -169,7 +143,7 @@ export default class Operations {
             (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
             this.secondArg = `${BUTTONS_CONTENT.ZERO}.`;
 
-            this.setResultToDisplay(`${this.secondArg}`);
+            this.display.setResultToDisplay(`${this.secondArg}`);
             this.consoleInfo(`setNumber`);
 
             return;
@@ -192,7 +166,7 @@ export default class Operations {
             this.history.additionFirstArg();
 
             this.secondArg = BUTTONS_CONTENT.ZERO;
-            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+            this.display.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
             this.setIsNeededCleanResult(false);
             this.setIsOperationPressed(false);
             this.setIsComplexOperationPressed(false);
@@ -208,14 +182,14 @@ export default class Operations {
             (this.secondArg === DEFAULT_VALUES.DEFAULT_SECOND_NUMBER)) {//если изначально стоит 0, начальное значение или "-"
             this.secondArg = `${content}`;
 
-            this.setResultToDisplay(`${this.secondArg}`);
+            this.display.setResultToDisplay(`${this.secondArg}`);
             this.consoleInfo(`setNumber`);
 
             return;
         }
 
         this.secondArg = `${this.secondArg}${content}`;
-        this.setResultToDisplay(`${this.secondArg}`);
+        this.display.setResultToDisplay(`${this.secondArg}`);
         this.setIsOperationPressed(false);
         this.setIsComplexOperationPressed(false);
         this.setIsEqualPressed(false);
@@ -243,7 +217,7 @@ export default class Operations {
             }
 
             this.execBasicOperation(this.result);
-            this.setResultToDisplay(`${this.result}`);
+            this.display.setResultToDisplay(`${this.result}`);
             this.consoleInfo(`equal`);
             this.setOperation(content);
 
@@ -299,7 +273,7 @@ export default class Operations {
         this.firstArg = DEFAULT_VALUES.DEFAULT_FIRST_NUMBER;
         this.result = DEFAULT_VALUES.DEFAULT_RESULT;
 
-        this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+        this.display.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         this.setOperation(DEFAULT_VALUES.DEFAULT_OPERATION);
         this.history.cleanAll();
         this.history.setResultToDisplay();
@@ -313,7 +287,7 @@ export default class Operations {
         if (this.getIsOperationPressed() || this.getIsComplexOperationPressed()) {
             this.secondArg = BUTTONS_CONTENT.ZERO;
 
-            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+            this.display.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
             this.history.setResultToDisplay();
             this.consoleInfo("cleanLine");
 
@@ -322,7 +296,7 @@ export default class Operations {
 
         this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
 
-        this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+        this.display.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         this.history.cleanLine();
         this.history.setResultToDisplay();
         this.consoleInfo("cleanLine");
@@ -343,11 +317,11 @@ export default class Operations {
 
         this.secondArg = this.secondArg?.slice(0, this.secondArg?.length - 1);
 
-        this.setResultToDisplay(`${this.secondArg}`);
+        this.display.setResultToDisplay(`${this.secondArg}`);
 
         if (this.secondArg === "" || this.secondArg === "-") {//если после стирания остался '-' или ничего
             this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
-            this.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
+            this.display.setResultToDisplay(`${BUTTONS_CONTENT.ZERO}`);
         }
 
         this.consoleInfo("cleanLastSymbol");
@@ -358,7 +332,7 @@ export default class Operations {
             this.secondArg = DEFAULT_VALUES.DEFAULT_SECOND_NUMBER;
             this.result = BUTTONS_CONTENT.ZERO;
 
-            this.setResultToDisplay(`${this.result}`);
+            this.display.setResultToDisplay(`${this.result}`);
             this.setIsComplexOperationPressed(true);
             this.consoleInfo("percent");
 
@@ -376,7 +350,7 @@ export default class Operations {
             currentOperation: null,
             secondArg:this.secondArg});
         this.history.setResultToDisplay();
-        this.setResultToDisplay(`${this.secondArg}`);
+        this.display.setResultToDisplay(`${this.secondArg}`);
         this.setIsComplexOperationPressed(true);
         this.setIsNeededCleanResult(true);
         this.consoleInfo("percent");
@@ -401,7 +375,7 @@ export default class Operations {
 
         this.secondArg = `${1 / Number(this.secondArg)}`;
 
-        this.setResultToDisplay(this.secondArg);
+        this.display.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
         this.setIsNeededCleanResult(true);
@@ -427,7 +401,7 @@ export default class Operations {
 
         this.secondArg = `${Math.pow(Number(this.secondArg), 2)}`;
 
-        this.setResultToDisplay(this.secondArg);
+        this.display.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
         this.setIsNeededCleanResult(true);
@@ -453,7 +427,7 @@ export default class Operations {
 
         this.secondArg = `${Math.sqrt(Number(this.secondArg))}`;
 
-        this.setResultToDisplay(this.secondArg);
+        this.display.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
         this.setIsNeededCleanResult(true);
@@ -479,7 +453,7 @@ export default class Operations {
 
         this.secondArg = `${Number(this.secondArg) * -1}`;
 
-        this.setResultToDisplay(this.secondArg);
+        this.display.setResultToDisplay(this.secondArg);
         this.setIsComplexOperationPressed(true);
         this.setIsOperationPressed(false);
         this.setIsNeededCleanResult(true);
@@ -490,7 +464,7 @@ export default class Operations {
         if (this.firstArg === DEFAULT_VALUES.DEFAULT_FIRST_NUMBER) {
             this.result = `${Number(this.secondArg)}`;
 
-            this.setResultToDisplay(this.result);
+            this.display.setResultToDisplay(this.result);
             this.history.setHistoryData({result: this.result})
             this.history.pushInHistoryList();
             this.history.cleanAll();
@@ -525,12 +499,34 @@ export default class Operations {
     }
 
     onClickMoveHistoryLeft() {
-        this.historyElement.scrollLeft -= 35;
+        const scrollLeftBefore = this.history.historyHTMLElement.scrollLeft;
+        this.history.historyHTMLElement.scrollLeft -= DEFAULT_VALUES.HISTORY_SCROLL_LENGTH;
+        const scrollLeftAfter = this.history.historyHTMLElement.scrollLeft;
+
+        this.history.showRightMoveButton();
+
+        if (scrollLeftBefore === scrollLeftAfter) {
+            this.history.hideLeftMoveButton();
+        } else {
+            this.history.showLeftMoveButton();
+        }
+
         this.consoleInfo("moveHistory");
     }
 
     onClickMoveHistoryRight() {
-        this.historyElement.scrollLeft += 35;
+        const scrollLeftBefore = this.history.historyHTMLElement.scrollLeft;
+        this.history.historyHTMLElement.scrollLeft += DEFAULT_VALUES.HISTORY_SCROLL_LENGTH;
+        const scrollLeftAfter = this.history.historyHTMLElement.scrollLeft;
+
+        this.history.showLeftMoveButton();
+
+        if (scrollLeftBefore === scrollLeftAfter) {
+            this.history.hideRightMoveButton();
+        } else {
+            this.history.showRightMoveButton();
+        }
+
         this.consoleInfo("moveHistory");
     }
 
@@ -564,17 +560,17 @@ export default class Operations {
 
     addition(param) {
         this.result = `${Number(param) + Number(this.secondArg)}`;
-        this.setResultToDisplay(this.result);
+        this.display.setResultToDisplay(this.result);
     }
 
     subtraction(param) {
         this.result = `${Number(param) - Number(this.secondArg)}`;
-        this.setResultToDisplay(this.result);
+        this.display.setResultToDisplay(this.result);
     }
 
     multiplication(param) {
         this.result = `${Number(param) * Number(this.secondArg)}`;
-        this.setResultToDisplay(this.result);
+        this.display.setResultToDisplay(this.result);
     }
 
     division(param) {
@@ -583,222 +579,160 @@ export default class Operations {
         }
 
         this.result = `${Number(param) / Number(this.secondArg)}`
-        this.setResultToDisplay(this.result);
+        this.display.setResultToDisplay(this.result);
     }
 
-    numberOperations(item) {
-        switch (item.dataset.text) {
+    numberOperations(text) {
+        switch (text) {
             case BUTTONS_CONTENT.ONE: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.TWO: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.THREE: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.FOUR: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.FIVE: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.SIX: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.SEVEN: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.EIGHT: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.NINE: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
             case BUTTONS_CONTENT.ZERO: {
-                item.onclick = this.onClickNumber;
-
-                break;
+                return this.onClickNumber;
             }
         }
     }
 
-    pointOperation(item) {
-        switch (item.dataset.text) {
+    pointOperation(text) {
+        switch (text) {
             case BUTTONS_CONTENT.POINT: {
-                item.onclick = this.onClickPoint;
-
-                break;
+                return this.onClickPoint;
             }
         }
     }
 
-    cleanupOperations(item) {
-        switch (item.dataset.text) {
+    cleanupOperations(text) {
+        switch (text) {
             case BUTTONS_CONTENT.CLEAN_LINE: {
-                item.onclick = this.onClickCleanLine;
-
-                break;
+                return this.onClickCleanLine;
             }
             case BUTTONS_CONTENT.CLEAN_ALL: {
-                item.onclick = this.onClickCleanAll;
-
-                break;
+                return this.onClickCleanAll;
             }
             case BUTTONS_CONTENT.CLEAN_SYMBOL: {
-                item.onclick = this.onClickCleanLastSymbol;
-
-                break;
+                return this.onClickCleanLastSymbol;
             }
         }
     }
 
-    complexOperations(item) {
-        switch (item.dataset.text) {
+    complexOperations(text) {
+        switch (text) {
             case BUTTONS_CONTENT.PERCENT: {
-                item.onclick = this.onClickPercent;
-
-                break;
+                return this.onClickPercent;
             }
             case BUTTONS_CONTENT.SQUARE: {
-                item.onclick = this.onClickSquare;
-
-                break;
+                return this.onClickSquare;
             }
             case BUTTONS_CONTENT.SQUARE_ROOT: {
-                item.onclick = this.onClickSquareRoot;
-
-                break;
+                return this.onClickSquareRoot;
             }
             case BUTTONS_CONTENT.REVERSE: {
-                item.onclick = this.onClickReverse;
-
-                break;
+                return this.onClickReverse;
             }
             case BUTTONS_CONTENT.NEGATE: {
-                item.onclick = this.onClickNegate;
-
-                break;
+                return this.onClickNegate;
             }
         }
     }
 
-    basicOperations(item) {
-        switch (item.dataset.text) {
+    basicOperations(text) {
+        switch (text) {
             case BUTTONS_CONTENT.ADDITION: {
-                item.onclick = this.onClickBasicOperation;
-
-                break;
+                return this.onClickBasicOperation;
             }
             case BUTTONS_CONTENT.SUBTRACTION: {
-                item.onclick = this.onClickBasicOperation;
-
-                break;
+                return this.onClickBasicOperation;
             }
             case BUTTONS_CONTENT.MULTIPLICATION: {
-                item.onclick = this.onClickBasicOperation;
-
-                break;
+                return this.onClickBasicOperation;
             }
             case BUTTONS_CONTENT.DIVISION: {
-                item.onclick = this.onClickBasicOperation;
-
-                break;
+                return this.onClickBasicOperation;
             }
         }
     }
 
-    equalOperation(item) {
-        switch (item.dataset.text) {
+    equalOperation(text) {
+        switch (text) {
             case BUTTONS_CONTENT.EQUAL: {
-                item.onclick = this.onClickEqual;
-
-                break;
+                return this.onClickEqual;
             }
         }
     }
 
-    moveOperation(item) {
-        switch (item.dataset.text) {
+    moveOperation(text) {
+        switch (text) {
             case BUTTONS_CONTENT.MOVE_LEFT: {
-                item.onclick = this.onClickMoveHistoryLeft;
+                return this.onClickMoveHistoryLeft;
 
-                break;
             }
             case BUTTONS_CONTENT.MOVE_RIGHT: {
-                item.onclick = this.onClickMoveHistoryRight;
-
-                break;
+                return this.onClickMoveHistoryRight;
             }
         }
     }
 
-    setOperationsLogic() {
-        this.buttons.forEach(item => {
-            switch (item.dataset.type) {
-                case ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER: {
-                    this.numberOperations(item);
+    setOperationsLogic(type, text) {
+        if (this.switchOfButtonsClickAbility) {
+            return;
+        }
 
-                    break;
-                }
-                case ELEMENTS_PROPERTY.OPERATION_TYPE_POINT: {
-                    this.pointOperation(item);
-
-                    break;
-                }
-                case ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION: {
-                    this.cleanupOperations(item);
-
-                    break;
-                }
-                case ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION: {
-                    this.complexOperations(item);
-
-                    break;
-                }
-                case ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION: {
-                    this.basicOperations(item);
-
-                    break;
-                }
-                case ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL: {
-                    this.equalOperation(item);
-
-                    break;
-                }
-                case ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON: {
-                    this.moveOperation(item);
-
-                    break;
-                }
-                case ELEMENTS_PROPERTY.DISPLAY_TYPE: {
-                    break;
-                }
-                case ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT: {
-                    break;
-                }
-                default: {
-                    console.warn(`Element ${item.dataset.type} has no initialized logic \n\tat setOperationsLogic() \n\tat operation.js`);
-                }
+        switch (type) {
+            case ELEMENTS_PROPERTY.OPERATION_TYPE_NUMBER: {
+                return this.numberOperations(text);
             }
-        })
+            case ELEMENTS_PROPERTY.OPERATION_TYPE_POINT: {
+                return this.pointOperation(text);
+            }
+            case ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION: {
+                return this.cleanupOperations(text);
+            }
+            case ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION: {
+                return this.complexOperations(text);
+            }
+            case ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION: {
+                return this.basicOperations(text);
+            }
+            case ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL: {
+                return this.equalOperation(text);
+            }
+            case ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON: {
+                return this.moveOperation(text);
+
+            }
+            case ELEMENTS_PROPERTY.DISPLAY_TYPE: {
+                break;
+            }
+            case ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT: {
+                break;
+            }
+            default: {
+                console.warn(`Element ${type} has no initialized logic \n\tat setOperationsLogic() \n\tat operation.js`);
+            }
+        }
     }
-}
+    }

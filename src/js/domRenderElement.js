@@ -1,4 +1,4 @@
-import {ELEMENTS_PROPERTY} from "./global_elements.js";
+import {ELEMENTS_PROPERTY} from "./constants.js";
 
 export default class DomRendererElement {
     constructor(calculatorHTMLClass) {
@@ -20,7 +20,8 @@ export default class DomRendererElement {
             textContent,
             datasetText,
             datasetType,
-            switchOfButtonsClickability
+            onClick,
+            switchOfButtonsClickAbility
         } = params;
 
         const element = document.createElement(tagName);
@@ -39,7 +40,10 @@ export default class DomRendererElement {
         if (datasetType) {
             element.dataset.type = datasetType;
         }
-        if (switchOfButtonsClickability) {
+        if (onClick){
+            element.addEventListener("click", onClick);
+        }
+        if (switchOfButtonsClickAbility) {
             element.style.color = "gray";
             element.style.cursor = "inherit";
         }
