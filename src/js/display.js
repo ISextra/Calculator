@@ -1,4 +1,4 @@
-import DomRendererElement from "./dom-render-element.js";
+import DomRendererElement from "./domRenderElement.js";
 import {DEFAULT_VALUES, BUTTONS_CONTENT} from "./constants.js"
 
 export default class Display extends DomRendererElement {

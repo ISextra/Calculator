@@ -1,5 +1,4 @@
 import Operations from "./operations.js";
-import DomRendererElement from "./dom-render-element.js"
 import Button from "./button.js";
 import Display from "./display.js";
 import History from "./history.js";
@@ -173,17 +172,18 @@ export default class Calculator {
         this.historyElements = HISTORY_ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
                 case ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT: {
-                    const domRenderElement = new DomRendererElement();
-
-                    const renderedElement = domRenderElement.render({
+                    const  params = {
                         tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
                         classNames: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.DISPLAY_CLASS],
                         datasetType: item.OPERATION_TYPE,
                         onClick: this.operations.setOperationsLogic(ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT),
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
-                    });
+                    }
+
+                    const renderedElement = this.history.render(params);
 
                     this.history.setHistoryElement(renderedElement);
+                    this.buttons.push(this.history);
 
                     return renderedElement;
                 }

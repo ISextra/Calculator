@@ -1,4 +1,4 @@
-import DomRendererElement from "./dom-render-element.js";
+import DomRendererElement from "./domRenderElement.js";
 
 export default class Button extends DomRendererElement {
     constructor(calculatorHTMLClass) {
@@ -13,6 +13,8 @@ export default class Button extends DomRendererElement {
             onClick: null,
             switchOfButtonsClickAbility: null
         }
+
+        this.buttonsArray = [];
     }
 
     setButtonsData(params) {
