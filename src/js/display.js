@@ -1,32 +1,34 @@
 import DomRendererElement from "./dom-render-element.js";
-import {DEFAULT_VALUES} from "./constants.js"
+import {DEFAULT_VALUES, BUTTONS_CONTENT} from "./constants.js"
+
 export default class Display extends DomRendererElement {
     constructor(params) {
         super(params);
 
         this.displayValue = null;
-        this.displayElement = null;
+        this.displayHTMLElement = null;
     }
 
     setResultToDisplay(result) {
         this.displayValue = result;
-        this.displayElement.innerHTML = this.displayValue;
+        this.displayHTMLElement.innerHTML = this.displayValue;
 
         if (this.displayValue?.length > DEFAULT_VALUES.LENGTH_FOR_SWITCH_FONT_SIZE_MEDIUM) {//если длинна больше допустимой
-            this.displayElement.style.fontSize = DEFAULT_VALUES.FONT_SIZE_MEDIUM;
+            this.displayHTMLElement.style.fontSize = DEFAULT_VALUES.FONT_SIZE_MEDIUM;
 
             return
         }
 
-        this.displayElement.style.fontSize = DEFAULT_VALUES.FONT_SIZE_LARGE;
+        this.displayHTMLElement.style.fontSize = DEFAULT_VALUES.FONT_SIZE_LARGE;
     }
 
-    set resultElement(element) {
-        this.displayElement = element;
+    setDisplayElement(element) {
+        this.displayHTMLElement = element;
+        this.displayHTMLElement.innerHTML = BUTTONS_CONTENT.ZERO;
     }
 
-    get resultElement() {
-        return this.displayElement;
+    get displayElement() {
+        return this.displayHTMLElement;
     }
 
     set displayResult(value) {

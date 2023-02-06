@@ -1,7 +1,10 @@
 import {BUTTONS_CONTENT} from "./constants.js";
+import Display from "./display.js";
 
-export default class History {
-    constructor() {
+export default class History extends Display{
+    constructor(params) {
+        super(params);
+
         this.historyHTMLElement = null;
         this.historyList = [];
 
@@ -13,6 +16,7 @@ export default class History {
         }
 
         this.copyOfHistoryElement = Object.assign({}, this.historyElement);
+        this.moveButtons = [];
     }
 
     setHistoryElement(element) {
@@ -20,7 +24,7 @@ export default class History {
     }
 
     setMoveButtons(buttons) {
-        this.moveButtons = buttons;
+        this.moveButtons.push(buttons);
     }
 
     showMoveButtons() {

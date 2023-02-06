@@ -27,10 +27,9 @@ export default class Calculator {
         }
 
         this.operations = new Operations({
-                buttons: this.buttons,
+                display: this.display,
                 history: this.history,
                 showConsoleInfo: this.showConsoleInfo,
-                display: this.display,//перенести методы связанные с отоброжением
                 switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
             },
         )
@@ -38,7 +37,7 @@ export default class Calculator {
         this.render();
     }
     render() {
-        this.buttons = ELEMENTS.map(item => {//переименовать в elements
+        this.elements = ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
                 case ELEMENTS_PROPERTY.DISPLAY_TYPE: {
                     //накидывать в this.buttons экземпляры display и button
@@ -51,7 +50,7 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     });
 
-                    this.display.resultElement(renderedElement);
+                    this.display.setDisplayElement(renderedElement);
 
                     return renderedElement;
 
@@ -140,27 +139,27 @@ export default class Calculator {
             }
         });
 
-        console.log(this.buttons);
-
-        this.root.append(...this.buttons);
-        this.rootForHistoryElements = document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_HISTORY_ELEMENTS)
+        this.root.append(...this.elements);
+        this.rootForHistoryElements = document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_HISTORY_ELEMENTS);
 
         this.historyElements = HISTORY_ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
                 case ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT: {
                     const domRenderElement = new DomRendererElement();
 
-                    return domRenderElement.render({
+                    const renderedElement = domRenderElement.render({
                         tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
                         classNames: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.DISPLAY_CLASS],
                         datasetType: item.OPERATION_TYPE,
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     });
+
+                    this.history.setMoveButtons(renderedElement);
+
+                    return renderedElement;
                 }
                 case ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON: {
-                    const domRenderElement = new DomRendererElement();
-
-                    return domRenderElement.render({
+                    const renderedElement = this.history.render({
                         tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_BUTTONS,
                         classNames: [item.BUTTON_CLASS],
                         textContent: item.CONTENT,
@@ -168,11 +167,15 @@ export default class Calculator {
                         datasetType: item.OPERATION_TYPE,
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     });
+
+                    this.history.setHistoryElement(renderedElement);
+
+                    return renderedElement;
                 }
             }
         });
 
         this.rootForHistoryElements.append(...this.historyElements);
-        this.buttons.push(...this.historyElements);
+        this.elements.push(...this.historyElements);
     }
 }

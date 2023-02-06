@@ -5,33 +5,17 @@ export default class Operations {
         if (operationsData) {}
 
         const {
-            buttons,
             display,
             history,
             showConsoleInfo,
             switchOfButtonsClickAbility,
         } = operationsData;
 
-        this.switchOfButtonsClickAbility = switchOfButtonsClickAbility;
-        this.isShownConsoleInfo = showConsoleInfo;
-        this.buttons = buttons;
-        this.history = history;
         this.display = display;
+        this.history = history;
+        this.isShownConsoleInfo = showConsoleInfo;
+        this.switchOfButtonsClickAbility = switchOfButtonsClickAbility;
 
-        const [historyElement] = this.buttons.filter(item => {
-            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS_HISTORY_RESULT);
-        });
-        //так же переделать
-
-        this.historyElement = historyElement;
-        this.history.setHistoryElement(this.historyElement);
-
-        this.history.setMoveButtons(this.buttons.filter(item => {
-            return Object.values(item.classList).includes(ELEMENTS_PROPERTY.DISPLAY_CLASS_MOVE_BUTTON);
-        }));
-        //убрать
-
-        this.display.setResultToDisplay(BUTTONS_CONTENT.ZERO);
         this.firstArg = null;
         this.secondArg = null;
         this.currentOperation = null;
@@ -43,7 +27,6 @@ export default class Operations {
         this.isShownConsoleInfo = false;
 
         this.bindFunctions();
-        this.setOperationsLogic();
 
         if (showConsoleInfo) {
             this.showConsoleInfo(showConsoleInfo);
