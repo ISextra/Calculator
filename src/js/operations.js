@@ -499,12 +499,34 @@ export default class Operations {
     }
 
     onClickMoveHistoryLeft() {
-        this.history.historyHTMLElement.scrollLeft -= 35;
+        const scrollLeftBefore = this.history.historyHTMLElement.scrollLeft;
+        this.history.historyHTMLElement.scrollLeft -= DEFAULT_VALUES.HISTORY_SCROLL_LENGTH;
+        const scrollLeftAfter = this.history.historyHTMLElement.scrollLeft;
+
+        this.history.showRightMoveButton();
+
+        if (scrollLeftBefore === scrollLeftAfter) {
+            this.history.hideLeftMoveButton();
+        } else {
+            this.history.showLeftMoveButton();
+        }
+
         this.consoleInfo("moveHistory");
     }
 
     onClickMoveHistoryRight() {
-        this.history.historyHTMLElement.scrollLeft += 35;
+        const scrollLeftBefore = this.history.historyHTMLElement.scrollLeft;
+        this.history.historyHTMLElement.scrollLeft += DEFAULT_VALUES.HISTORY_SCROLL_LENGTH;
+        const scrollLeftAfter = this.history.historyHTMLElement.scrollLeft;
+
+        this.history.showLeftMoveButton();
+
+        if (scrollLeftBefore === scrollLeftAfter) {
+            this.history.hideRightMoveButton();
+        } else {
+            this.history.showRightMoveButton();
+        }
+
         this.consoleInfo("moveHistory");
     }
 

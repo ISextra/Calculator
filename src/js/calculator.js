@@ -202,7 +202,10 @@ export default class Calculator {
                     button.setButtonsData(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    const renderedElement = button.render(button.getButtonData());
+                    this.history.setMoveButtons(params, renderedElement);
+
+                    return renderedElement;
                 }
             }
         });

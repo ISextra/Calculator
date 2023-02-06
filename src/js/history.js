@@ -5,6 +5,8 @@ export default class History extends Display{
     constructor(params) {
         super(params);
 
+        this.leftMoveButton = null;
+        this.rightMoveButton = null;
         this.historyHTMLElement = null;
         this.historyList = [];
 
@@ -23,20 +25,30 @@ export default class History extends Display{
         this.historyHTMLElement = element;
     }
 
-    setMoveButtons(buttons) {
-        this.moveButtons.push(buttons);
+    setMoveButtons(buttonData, renderedElement) {
+        if (buttonData.datasetText === BUTTONS_CONTENT.MOVE_RIGHT) {
+            this.rightMoveButton = renderedElement;
+
+            return
+        }
+
+        this.leftMoveButton = renderedElement;
     }
 
-    showMoveButtons() {
-        this.moveButtons.forEach(item => {
-            item.style.visibility = "visible";
-        });
+    showLeftMoveButton() {
+        this.leftMoveButton.style.visibility = "visible";
     }
 
-    hideMoveButtons() {
-        this.moveButtons.forEach(item => {
-            item.style.visibility = "hidden";
-        });
+    hideLeftMoveButton() {
+        this.leftMoveButton.style.visibility = "hidden";
+    }
+
+    showRightMoveButton() {
+        this.rightMoveButton.style.visibility = "visible";
+    }
+
+    hideRightMoveButton() {
+        this.rightMoveButton.style.visibility = "hidden";
     }
 
     moveToHistoryEnd() {
@@ -68,7 +80,8 @@ export default class History extends Display{
         this.historyElement.currentOperation = null;
         this.historyElement.secondArg = null;
         this.historyElement.result = null;
-        this.hideMoveButtons();
+        this.hideLeftMoveButton();
+        this.hideRightMoveButton();
     }
 
     setHistoryData(element) {
@@ -146,14 +159,15 @@ export default class History extends Display{
 
         this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg}`
 
-        if (this.historyHTMLElement.textContent.length > 19) {
+        if (this.historyHTMLElement.scrollWidth > this.historyHTMLElement.clientWidth) {
             this.moveToHistoryEnd();
-            this.showMoveButtons();
+            this.showLeftMoveButton();
 
             return
         }
 
-        this.hideMoveButtons();
+        this.hideLeftMoveButton();
+        this.hideRightMoveButton();
     }
 
     setResultToDisplay() {
@@ -161,13 +175,14 @@ export default class History extends Display{
 
         this.historyHTMLElement.innerHTML = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`
 
-        if (this.historyHTMLElement.textContent.length > 19) {
+        if (this.historyHTMLElement.scrollWidth > this.historyHTMLElement.clientWidth) {
             this.moveToHistoryEnd();
-            this.showMoveButtons();
+            this.showLeftMoveButton();
 
             return
         }
 
-        this.hideMoveButtons();
+        this.hideLeftMoveButton();
+        this.hideRightMoveButton();
     }
 }
