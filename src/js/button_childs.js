@@ -1,6 +1,6 @@
 import {Button} from "./dom-render-elemen_childs.js";
 
-class ButtonNumber extends Button{
+class ButtonNumber extends Button{//убрать классы по ненадобности
     constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
     }

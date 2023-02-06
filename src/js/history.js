@@ -1,4 +1,4 @@
-import {BUTTONS_CONTENT} from "./global_elements.js";
+import {BUTTONS_CONTENT} from "./constants.js";
 
 export default class History {
     constructor() {
@@ -145,9 +145,11 @@ export default class History {
         if (this.historyHTMLElement.textContent.length > 19) {
             this.moveToHistoryEnd();
             this.showMoveButtons();
-        } else {
-            this.hideMoveButtons();
+
+            return
         }
+
+        this.hideMoveButtons();
     }
 
     setResultToDisplay() {
@@ -158,8 +160,10 @@ export default class History {
         if (this.historyHTMLElement.textContent.length > 19) {
             this.moveToHistoryEnd();
             this.showMoveButtons();
-        } else {
-            this.hideMoveButtons();
+
+            return
         }
+
+        this.hideMoveButtons();
     }
 }
