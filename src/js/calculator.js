@@ -151,10 +151,11 @@ export default class Calculator {
                         tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
                         classNames: [item.BUTTON_CLASS, ELEMENTS_PROPERTY.DISPLAY_CLASS],
                         datasetType: item.OPERATION_TYPE,
+                        onClick: this.operations.setOperationsLogic(ELEMENTS_PROPERTY.DISPLAY_TYPE_HISTORY_RESULT),
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     });
 
-                    this.history.setMoveButtons(renderedElement);
+                    this.history.setHistoryElement(renderedElement);
 
                     return renderedElement;
                 }
@@ -165,10 +166,11 @@ export default class Calculator {
                         textContent: item.CONTENT,
                         datasetText: item.CONTENT,
                         datasetType: item.OPERATION_TYPE,
+                        onClick: this.operations.setOperationsLogic(ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON, item.CONTENT),
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     });
 
-                    this.history.setHistoryElement(renderedElement);
+                    this.history.setMoveButtons(renderedElement);
 
                     return renderedElement;
                 }

@@ -40,9 +40,9 @@ export default class DomRendererElement {
         if (datasetType) {
             element.dataset.type = datasetType;
         }
-        // if (onClick){
-        //     element.onClick = onClick;
-        // }
+        if (onClick){
+            element.addEventListener("click", onClick);
+        }
         if (switchOfButtonsClickAbility) {
             element.style.color = "gray";
             element.style.cursor = "inherit";

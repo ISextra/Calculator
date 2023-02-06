@@ -499,12 +499,12 @@ export default class Operations {
     }
 
     onClickMoveHistoryLeft() {
-        this.historyElement.scrollLeft -= 35;
+        this.history.historyHTMLElement.scrollLeft -= 35;
         this.consoleInfo("moveHistory");
     }
 
     onClickMoveHistoryRight() {
-        this.historyElement.scrollLeft += 35;
+        this.history.historyHTMLElement.scrollLeft += 35;
         this.consoleInfo("moveHistory");
     }
 
