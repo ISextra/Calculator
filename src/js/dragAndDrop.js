@@ -12,13 +12,13 @@ export default class DragAndDrop {
         let offsetY = null;
 
         elementForDrugAndDrop.addEventListener("dragstart", function(event) {
-            offsetX = elementForDrugAndDrop.offsetX;
-            offsetY = elementForDrugAndDrop.offsetY;
+            offsetX = event.offsetX;
+            offsetY = event.offsetY;
         });
 
         elementForDrugAndDrop.addEventListener("dragend", function(event) {
             elementForDrugAndDrop.style.top = (event.pageY - offsetY) + 'px';
-            elementForDrugAndDrop.style.left = (event.pageX- offsetX) + 'px';
+            elementForDrugAndDrop.style.left = (event.pageX - offsetX) + 'px';
         });
     }
 }
