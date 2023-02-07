@@ -2,6 +2,7 @@ import Operations from "./operations.js";
 import Button from "./button.js";
 import Display from "./display.js";
 import History from "./history.js";
+import DragAndDrop from "./dragAndDrop.js";
 import {ELEMENTS, HISTORY_ELEMENTS, ELEMENTS_PROPERTY} from "./constants.js";
 
 export default class Calculator {
@@ -17,6 +18,7 @@ export default class Calculator {
         this.showConsoleInfo = false;
         this.display = new Display();
         this.history = new History();
+        this.dragAndDrop = new DragAndDrop(this.root);
         this.elements = null;
         this.buttons = [];
 

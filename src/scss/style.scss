@@ -18,18 +18,16 @@ body {
   font-size: 0;
 }
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
   .calculator {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 100px;
     padding: 5px;
     background: $gray-2;
     width: 320px;
+
+    position: absolute;
+    top: 10px;
+    left: 10px;
 
     .display {
       display: flex;
