@@ -1,11 +1,11 @@
 import {DEFAULT_VALUES} from "./constants.js"
 
 export default class DragAndDrop {
-    constructor(elementForDrugAndDrop) {
-        this.setDragendEventListener(elementForDrugAndDrop);
+    constructor(elementForDrugAndDrop, localStorage) {
+        this.setDragendEventListener(elementForDrugAndDrop, localStorage);
     }
 
-    setDragendEventListener(elementForDrugAndDrop) {
+    setDragendEventListener(elementForDrugAndDrop, localStorage) {
         let shiftX = null;
         let shiftY = null;
         let rightEdge = null;
@@ -61,6 +61,11 @@ export default class DragAndDrop {
             document.addEventListener('mousemove', onMouseMove);
 
             elementForDrugAndDrop.addEventListener('mouseup', function(event) {
+                localStorage.setPosition({
+                    positionX: finalPositionX,
+                    positionY: finalPositionY,
+                })
+
                 document.removeEventListener('mousemove', onMouseMove);
             });
         })

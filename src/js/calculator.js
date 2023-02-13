@@ -3,7 +3,8 @@ import Button from "./button.js";
 import Display from "./display.js";
 import History from "./history.js";
 import DragAndDrop from "./dragAndDrop.js";
-import {ELEMENTS, HISTORY_ELEMENTS, ELEMENTS_PROPERTY} from "./constants.js";
+import LocalStorage from "./localStorage.js";
+import {ELEMENTS, HISTORY_ELEMENTS, ELEMENTS_PROPERTY, DEFAULT_VALUES} from "./constants.js";
 
 export default class Calculator {
     constructor(rootData) {
@@ -18,7 +19,8 @@ export default class Calculator {
         this.showConsoleInfo = false;
         this.display = new Display();
         this.history = new History();
-        this.dragAndDrop = new DragAndDrop(this.root);
+        this.localStorage = new LocalStorage();
+        this.dragAndDrop = new DragAndDrop(this.root, this.localStorage);
         this.elements = null;
         this.buttons = [];
 
@@ -38,8 +40,10 @@ export default class Calculator {
             },
         )
 
+        this.setCalculatorPosition();
         this.render();
     }
+
     render() {
         this.elements = ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
@@ -214,5 +218,23 @@ export default class Calculator {
 
         this.rootForHistoryElements.append(...this.historyElements);
         this.elements.push(...this.historyElements);
+    }
+
+    setCalculatorPosition() {
+        let position = {
+            positionX: DEFAULT_VALUES.DEFAULT_POSITION_X,
+            positionY: DEFAULT_VALUES.DEFAULT_POSITION_Y,
+        }
+        const positionFromLocalStorage = this.localStorage.getPosition()
+
+        if (positionFromLocalStorage.positionX !== null) {
+            position.positionX = positionFromLocalStorage.positionX;
+        }
+        if (positionFromLocalStorage.positionY !== null) {
+            position.positionY = positionFromLocalStorage.positionY;
+        }
+
+        this.root.style.left = position.positionX + "px";
+        this.root.style.top = position.positionY + "px";
     }
 }
