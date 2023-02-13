@@ -4,6 +4,7 @@ import Display from "./display.js";
 import History from "./history.js";
 import DragAndDrop from "./dragAndDrop.js";
 import LocalStorage from "./localStorage.js";
+import Widget from "./widget.js";
 import {ELEMENTS, HISTORY_ELEMENTS, ELEMENTS_PROPERTY, DEFAULT_VALUES} from "./constants.js";
 
 export default class Calculator {
@@ -21,6 +22,7 @@ export default class Calculator {
         this.history = new History();
         this.localStorage = new LocalStorage();
         this.dragAndDrop = new DragAndDrop(this.root, this.localStorage);
+        this.widget = new Widget(this.root, this.buttons);
         this.elements = null;
         this.buttons = [];
 

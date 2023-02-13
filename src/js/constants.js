@@ -13,12 +13,20 @@ const DEFAULT_VALUES = {
     DEFAULT_POSITION_Y: 10,
     LOCAL_STORAGE_POSITION_X_KEY: "calculatorJS-positionX",
     LOCAL_STORAGE_POSITION_Y_KEY: "calculatorJS-positionY",
+    WIDGET_BUTTON_ANIMATION_LEFT: 50,
+    WIDGET_BUTTON_ANIMATION_TRANSFORM: 90,
+    STYLE_OPACITY_HIDDEN: 0,
+    STYLE_OPACITY_VISIBLE: 1,
+    STYLE_HIDDEN: "hidden",
+    STYLE_VISIBLE: "visible",
+
 }
 const ELEMENTS_PROPERTY = {
     TAG_NAME_FOR_BUTTONS: "button",
     TAG_NAME_FOR_DISPLAY: "div",
     ROOT_FOR_BUTTONS: ".button",
     ROOT_FOR_MAIN: ".calculator",
+    ROOT_FOR_DOCUMENT: ".wrapper",
     ROOT_FOR_DISPlAY: ".display",
     ROOT_FOR_HISTORY_ELEMENTS: ".display__history",
     DISPLAY_CLASS: "display",
@@ -30,6 +38,10 @@ const ELEMENTS_PROPERTY = {
     DISPLAY_TYPE_HISTORY_RESULT: "displayHistoryResult",
     DISPLAY_CLASS_MOVE_BUTTON: "display__history_move-button",
     DISPLAY_TYPE_MOVE_BUTTON: "displayMoveButton",
+    DISPLAY_CLASS_WIDGET: "widget",
+    DISPLAY_TYPE_WIDGET: "widget",
+    WIDGET_CLASS_BUTTONS: "widget__buttons",
+    WIDGET_TYPE_BUTTONS: "widgetButtons",
     BUTTON_CLASS_GENERAL: "button__element",
     BUTTON_CLASS_OPERATION:"button__element_operation",
     BUTTON_CLASS_NUMBER: "button__element_number",
@@ -69,6 +81,8 @@ const BUTTONS_CONTENT = {
     EQUAL: "=",
     MOVE_LEFT: "<",
     MOVE_RIGHT: ">",
+    SHOW: "Show",
+    HIDE: "Hide",
 }
 const ELEMENTS = [
     {
@@ -217,5 +231,12 @@ const HISTORY_ELEMENTS = [
         OPERATION_TYPE: ELEMENTS_PROPERTY.DISPLAY_TYPE_MOVE_BUTTON,
     },
 ]
+const WIDGET_ELEMENTS = [
+    {
+        CONTENT: BUTTONS_CONTENT.HIDE,
+        BUTTON_CLASS: ELEMENTS_PROPERTY.WIDGET_CLASS_BUTTONS,
+        OPERATION_TYPE: ELEMENTS_PROPERTY.WIDGET_TYPE_BUTTONS,
+    },
+]
 
-export {DEFAULT_VALUES, ELEMENTS_PROPERTY, BUTTONS_CONTENT, ELEMENTS, HISTORY_ELEMENTS}
+export {DEFAULT_VALUES, ELEMENTS_PROPERTY, BUTTONS_CONTENT, ELEMENTS, HISTORY_ELEMENTS, WIDGET_ELEMENTS}
