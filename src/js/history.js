@@ -5,20 +5,18 @@ export default class History extends Display{
     constructor(params) {
         super(params);
 
-        this.leftMoveButton = null;
-        this.rightMoveButton = null;
-        this.historyHTMLElement = null;
-        this.historyList = [];
-
-        this.historyElement = {
+        this.state = {
             firstArg: null,
             currentOperation: null,
             secondArg: null,
-            result: null
+            result: null,
         }
 
-        this.copyOfHistoryElement = Object.assign({}, this.historyElement);
-        this.moveButtons = [];
+        this.leftMoveButton = null
+        this.rightMoveButton = null
+        this.historyHTMLElement = null
+        this.historyList =  [];
+        this.copyOfHistoryElement = Object.assign({}, this.state);
     }
 
     setHistoryElement(element) {
@@ -67,64 +65,43 @@ export default class History extends Display{
         this.historyList = [];
     }
 
-    cleanCurrentOperation() {
-        this.historyElement.currentOperation = null;
-    }
-
-    cleanLine() {
-        this.historyElement.secondArg = null;
-    }
-
     cleanAll() {
-        this.historyElement.firstArg = null;
-        this.historyElement.currentOperation = null;
-        this.historyElement.secondArg = null;
-        this.historyElement.result = null;
+        this.updateState({
+            firstArg: null,
+            currentOperation: null,
+            secondArg: null,
+            result: null,
+        });
         this.hideLeftMoveButton();
         this.hideRightMoveButton();
     }
 
-    setHistoryData(element) {
-        const {
-            firstArg,
-            currentOperation,
-            secondArg,
-            result
-        } = element;
-
-        if (currentOperation !== undefined) {
-            this.historyElement.currentOperation = currentOperation;
-        }
-        if (secondArg !== undefined) {
-            this.historyElement.secondArg = secondArg;
-        }
-        if (firstArg !== undefined) {
-            this.historyElement.firstArg = firstArg;
-        }
-        if (result !== undefined) {
-            this.historyElement.result = result;
+    updateState(data) {
+        this.state = {
+            ...this.state,
+            ...data,
         }
     }
 
     changeToHistoryElement(operation) {
         switch (operation) {
             case BUTTONS_CONTENT.SQUARE: {
-                this.historyElement.secondArg = `sqr(${this.historyElement.secondArg})`;
+                this.state.secondArg = `sqr(${this.state.secondArg})`;
 
                 break;
             }
             case BUTTONS_CONTENT.SQUARE_ROOT: {
-                this.historyElement.secondArg = `sqrt(${this.historyElement.secondArg})`;
+                this.state.secondArg = `sqrt(${this.state.secondArg})`;
 
                 break;
             }
             case BUTTONS_CONTENT.REVERSE: {
-                this.historyElement.secondArg = `reciproc(${this.historyElement.secondArg})`;
+                this.state.secondArg = `reciproc(${this.state.secondArg})`;
 
                 break;
             }
             case BUTTONS_CONTENT.NEGATE: {
-                this.historyElement.secondArg = `negate(${this.historyElement.secondArg})`;
+                this.state.secondArg = `negate(${this.state.secondArg})`;
 
                 break;
             }
@@ -132,16 +109,17 @@ export default class History extends Display{
     }
 
     additionFirstArg() {
-        if (this.historyElement.firstArg === null) {
-            this.historyElement.firstArg = `${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation} `;
+        if (this.state.firstArg === null) {
+            this.state.firstArg = `${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation} `;
         } else {
-            this.historyElement.firstArg = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`;
+            this.state.firstArg = `${this.copyOfHistoryElement.firstArg} ${this.copyOfHistoryElement.secondArg} ${this.copyOfHistoryElement.currentOperation}`;
         }
 
     }
 
     refreshCopyWithoutNulls() {
-        this.copyOfHistoryElement = Object.assign({}, this.historyElement);
+        //копирование обьекта с изменением значений у всех ключей с null на ""
+        this.copyOfHistoryElement = Object.assign({}, this.state);
 
         Object.keys(this.copyOfHistoryElement).forEach(function(key) {
             if (this[key] === null) {

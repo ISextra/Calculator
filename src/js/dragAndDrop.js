@@ -6,22 +6,24 @@ export default class DragAndDrop {
     }
 
     setDragendEventListener(elementForDrugAndDrop, localStorage) {
-        let shiftX = null;
-        let shiftY = null;
-        let rightEdge = null;
-        let bottomEdge = null;
-        let finalPositionX = null;
-        let finalPositionY = null;
-        let documentHeight = Math.max(
-            document.body.scrollHeight, document.documentElement.scrollHeight,
-            document.body.offsetHeight, document.documentElement.offsetHeight,
-            document.body.clientHeight, document.documentElement.clientHeight
-        );
-        let documentWidth = Math.max(
-            document.body.scrollWidth, document.documentElement.scrollWidth,
-            document.body.offsetWidth, document.documentElement.offsetWidth,
-            document.body.clientWidth, document.documentElement.clientWidth
-        );
+        let state = {
+            shiftX: null,
+            shiftY: null,
+            rightEdge: null,
+            bottomEdge: null,
+            finalPositionX: null,
+            finalPositionY: null,
+            documentHeight: Math.max(
+                document.body.scrollHeight, document.documentElement.scrollHeight,
+                document.body.offsetHeight, document.documentElement.offsetHeight,
+                document.body.clientHeight, document.documentElement.clientHeight
+            ),
+            documentWidth: Math.max(
+                document.body.scrollWidth, document.documentElement.scrollWidth,
+                document.body.offsetWidth, document.documentElement.offsetWidth,
+                document.body.clientWidth, document.documentElement.clientWidth
+            ),
+        }
 
         //удаление встроенного dnd
         elementForDrugAndDrop.ondragstart = function() {
@@ -29,41 +31,41 @@ export default class DragAndDrop {
         };
 
         elementForDrugAndDrop.addEventListener("mousedown", function onMouseDown(event) {
-            shiftX = event.clientX - elementForDrugAndDrop.getBoundingClientRect().left;
-            shiftY = event.clientY - elementForDrugAndDrop.getBoundingClientRect().top;
+            state.shiftX = event.clientX - elementForDrugAndDrop.getBoundingClientRect().left;
+            state.shiftY = event.clientY - elementForDrugAndDrop.getBoundingClientRect().top;
 
             function onMouseMove(event) {
-                rightEdge = documentWidth - elementForDrugAndDrop.offsetWidth;
-                bottomEdge = documentHeight - elementForDrugAndDrop.offsetHeight;
-                finalPositionX = event.pageX - shiftX;
-                finalPositionY = event.pageY - shiftY;
+                state.rightEdge = state.documentWidth - elementForDrugAndDrop.offsetWidth;
+                state.bottomEdge = state.documentHeight - elementForDrugAndDrop.offsetHeight;
+                state.finalPositionX = event.pageX - state.shiftX;
+                state.finalPositionY = event.pageY - state.shiftY;
                 
-                if (finalPositionX < DEFAULT_VALUES.ZERO) {
-                    finalPositionX = DEFAULT_VALUES.ZERO;
+                if (state.finalPositionX < DEFAULT_VALUES.ZERO) {
+                    state.finalPositionX = DEFAULT_VALUES.ZERO;
                 }
 
-                if (finalPositionX > rightEdge ) {
-                    finalPositionX = rightEdge;
+                if (state.finalPositionX > state.rightEdge ) {
+                    state.finalPositionX = state.rightEdge;
                 }
 
-                if (finalPositionY < DEFAULT_VALUES.ZERO) {
-                    finalPositionY = DEFAULT_VALUES.ZERO;
+                if (state.finalPositionY < DEFAULT_VALUES.ZERO) {
+                    state.finalPositionY = DEFAULT_VALUES.ZERO;
                 }
 
-                if (finalPositionY > bottomEdge ) {
-                    finalPositionY = bottomEdge;
+                if (state.finalPositionY > state.bottomEdge ) {
+                    state.finalPositionY = state.bottomEdge;
                 }
                 
-                elementForDrugAndDrop.style.left = finalPositionX + 'px';
-                elementForDrugAndDrop.style.top = finalPositionY + 'px';
+                elementForDrugAndDrop.style.left = state.finalPositionX + 'px';
+                elementForDrugAndDrop.style.top = state.finalPositionY + 'px';
             }
 
             document.addEventListener('mousemove', onMouseMove);
 
-            elementForDrugAndDrop.addEventListener('mouseup', function(event) {
+            elementForDrugAndDrop.addEventListener('mouseup', function() {
                 localStorage.setPosition({
-                    positionX: finalPositionX,
-                    positionY: finalPositionY,
+                    positionX: state.finalPositionX,
+                    positionY: state.finalPositionY,
                 })
 
                 document.removeEventListener('mousemove', onMouseMove);

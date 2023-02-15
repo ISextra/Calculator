@@ -15,14 +15,14 @@ export default class Calculator {
             switchOfButtonsClickAbility,
         } = rootData
 
-        this.root = root;
+        this.root = document.querySelector(root);
         this.switchOfButtonsClickAbility = false;
         this.showConsoleInfo = false;
         this.display = new Display();
         this.history = new History();
         this.localStorage = new LocalStorage();
         this.dragAndDrop = new DragAndDrop(this.root, this.localStorage);
-        this.widget = new Widget(this.root, this.buttons);
+        this.widget = new Widget(this.root);
         this.elements = null;
         this.buttons = [];
 
@@ -78,10 +78,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    return button.render(button.getState());
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_POINT: {
                     const button = new Button();
@@ -95,10 +95,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    return button.render(button.getState());
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_BASIC_OPERATION: {
                     const button = new Button();
@@ -112,10 +112,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    return button.render(button.getState());
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_COMPLEX_OPERATION: {
                     const button = new Button();
@@ -129,10 +129,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    return button.render(button.getState());
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_CLEANUP_OPERATION: {
                     const button = new Button();
@@ -146,10 +146,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    return button.render(button.getState());
                 }
                 case ELEMENTS_PROPERTY.OPERATION_TYPE_EQUAL: {
                     const button = new Button();
@@ -163,10 +163,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    return button.render(button.getButtonData());
+                    return button.render(button.getState());
                 }
                 default: {
                     return;
@@ -207,10 +207,10 @@ export default class Calculator {
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
+                    button.updateState(params);
                     this.buttons.push(button);
 
-                    const renderedElement = button.render(button.getButtonData());
+                    const renderedElement = button.render(button.getState());
                     this.history.setMoveButtons(params, renderedElement);
 
                     return renderedElement;

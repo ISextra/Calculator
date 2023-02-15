@@ -1,5 +1,5 @@
 import DomRendererElement from "./domRenderElement.js";
-import {DEFAULT_VALUES, BUTTONS_CONTENT} from "./constants.js"
+import {DEFAULT_VALUES} from "./constants.js"
 
 export default class Display extends DomRendererElement {
     constructor(params) {
@@ -24,18 +24,10 @@ export default class Display extends DomRendererElement {
 
     setDisplayElement(element) {
         this.displayHTMLElement = element;
-        this.displayHTMLElement.innerHTML = BUTTONS_CONTENT.ZERO;
+        this.displayHTMLElement.innerHTML = DEFAULT_VALUES.ZERO;
     }
 
     get displayElement() {
         return this.displayHTMLElement;
-    }
-
-    set displayResult(value) {
-        this.displayValue = value;
-    }
-
-    get displayResult() {
-        return this.displayValue;
     }
 }

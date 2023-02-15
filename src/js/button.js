@@ -4,7 +4,7 @@ export default class Button extends DomRendererElement {
     constructor(calculatorHTMLClass) {
         super(calculatorHTMLClass);
 
-        this.buttonsData = {
+        this.state = {
             tagName: null,
             classNames: [],
             textContent: null,
@@ -17,17 +17,14 @@ export default class Button extends DomRendererElement {
         this.buttonsArray = [];
     }
 
-    setButtonsData(params) {
-        this.buttonsData.tagName = params.tagName;
-        this.buttonsData.classNames = params.classNames;
-        this.buttonsData.textContent = params.textContent;
-        this.buttonsData.datasetText = params.datasetText;
-        this.buttonsData.datasetType = params.datasetType;
-        this.buttonsData.onClick = params.onClick;
-        this.buttonsData.switchOfButtonsClickAbility = params.switchOfButtonsClickAbility;
+    updateState(params) {
+        this.state = {
+            ...this.state,
+            ...params,
+        }
     }
 
-    getButtonData() {
-        return this.buttonsData;
+    getState() {
+        return this.state;
     }
 }

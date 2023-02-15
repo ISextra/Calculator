@@ -3,7 +3,7 @@ import Button from "./button.js";
 import {BUTTONS_CONTENT, DEFAULT_VALUES, ELEMENTS_PROPERTY, WIDGET_ELEMENTS} from "./constants.js";
 
 export default class Widget extends DomRendererElement{
-    constructor(rootForMain, buttons) {
+    constructor(rootForMain) {
         super(rootForMain);
         this.documentHeight = Math.max(
             document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -19,7 +19,6 @@ export default class Widget extends DomRendererElement{
         this.rootForMain = rootForMain;
         this.rootForDocument = document.querySelector(ELEMENTS_PROPERTY.ROOT_FOR_DOCUMENT);
         this.widget = null;
-        this.buttons = buttons;
 
         this.bindFunctions();
         this.render();
@@ -31,6 +30,7 @@ export default class Widget extends DomRendererElement{
     }
 
     render() {
+        //виджет (правая часть экрана)
         const params = {
             tagName: ELEMENTS_PROPERTY.TAG_NAME_FOR_DISPLAY,
             classNames: [ELEMENTS_PROPERTY.DISPLAY_CLASS_WIDGET],
@@ -41,6 +41,7 @@ export default class Widget extends DomRendererElement{
         this.rootForDocument.append(this.widget);
         this.setWidgetStyle();
 
+        //элементы виджета
         this.widgetElements = WIDGET_ELEMENTS.map(item => {
             switch (item.OPERATION_TYPE) {
                 case ELEMENTS_PROPERTY.WIDGET_TYPE_BUTTONS: {
@@ -55,8 +56,8 @@ export default class Widget extends DomRendererElement{
                         switchOfButtonsClickAbility: this.switchOfButtonsClickAbility
                     }
 
-                    button.setButtonsData(params);
-                    const renderedElement = button.render(button.getButtonData());
+                    button.updateState(params);
+                    const renderedElement = button.render(button.getState());
 
                     return renderedElement;
                 }
@@ -75,7 +76,7 @@ export default class Widget extends DomRendererElement{
     setWidgetLogic() {
         let widgetElements = this.widgetElements;
 
-        this.widget.addEventListener("mouseover",function (event) {
+        this.widget.addEventListener("mouseover",function () {
             widgetElements.forEach(item => {
                 item.style.visibility = DEFAULT_VALUES.STYLE_VISIBLE;
                 item.style.opacity = DEFAULT_VALUES.STYLE_OPACITY_VISIBLE;
@@ -83,7 +84,7 @@ export default class Widget extends DomRendererElement{
                 item.style.transform  = `rotate(${DEFAULT_VALUES.ZERO}deg)`;
             })
         })
-        this.widget.addEventListener("mouseout",function (event) {
+        this.widget.addEventListener("mouseout",function () {
             widgetElements.forEach(item => {
                 item.style.visibility = DEFAULT_VALUES.STYLE_HIDDEN;
                 item.style.opacity = DEFAULT_VALUES.STYLE_OPACITY_HIDDEN;
